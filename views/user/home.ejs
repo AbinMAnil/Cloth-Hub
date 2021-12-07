@@ -1,0 +1,78 @@
+<%-include('./partials/!docType')%>
+<%- include('./partials/headers')%> 
+<link rel="stylesheet" href="/stylesheets/user/userHome.css">
+
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+
+ </head>
+ </html>
+ <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+   <div class="swiper mySwiper">
+     <div class="swiper-wrapper">
+       <div class="swiper-slide">
+         <img src="https://www.system-concepts.com/wp-content/uploads/2018/01/shopping-cart-blue-banner.jpg" alt="">
+       </div>
+       <div class="swiper-slide">
+            <img src="https://media.istockphoto.com/vectors/electronics-promotional-sales-banner-with-shopping-cart-vector-id1198459394" alt="">
+       </div>
+       <div class="swiper-slide">\
+            <img src="https://png.pngtree.com/background/20210714/original/pngtree-black-friday-sale-banner-background-label-with-shopping-cart-picture-image_1244396.jpg" alt="">
+       </div>
+       <div class="swiper-slide">
+            <img src="https://cdn.w600.comps.canstockphoto.com/banner-of-shopping-cart-with-school-stock-images_csp84249657.jpg" alt="">
+       </div>
+       <div class="swiper-slide"><img src="https://www.system-concepts.com/wp-content/uploads/2018/01/shopping-cart-blue-banner.jpg" alt=""></div>
+     </div>
+     <div class="swiper-button-next"></div>
+     <div class="swiper-button-prev"></div>
+     <div class="swiper-pagination"></div>
+   </div>
+ </div>
+ 
+ <!--  -->
+ <marquee width="100%" direction="right" scrollamount="20">
+   <span class="stroke">sales and cart offers are waiting for you </span>
+   <span class="stroke1"> &nbsp &nbsp &nbsp &nbsp50% off on kids Catagory </span>
+     </marquee>
+
+   <script>
+ 
+ var swiper = new Swiper(".mySwiper", {
+         spaceBetween: 30,
+         centeredSlides: true,
+         autoplay: {
+           delay: 2500,
+           disableOnInteraction: false,
+         },
+         pagination: {
+           el: ".swiper-pagination",
+           clickable: true,
+         },
+         navigation: {
+           nextEl: ".swiper-button-next",
+           prevEl: ".swiper-button-prev",
+         },
+ 
+       });
+  
+ var myIndex = 0;
+ carousel();
+ function carousel() {
+      var i;
+      var x = document.getElementsByClassName("mySlides");
+      for (i = 0; i < x.length; i++) {
+           x[i].style.display = "none";
+      }
+      myIndex++;
+      if (myIndex > x.length) {
+           myIndex = 1
+      }
+      x[myIndex - 1].style.display = "block";
+      setTimeout(carousel, 3000); // Change image every 2 seconds
+ }
+ 
+ 
+ 
+   </script>
+ </body>
+ 

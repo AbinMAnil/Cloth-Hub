@@ -1,0 +1,60 @@
+
+<%-include('./partials/!docType')%>
+<%-include('./partials/header')%>
+<%-include('./partials/spinner') %> 
+
+<link rel="stylesheet" href="/stylesheets/admin/admin-prouctlist.css">
+<div class="container">
+     <div class="row">
+          <div class="home-content loader">
+               <div class="tableContol" >
+          <table class="table table-borderless" id="table" >
+               <thead>
+                 <tr>
+                   <th scope="col">#</th>
+                   <th scope="col">Product-Image</th>
+                   <th scope="col">Details</th>
+                   <th scope="col">Priece</th>
+                   <th scope="col">Stock status</th>
+                   <th scope="col">Actions</th>
+
+
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr class="table-warning">
+                   <th scope="row" class="align-middle">1</th>
+                   <td>
+                         <div class="image-div" style="width: 150px; height: 100px;">
+                              <img  src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQAX1moxXEy5zUu7UXMpZD2bCBoTFhhg-FqEI5VPzMM0620N-Wt4EjQloeny_hgnchFODW99ZXgj7YhBQIWfs0FP7yMuoQzC55dqeBf6M&usqp=CAE" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+                         </div> 
+
+                   </td>
+                   <td class="align-middle">Product Name
+                        catagory
+                        subCatagory
+                 </td>
+                   <td class="align-middle">1003</td>
+
+                    <td class="align-middle" >
+                         <button type="button" class="btn btn-outline-success">Avaliable</button>
+                         <button type="button" class="btn btn-outline-danger">No Stock Left</button>
+                         <button type="button" class="btn btn-outline-primary">less-than 50</button>
+        
+                      </td>
+
+                      <td  class="align-middle">
+                         <button type="button" class="btn btn-outline-info">Edit </button>
+                         <button type="button" class="btn btn-outline-danger">Delete</button>
+        
+                      </td>
+                 
+
+
+                
+               </tbody>
+             </table>
+          </div>
+          </div>
+     </div>
+</div>

@@ -1,0 +1,61 @@
+<%-include('./partials/!docType') %>
+<link rel="stylesheet" href="/stylesheets/user/createAccout.css">
+</head>
+<body>
+    <main>
+        <section class="section">
+            <div class="outer" id="outer">
+                <div class="left">
+                    <h1 class="image-text" id="image-text">Huge offers are Waitng </h1>
+                    <div class="image">
+                        <div style="width:100%;height:100%;position:relative;"><iframe src="https://giphy.com/embed/l46CgonUOtSV0pxyE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+                    </div>
+                </div>
+                <div class="right">
+                    <%-include('./partials/spinner') %> 
+                    <section>
+                        <form  id="createUserForm" action="">
+                            <div class="header">
+                                <div style="margin-left: 3vw;">
+                                    <h1>cloth Hub</h1>
+                                </div>
+                                <center>
+                                    <h1><span style="font-size: 25px;background-color: yellow; padding: 2px;">Create </span> Account</h1>
+                                </center>
+                            </div>
+                            <!-- timer to limit user time -->
+                            <center id="createAccountHide">
+                                <div class="timer" id="timer">
+                                    <span class="timing" id="safeTimerDisplay">02 : 60</span>
+                                </div>
+                                <p id="chanceIndicator">your have <span id="limitIndicator"> 4 </span> cahances left</p>
+                            </center>
+                            <!-- end of the timer -->
+                            <div class="form-body">
+                                <input class="form hideBeforeOtp" type="text" name="name" id="" placeholder="Name "  onkeyup="Check(this);" onkeydown="Check(this);" onKeyPress="if(this.value.length==10) return false;">
+                                <input class="form hideBeforeOtp" type="email" name="email" id="" placeholder="E mail">
+                                <input  class="form " type="number" name="phone" id="phone" placeholder="Phone number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" >
+                                <input  class="form hideBeforeOtp" type="password" name="password" id="" placeholder="Password">
+                            </div>
+                        </form>
+                        <footer>
+                            <center class="otpField"  id="otpField">
+                                <input  class="form " type="number" name="otp" id="otp" placeholder="Enter the OTP" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length== 6) return false;" >
+                            </center>
+                            <center class="hideBeforeOtp"> <button  onclick="submitData()" type="button">Create Account  </button></center>
+                            <center class="hideButton"> <button id="continueButton"  onclick="numberSubmit()" type="button">Continue </button></center>
+                            <div style="display: flex; justify-content: space-evenly;" class="hideButton" >
+                                <center class="hideBeforeOtp" id="showOtpSubmitButton"> <button id=""  onclick="submitOtp()" type="button">Submit OTP </button></center>
+                                <center class="hideBeforeOtp" id="goBack"> <button id=""  onclick="location.reload()" type="button"> Go Back </button></center>
+                            </div>
+                            <p style="text-align: center; color: red;  margin-top: 1vh;" id="err"></p>
+                            <p style="text-align: center;">have an Account <span><a href="/signup">sign Up</a></span></p>
+                        </footer>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="/javascripts/user/createAccount.js"></script>
+</body>
+</html>

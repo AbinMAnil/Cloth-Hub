@@ -1,0 +1,153 @@
+
+<%-include('./!docType')%>
+<link rel="stylesheet" href="/stylesheets/admin/admin-layout.css">
+<style>
+  .display-none{
+    display: none;
+  }
+ .dropdown-content {
+  display: none;
+  width: 100%;
+  }
+</style>
+<body>
+     <div class="sidebar">
+       <div class="logo-details">
+           <i class="fab fa-etsy"></i>
+           <span class="logo_name">Cloth Hub</span>
+       </div>
+         <ul class="nav-links" id="nav-links">
+           <li>
+             <a href="/admin" class="active">
+               <i class='bx bx-grid-alt' ></i>
+               <span class="links_name">Dashboard</span>
+             </a>
+           </li>
+           <li>
+             <a href="/admin/userManage">
+               <i class=" fas fa-user-cog"></i>
+               <span class="links_name">Users</span>
+             </a>
+           </li >
+           <li onclick="myFunction()" >
+           <div class="dropdown" style="font-size: 20xp; width: 100%;"  >
+              <button     class="dropbtn" style="font-size: 30px;"> <i  class='bx bx-list-ul'  id='product' style="font-size: 28px;"> <span id="hide-pro" >&nbsp &nbsp Products &nbsp   &nbsp &nbsp </span>  <i id="closeProudcts"  style="display: none;" onmouseenter="hideProudctOptions()"  class="fab fa-xing"   ></i> </i>  </button> 
+            <div id="myDropdown" class="dropdown-content  " style="margin-top: 0px;"    >
+              <a href="/admin/products">All Products</a>
+              <a href="/admin/products/addproucts">Add Products</a>
+              <a href="#"> Stockes </a>
+            </div>
+          </div>   
+          </li>
+
+           <li>
+             <a href="/admin/catagory">
+               <i class='bx bx-pie-chart-alt-2' ></i>
+               <span class="links_name">Catagory </span>
+             </a>
+           </li>
+           <li>
+             <a href="#">
+               <i class='bx bx-coin-stack' ></i>
+               <span class="links_name">Offers</span>
+             </a>
+           </li>
+           <li>
+             <a href="#">
+               <i class='bx bx-book-alt' ></i>
+               <span class="links_name">Total order</span>
+             </a>
+           </li>
+           <li>
+             <a href="#">
+               <i class="fas fa-gift"></i>
+               <span class="links_name">Coupons</span>
+             </a>
+           </li>
+          
+           <li>
+             <a href="#">
+               <i class='bx bx-cog' ></i>
+               <span class="links_name">Setting</span>
+             </a>
+           </li >
+           <li class="log_out"  onclick="logout()">
+             <a href="#" >
+               <i class='bx bx-log-out'></i>
+               <span class="links_name" >Log out</span>
+             </a>
+           </li>
+         </ul>
+     </div>
+     <section class="home-section">
+       <nav>
+         <div class="sidebar-button">
+           <i class='bx bx-menu sidebarBtn'></i>
+           <span class="dashboard">Dashboard</span>
+         </div>
+         <div class="search-box">
+           <input type="text" placeholder="Search...">
+           <i class='bx bx-search' ></i>
+         </div>
+         <div class="profile-details">
+           <!--<img src="images/profile.jpg" alt="">-->
+           <span class="admin_name">Prem Shahi</span>
+           <i class='bx bx-chevron-down' ></i>
+         </div>
+       </nav>
+     <script>
+      let sidebar = document.querySelector(".sidebar");
+   let sidebarBtn = document.querySelector(".sidebarBtn");
+   sidebarBtn.onclick = function() {
+    document.getElementById("hide-pro").classList.toggle("hider")
+    document.getElementsByTagName("body")[0].style.overflow = "hidden"
+     sidebar.classList.toggle("active");
+     if(sidebar.classList.contains("active")){
+     sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+   }else
+     sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+   }
+
+   function logout(){
+     swal({
+  title: "Really?",
+  text: "Poyettu pinne va",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+    $.ajax({
+         url:"/admin/logout",
+         method:"get",
+         success:(result)=>{
+              location.href = "/admin"
+         }
+    })
+  } else {
+    
+  }
+});
+   }
+
+
+function hideProudctOptions(){
+  document.getElementById("myDropdown").style.display = "none"
+  document.getElementById('closeProudcts').style.display = "none";
+
+}
+function myFunction() {
+  document.getElementById("closeProudcts").style.display = "block"
+  document.getElementById("myDropdown").style.display = "block"
+}
+
+
+
+
+    </script>
+   
+   </body>
+
+
+  

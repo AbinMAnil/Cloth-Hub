@@ -1,0 +1,124 @@
+<%-include('./partials/header')%> 
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="/stylesheets/admin/userManageMent.css" />
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"
+/>
+
+<div  class="home-content loader">
+  <center><h1>Manage The User</h1></center>
+  <div class="showDiv">
+    <a href="/admin/userManage/getUsersByBlockStatus/true">
+    <div class="items item-1">
+      <i class="fas fa-user-times"></i>
+      <h5>blocked User</h5>
+    </div>
+  </a>
+  <a href="/admin/userManage/getUsersByBlockStatus/false">
+    <div onclick="getUsersByBlockStatus(false)" class="items item-2">
+      <i class="fas fa-user-check"></i>
+      <h5>Unblocke User</h5>
+    </div>
+  </a>
+  </div>
+ 
+  <div style="overflow: auto">
+    <table id="hello" class="table table-striped table-bordered">
+      <thead style="text-align: center">
+        <tr style="background-color: rgb(0, 0, 0); color: white">
+          <th>Index</th>
+          <th>User Name</th>
+          <th>E-mail</th>
+          <th>Phone number</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody style="background-color: red">
+        <% if(result) {%> <% for(var i = 0 ;i < result.length; i++){%>
+        <tr id="tableRow" style="background-color: rgb(255, 255, 255)">
+          <td s id="td-1"><%=i+1 %></td>
+          <td id="td-2"><%=result[i].name %></td>
+          <td id="td-3"><%=result[i].email %></td>
+          <td><%=result[i].phone %></td>
+          <td id="td-4" style="text-align: center; cursor: pointer">
+            <button
+              id="<%=result[i]._id %>"
+              type="button"
+              class="btn btn-outline-danger"
+              data-mdb-ripple-color="dark"
+              onclick="blockUser('<%= result[i]._id %>' ,'<%= result[i].name %>','<%=result[i].blockStatus %>')"
+            >
+              <%if(result[i].blockStatus){ %> Unblock User <% }else{ %> Block
+              User <% } %>
+            </button>
+          </td>
+        </tr>
+
+        <% } %> <% } %>
+      </tbody>
+    </table>
+    
+    <div class="pagination">
+      <a href="#">&laquo;</a>
+      <% for(var i = 0 ;i< result.length/10;i++){ %> 
+        <% if(i ==0 ){ %> 
+      <a href="#" class="active" ><%=i+1%> </a>
+      <% }else{ %> 
+          <a href="#" class="active" ><%=i+1%> </a>
+        <% }} %> 
+      <a href="#">&raquo;</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    var table = $("#hello").DataTable({
+      bPaginate: false,
+    });
+
+    $("#example tbody").on("click", "tr", function () {
+      var data = table.row(this).data();
+      alert("You clicked on " + data[0] + "'s row");
+    });
+  });
+
+  //function to block the user by id
+  function blockUser(uid, name, currentStatus) {
+    swal({
+      title: "Are you sure?",
+      text: "",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        var data = { id: uid };
+        $.ajax({
+          url: "/admin/userManage/action",
+          data: data,
+          method: "POST",
+          success: (result) => {
+            var temBtn = document.getElementById(uid);
+            if (result.status) {
+              swal({
+                title: "Sucess",
+                text: "User UnBlocked sucessful",
+                icon: "success",
+                button: "!Oh ya",
+              });
+              if (currentStatus) temBtn.innerHTML = "Block User";
+              else {
+                temBtn.innerText = "Unblock User";
+              }
+            }
+          },
+        });
+      } else {
+      }
+    });
+  }
+    
+
+</script>

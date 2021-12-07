@@ -1,0 +1,79 @@
+<link rel="stylesheet" href="/stylesheets/user/header.css" />
+<body>
+  <main >
+ <div class="navContainer" id="navContainer">
+    <div class="nav"  id="navbar">
+      <div class="left">
+        <span class="brand"><span style="color: orange;">Cloth</span> Hub </span>
+      </div>
+      <div class="right">
+        <span class="input">
+          <input type="text" />
+          <button class="btn">search</button></span>
+        <div class="nav-links">
+          <% if(logStatus){ %> 
+          <a style="cursor: pointer;"><i  class="fas fa-user-secret"></i></a>
+         <%  }else{ %> 
+          <a title="Log In"  style="cursor: pointer;"><i title="Log In"  class="far fa-sign-in-alt"></i></a>
+          <% } %> 
+          <a  href=""><i title="Go to Cart " class="fas fa-shopping-cart text-white">  <span id="badge">11</span></i></a>
+          <a ><i title="Fav List" style="color: red;" class="fas fa-heart"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="second-nav" id="second-nav">
+      <i onclick="openNav()" class="fas fa-bars m-4 allItem"  title="All Catagories"></i>
+      <div class="innerCat">
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+        <a href="">cataory</a>
+      </div>
+    </div>
+
+
+    <div id="mySidenav" class="sidenav">
+      <a href="#" class="closebtn" onclick="closeNav()">&times;</a>
+      
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Clients</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+
+  </main>
+  
+
+ 
+  <script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+  var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementById("navbar").style.top = "0";
+    document.getElementById("second-nav").style.top= "8%"
+  } else {
+    document.getElementById("navbar").style.top = "-100px";
+    document.getElementById("second-nav").style.top= "0%"
+
+
+
+  }
+  prevScrollpos = currentScrollPos;
+}
+
+
+  </script>

@@ -1,0 +1,160 @@
+<%-include('./partials/!docType')%>
+<%-include('./partials/header')%>
+<%-include('./partials/spinner') %> 
+<link rel="stylesheet" href="/stylesheets/admin/adminCatagory.css">
+<div class="home-content loader">
+	<center class="m-4">
+		<h3><span style="color: rgb(3, 35, 53);">Do Something</span> With Catagory</h3>
+	</center>
+	<div class="control">
+		<button class="tablink" onclick="openPage('allCatagory', this, '')" id="defaultOpen"> Manage Catagory and SubCatagory  </button>
+		<button class="tablink" onclick="openPage('addCatagory', this, '')" >Add Catagory and Sub Catgory</button>
+
+	<div  class="tabcontent" id="allCatagory">
+
+        <div class="display-flex" >
+          <div >
+			<h3 class="sample-para">Edit and Delete <span style="color: rgb(0, 2, 61);">Catagorys</span> and <span style="color: rgb(0, 2, 61)">subCatagories</span> Here...</h3>
+			<center >
+				<h4 style="color: rgb(63, 56, 17); font-weight: 900;">chose Your <span style="color:rgb(0, 2, 61)">Catagory</span></h2>
+			</center>
+			<p id="err" style="color: red;"></p>
+			<div class="catagory" id="catagory">
+				<select onchange="clearError() , insertIntoEdit() ,  getSubCatagoryToTable()"  class="form-select form-select-lg mb-3"   aria-label=".form-select-lg example" id="mainCata">
+					<option selected ></option>
+					<% for (var i = 0  ;i< catagory.length ;i++ ){ %> 
+					<option><%= catagory[i].catagory %> </option>
+					<% } %> 
+				</select>
+				<div class="options">
+					<button style=" padding: 0px ;  height: 3rem;" onclick="showEditForm()"  class="btn btn-warning btn-cntrl" id="editBtn"> <i class="fas fa-edit"></i></button>
+					<button style=" padding: 0px ;  height: 3rem;" onclick="deleteCatgory()" class="btn btn-danger btn-cntrl" id="dltBtn"> <i class="fas fa-trash-alt"></i></button>
+				</div>
+			</div>
+			<div class="edit-Cat  hide-class" id="edit-form">
+				<div class="options">
+					<button onclick="editCatagory()" class="btn btn-outline-success btn-cntrl"> <i class="fas fa-check"></i></button>
+					<button onclick="hideForm()" class="btn btn-outline-danger btn-cntrl"> <i class="fas fa-times"></i></button>
+				</div>
+				<input style="margin-left: 2%;background-color: rgb(255, 255, 255); color: black;" type="text" class="input input-group-text form-control" id="form" >
+			</div>
+        </div>
+          
+       
+
+          
+
+            <!-- table to show all subs  -->
+
+       <div class="hel shadow-lg" id="hel" >
+      <h3 class="mb-4" id="overCata">All SubCatagories</h3>
+	 <div  class="overFlow">
+      <table id="table" >
+        <tr class="t-head">
+
+          <th>Sub Catagory</th>
+          <th>actions</th>
+        </tr>
+
+   <% for(var i = 0 ;i<catagory.length ; i++){ %> 
+
+   <tbody id="<%=catagory[i].catagory%>" class="hide  common" >
+
+	   <% for(var j = 0 ; j< catagory[i].subCatagory.length ;j++){ %>
+	<tr class="tr" id="tableRow<%=catagory[i].subCatagory[j]%>">
+		<td>
+		   <span id="name<%=catagory[i].subCatagory[j]%>"><%=catagory[i].subCatagory[j]%></span>
+		   <input  type="text" name="" id="input<%=catagory[i].subCatagory[j]%>" class="form-control hide" value="<%=catagory[i].subCatagory[j]%>" >
+		</td>
+		<td><i   onclick="deleteSubCatagory('<%=catagory[i].subCatagory[j]%>')"  class="fas fa-trash table-icon" id="dlt<%=catagory[i].subCatagory[j]%>"  ></i>
+		 <i   onclick="showSubCatEdit('<%=catagory[i].subCatagory[j]%>')"   class="fas fa-pen-fancy table-icon" id="editItem<%=catagory[i].subCatagory[j]%>"></i>
+
+		 <i   onclick="editConfirm('<%=catagory[i].subCatagory[j]%>' , '<%=catagory[i].catagory%>')"   class="fas fa-check hide  table-icon"  id="confirm<%=catagory[i].subCatagory[j]%>"></i>
+		 <i   onclick="cancelEdit('<%=catagory[i].subCatagory[j]%>')"   class="far fa-window-close hide table-icon" id="cancel<%=catagory[i].subCatagory[j]%>"></i>
+	    </td>
+    </tr>
+    <% } %> 
+
+  </tbody> 
+
+  <% } %> 
+
+      </table>
+      
+	</div>
+      </div>
+
+
+
+         
+       
+
+    </div>
+
+
+	</div>
+
+
+
+
+
+
+        <!-- --------------------create new Catgory----------------------- -->
+
+
+		<div id="addCatagory" class="tabcontent"  style="overflow-y: auto;">
+			<h3 class="sample-para">Create  new  <span style="color: rgb(153, 80, 19);">Catagories </span> and <span style="color: rgb(153, 80, 19);">subCatagories</span> Here...</h3>
+			<div class="addCatAndSubCat" id="addCatAndSubCat">
+				<div class="addCat shadow" id="addCat">
+					<center>
+						<h2>
+						Create New Catagories</h4>
+					</center>
+					<br><br><br>
+					<input style="background-color: white;" type="text" class=" input-group-text form-control" id="addCatInput"  placeholder="Enter the Catagory Name" onkeyup="cleareCatError()">
+					<br><br>
+					<center>
+						<button onclick="addCatagory()" class="btn btn-outline-dark shadow" style="font-size: 15px;">Create New Catagory</button>
+						<br>
+						<br>
+						<p id="AddCatErr" style="color: red;"></p>
+					</center>
+				</div>
+				<div class="addSubCat shodow" id="addSubCat">
+					<center>
+						<h2>
+						Create New Sub - Catagories</h4>
+					</center>
+					<br>  
+					<div class="select-catagory-add mb-3">
+						<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="selectCatToAddSubCat">
+							<option selected></option>
+							<% for (var i = 0  ;i< catagory.length ;i++ ){ %> 
+							<option><%= catagory[i].catagory %> </option>
+							<% } %> 
+						</select>
+					</div>
+					<div class="select-catagory-add add-sub-cat mt-5">
+						<div class="input-group ">
+							<input id="sub-cat" type="text" class="form-control" placeholder="insert SubCatagory" aria-label="Recipient's username" aria-describedby="button-addon2"  onkeypress="if (event.key.replace(/[^\w\-.]/g,'')=='') event.preventDefault();">
+							<button class="btn btn-warning " type="button" id="button-addon2" onclick="storeInArray()" >Add </button>
+						</div>
+					</div>
+					<br>
+					<center>
+						<div class="scrollmenu" id="previewOfSubCat">                                                                                                                                                                                                                                                           
+						</div>
+					</center>
+					<center>
+						<button class="btn btn-success" onclick="insertSubCat()"> Insert to Catagory </button>
+						<button onclick="clearSubCatInsert()" class="btn btn-danger m-4"> cancel </button>
+						<p id="err2" style="color: rgb(255, 72, 72);"></p>
+					</center>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script src="/javascripts/admin/catagory.js"></script>
+<script></script>

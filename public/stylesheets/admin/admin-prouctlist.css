@@ -1,0 +1,12 @@
+
+
+.tableContol{
+     width: 100%;
+     overflow-x: auto;
+}
+
+@media all and (max-width : 400px){
+#table{
+          width: 300vw;
+     }
+}

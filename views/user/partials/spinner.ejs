@@ -1,0 +1,33 @@
+<style>
+     .spinner {
+  border: 3px solid black;
+  border-radius: 50%;
+  border-top: 3px solid white;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+
+
+
+<div class="w3-container">
+     <div id="id01" class="w3-modal w3-animate-opacity">
+       <div style="position: absolute;top: 0 ;left: 0;background-color: rgba(0, 0, 0, 0);"></div>
+       <div style="position: absolute; left: 50%; top: 50%;"><div class="spinner"></div></div>
+     </div>
+</div>
+

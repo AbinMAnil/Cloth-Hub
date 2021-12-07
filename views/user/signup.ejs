@@ -1,0 +1,218 @@
+<%-include('./partials/!docType')  %> 
+<link rel="stylesheet" href="/stylesheets/user/signup.css">
+<main>
+     <section class="section">
+       <div class="outer" id="outer">
+ 
+        
+         <div class="right">
+           <section>
+             <form action="">
+                 <div class="header">
+                   <div style="margin-left: 3vw;"><h1>cloth Hub</h1></div>
+                   <center><h1><span style="font-size: 25px;background-color: yellow; padding: 2px;">sign</span> up</h1></center>
+                 </div>
+                 <div class="form-body">
+                   <center id="allTimer">
+                     <div class="timer" id="timer">
+                      <span class="timing" id="safeTimerDisplay">02 : 60</span>
+                     </div>
+                     <p> you Have <span id="chanceIndicator">4</span> chances left </p>
+                   </center>
+                     <input class="form otp-hide " type="text" name="" id="email" placeholder="E mail">
+                   <input style="display:none" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;"  class="form" type="number" name="phone"   id="phone" placeholder="Phone number" >
+                   <input class="form otp-hide " type="text" name="" id="password" placeholder="Password">
+                  </form>
+                   <input id="hide-opt" class="otp-show   form " type="text" name="" placeholder="Enter the  OTP "  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==6) return false;">
+                 </div>
+                  <footer>
+                  <div style="display: flex; justify-content: space-evenly; ">
+                   <center  class="otp-hide"> <button type="button" onclick="simpleSubmit()" > Continue   </button></center>
+                   <center id="getTheOtp" > <button type="button" class="opt-show " onclick="getOtp()"> Get the   OTP </button></center>
+                   <center > <button id="reloadBtn" type="button" class="opt-show  " onclick="location.reload()"> Go Back </button></center>
+                   <center class="otp-hide"> <button type="button" id="opt-btn" onclick="showOtpForm()"> Continue With  OPT  </button></center>
+                   <!-- to submit the otp -->
+                   <center id="submitOpt" class="" style="display: none;"> <button type="button"  onclick="submitOtp()"> Submit  OTP   </button></center>
+                  </div>
+                   <p style="text-align: center; color: red;" id="err"></p>
+ 
+                   <p style="text-align: center;" > don't have an Account <span style="margin-left: 1%;"><a href="">Create Account</a></span></p>
+                  </footer>
+             </form>
+             <%-include('./partials/spinner') %> 
+           </section>
+         </div>
+         <div class="left">
+           <h1 class="image-text" id="image-text"><span style="background-color: white;"> continue</span> Shoping</h1>
+           <div class="image">
+             <div style="width:100%;height:100%;position:relative;"><iframe src="https://giphy.com/embed/l46CgonUOtSV0pxyE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+           </div>
+         </div>
+       </div>
+     </section>
+    
+   </main>
+ 
+   <script>
+var phone;
+     function showOtpForm(){
+       var showForms = document.getElementsByClassName('opt-show');
+       var hideForms = document.getElementsByClassName("otp-hide")
+       document.getElementById("phone").style.display = "block"
+       for(var i =0 ;i<showForms.length;i++){
+         showForms[i].style.display = "block"
+       }
+       for(var i =0 ;i<hideForms.length;i++){
+         hideForms[i].style.display = "none"
+       }
+     }
+ 
+ 
+     // to type otp form rendering 
+ var  timer = document.getElementById('safeTimerDisplay');
+ var intravel;
+ var timeLimit = true;
+  function stopTimer (){
+    timeLimit = false;
+    clearInterval(intravel);
+    swal("Sorry !", " Try again ", "error").then(() => {
+            location.reload();
+        })
+
+  }
+ function startTimer  (){
+ var minute = 2;
+ var second =60
+ 
+      intravel = setInterval(()=>{
+     second --;
+     if(second == 0 ){
+     minute --;
+     second = 60;
+     if(minute == 0 ){
+     second = '00'
+     minute = '00'
+        stopTimer();
+     }
+     }
+     timer.innerHTML ="0"+minute + ":" + second;
+     
+   },1000)
+ 
+  }
+   
+ // request otp with phone number;
+ function getOtp(){
+
+    phone =  document.getElementById('phone').value
+   if(phone.length != 10 ){
+     document.getElementById("err").innerHTML = ""
+     document.getElementById("err").innerHTML = "Ckeck the Phone Number"
+   }else{
+  document.getElementById('id01').style.display = 'block'
+     document.getElementById("err").innerText = ""
+     $.ajax({
+              url:'/otpSignUp',
+              data:{phone:parseInt(phone)},
+              method:"POST",
+              success:(result)=>{
+                  if(result.status == true){
+                        document.getElementById('id01').style.display = 'none'
+                          document.getElementById("getTheOtp").style.display = "none";
+                         document.getElementById("phone").disabled = true; 
+                         document.getElementById("hide-opt").style.display = "block"
+                         document.getElementById("timer").style.display = "block"
+                         document.getElementById("allTimer").style.display ="block"
+                         document.getElementById("submitOpt").style.display = "block";
+                         startTimer();
+                       
+                  }else{
+                    document.getElementById('id01').style.display = 'none'
+                      document.getElementById("err").innerText = result.status;
+                  }
+              }
+          })
+ 
+   }
+ }
+ var checker= 4;
+ 
+ function submitOtp (){
+   if(checker != 0 && timeLimit ){
+   var otp = document.getElementById("hide-opt").value;
+   if( parseInt(otp.length ) == 6){
+    document.getElementById('id01').style.display = 'block'
+
+    checker--;
+    document.getElementById("chanceIndicator").innerHTML = checker;
+     
+     document.getElementById('err').innerHTML = "";
+     $.ajax({
+       url:'/otpCheckForExistUser',
+       data:{phone:phone, otp:otp},
+       method:"post",
+       success :(result)=>{
+        document.getElementById('id01').style.display = 'none'
+          if(result.status === true){
+           location.href = "/";
+          }else{
+            document.getElementById('err').innerHTML = result.status;
+          }
+       }
+     })
+     
+   }else{
+     alert("outside the otp")
+     document.getElementById("err").innerText = " ! Velachil  Edukalledey...."
+   }
+  }else{
+
+    swal("Sorry !", " Try again ", "error").then(() => {
+            location.reload();
+        })
+
+  }
+ }
+
+ function simpleSubmit (){
+  
+   var err = document.getElementById("err")
+   err.style.display = "block";
+  var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  if(email.match(pattern) === null|| email == ""){
+    err.innerHTML = "check your Email"
+    return;
+  }
+  else if(password.length < 6 || password == ""){
+    err.innerHTML = "Enter a Valid Password";
+    return;
+
+  }else{
+    document.getElementById('id01').style.display = 'block'
+    err.innerHTML = "";
+    $.ajax({
+      url:"/signupWithEmail",
+      data:{email:email , password : password},
+      method:"post",
+      success : (result)=>{
+        document.getElementById('id01').style.display = 'none'
+
+        if(result.status === true){
+          location.href = "/"
+        }else{
+          err.innerHTML = result.status;
+        }
+      }
+    })
+  }
+
+
+ }
+
+ 
+   </script>
+ </body>
+ </html>

@@ -3,8 +3,8 @@ const schema = mongoose.Schema;
 // {{ creating the struecture of the size Varient array}}
 
 const sizeVarient = new schema({
-     sizeVarientId : mongoose.Types.ObjectId(),
-     
+     // sizeVarientId : mongoose.Types.ObjectId(),
+
      size:{
           type:Number,
           required:true,
@@ -37,7 +37,7 @@ const reviews = new schema({
 //  {{ creatating the structure of the varient array object}}
 
 const varentSchema = new schema({
-     varientUniqueId:mongoose.Types.ObjectId(),//  to make every objectid uinque;
+     // varientUniqueId:mongoose.Types.ObjectId(),//  to make every objectid uinque;
 
      color:{
           type:String,
@@ -94,5 +94,5 @@ const pruductScheme = new schema ( {
      }
 })
 
-const productData = mongoose.model('product', product);
-module.exports = productData;
+const productModel = mongoose.model('product', pruductScheme);
+module.exports = productModel;

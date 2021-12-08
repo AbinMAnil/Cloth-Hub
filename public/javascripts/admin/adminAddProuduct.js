@@ -233,7 +233,7 @@ function submitData(){
      console.log(varientSampleData1);
     // creating the basice structur of the data;
     var modelData = {
-         varient : JSON.stringify(varientSampleData1),
+         varient : JSON.stringify(varientArray),
          productName : productName,
          brand : brand,
          catagory : catagory,

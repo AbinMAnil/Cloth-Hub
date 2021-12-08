@@ -136,6 +136,7 @@ module.exports = {
      getAllCatagory:  ()=>{
          return new Promise( async (resolve , reject)=>{
                var result = await  getCatagory('')
+              
                resolve(result);
          })
      },

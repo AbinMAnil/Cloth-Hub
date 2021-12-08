@@ -32,7 +32,7 @@
 
     div.scrollmenu {
  color: gold;
-  background-color: rgb(19, 9, 75);
+ cursor: pointer;
   overflow: auto;
   white-space: nowrap;
 }
@@ -40,7 +40,7 @@
 div.scrollmenu a {
      border-right: 1px solid gold;
   display: inline-block;
-  color: white;
+  color: rgb(0, 0, 0);
 
   text-align: center;
   padding: 14px;
@@ -48,8 +48,8 @@ div.scrollmenu a {
 }
 
 div.scrollmenu a:hover {
-     color: gold;
-  background-color: rgb(91, 77, 157);
+     color: rgb(0, 0, 0);
+  background-color: rgb(232, 229, 243);
 }
 
 .scrollmenu::-webkit-scrollbar{
@@ -58,17 +58,8 @@ div.scrollmenu a:hover {
 
      </style>
  <%-include('./partials/header')%>
- <!-- validation  -->
- https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js
- <!-- end of  the validation  -->
-
-
- <form action="">
-     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="https://kit.fontawesome.com/4f9ff9a3d7.js" crossorigin="anonymous"></script>
+ 
 <!-- Material Dashboard CSS -->
-<link href="/assets/css/material-dashboard.min.css?v=2.1.0" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
        <link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
      <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
 
@@ -130,7 +121,7 @@ div.scrollmenu a:hover {
 
      <body style="overflow-x:hidden;">
           <div class="home-content loader">
-         <form class="jotform-form" action="/admin/addProPost" method="post" enctype="multipart/form-data">
+         <div class="jotform-form">
              <div role="main" class="form-all" style="margin:0 auto;">
                  <style>.form-all:before { background: none;}</style>
                  <ul class="form-section page-section shadow-lg">
@@ -145,9 +136,9 @@ div.scrollmenu a:hover {
                  <li class="form-line" data-type="control_fullname" id="id_2">
                     <div id="cid_2" class="form-input-wide" data-layout="full">
                         <div data-wrapper-react="true"><span class="form-sub-label-container" style="vertical-align:top" data-input-type="first">
-                            <input type="text" id="first_2" class="form-textbox"  data-component="first"  name="proName"  />
+                            <input type="text" id="productName" class="form-textbox"  data-component="first"  name="proName"  onkeyup="clearMainError(event)"     />
                             <label class="form-sub-label" for="first_2" id="sublabel_2_first" style="min-height:13px" aria-hidden="false"> Product Name </label>
-                             </span><span class="form-sub-label-container" style="vertical-align:top" data-input-type="last"><input type="text" id="last_2" name="brand" class="form-textbox" data-defaultvalue="" size="15" value="" data-component="last" aria-labelledby="label_2 sublabel_2_last" />
+                             </span><span class="form-sub-label-container" style="vertical-align:top" data-input-type="last"><input  onkeyup="clearMainError(event)"type="text" id="brandName" name="brand" class="form-textbox" data-defaultvalue="" size="15" value="" data-component="last" aria-labelledby="label_2 sublabel_2_last" />
                             <label class="form-sub-label" for="last_2" id="sublabel_2_last" style="min-height:13px" aria-hidden="false"> Brand Name  </label></span>
                         </div>
                     </div>
@@ -161,15 +152,20 @@ div.scrollmenu a:hover {
                          <div summary="" class="form-address-table jsTest-addressField">
                              <div class="form-address-line-wrapper jsTest-address-line-wrapperField"><span class="form-address-line form-address-street-line jsTest-address-lineField"><span class="form-sub-label-container" style="vertical-align:top">
                               <!-- search tags  -->
+                              <div class="scrollmenu shadow  mb-3"  >
+                                <a style="padding: 1px;" id="previewOfTags">Preview</a>
+                               
+                              </div>
                               <div class="input-group mb-3">
-                                   <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                                  
+                                   <input id="searchTags" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
                                    <div class="input-group-prepend">
-                                        <span style="background: rgb(0, 0, 0);" class="input-group-text" id="inputGroup-sizing-default"><i  style="font-size: 30px; color: red;" class="fas fa-plus"></i></span>
+                                        <span onclick="prevewOfSearchTags()" style="background: rgb(6, 2, 44);" class="input-group-text" id="inputGroup-sizing-default"><i  style="font-size: 30px; color: rgb(243, 188, 50); cursor:  pointer;" class="fas fa-plus"></i></span>
                                       </div>
                                  </div>
-                              Add Search tags to increse your product visiabliy  </label></span></span></div>
+                              Enter The Qualityies of  your product {{Speciality }} </label></span></span></div>
  
-                             <!-- color and size input feids -->
+                          
  
                              <div class="form-address-line-wrapper jsTest-address-line-wrapperField">
                                  
@@ -182,11 +178,12 @@ div.scrollmenu a:hover {
                                  <span class="form-address-line form-address-country-line jsTest-address-lineField ">
                                      <span class="form-sub-label-container" style="vertical-align:top">
                                          <!-- subcatagory -->
-                                         <select class="form-dropdown form-address-country noTranslate"name="catagory" id="mainCat" data-component="country" required="" aria-labelledby="label_4 sublabel_4_country" onchange="getSub()">
+                                         <select class="form-dropdown form-address-country noTranslate"name="catagory" id="mainCat" data-component="country" required="" aria-labelledby="label_4 sublabel_4_country" onchange="getSub()" onkeyup="clearMainError(event)">
+                                            <option value=""></option>
                                              <%if(data){ %> 
                                                  <!-- rendering the data in the main catagory  -->
                                                  <% for(i =0 ;i< data.length;i++){ %> 
-                                                 <option> <%=data[i].mainCatagory%> </option>
+                                                 <option> <%=data[i].catagory%> </option>
                                                  <% }} %> 
                                          </select>
                                          <label class="form-sub-label" for="input_4_country" id="sublabel_4_country" style="min-height:13px" aria-hidden="false"> Select a Catagory </label>
@@ -196,7 +193,8 @@ div.scrollmenu a:hover {
                              <span class="form-address-line form-address-country-line jsTest-address-lineField ">
                                  <span class="form-sub-label-container" style="vertical-align:top">
                                      <!-- subcatagory -->
-                                     <select class="form-dropdown form-address-country noTranslate" name="subCatagory" id="subCatSel" data-component="country" required="" aria-labelledby="label_4 sublabel_4_country">
+                                     <span id="loaderForSubCatagory" style="display: none; position: absolute;" class="spinner-grow spinner-grow-lg" role="status" aria-hidden="true">     &nbsp &nbsp   Loading </span>
+                                     <select class="   form-dropdown form-address-country noTranslate" name="subCatagory" id="subCatSel" data-component="country" required="" aria-labelledby="label_4 sublabel_4_country" onkeyup="clearMainError(event)">
                                          <option value=""></option>
                                      </select>
                                      <label class="form-sub-label" for="input_4_country" id="sublabel_4_country" style="min-height:13px" aria-hidden="false"> Select a sub Catagory </label>
@@ -217,6 +215,7 @@ div.scrollmenu a:hover {
            <div class="varientList"  style="height: 70vh  ; overflow-y: hidden; overflow-x: hidden;">
 
                <div id="form1">
+            <form action="" id="varientForm1">
                 <li class="form-line" data-type="control_address" id="id_4">
                     <div id="cid_4" class="form-input-wide" data-layout="full">
                   <div summary="" class="form-address-table jsTest-addressField">
@@ -269,7 +268,7 @@ div.scrollmenu a:hover {
 
 
            <li class="form-line" data-type="control_fullname" id="id_2">
-               <div class="scrollmenu mb-3" >
+               <div class="scrollmenu shadow  mb-3" >
                     <a id="previewSize1">preview</a>
                    
                   </div>
@@ -371,15 +370,16 @@ div.scrollmenu a:hover {
                          </div>
                      </div>
                      <center><button class="btn btn-success" type="button" onclick="addVarent(1)">confirm</button></center>
-                     <center style="margin-left: 2%;"><button class="btn btn-danger">Cancel</button></center>
+                     <center style="margin-left: 2%;"><button class="btn btn-danger" type="button" onclick="cancelButoonToVarientForm(1 , 1 , 3)">Cancel</button></center>
                  </li>
                     <hr width="100%">
-
+                </form>
                </div>
 
 
 
                <div id="form2">
+                   <form action="" id="varientForm2">
                     <li class="form-line" data-type="control_address" id="id_4">
                         <div id="cid_4" class="form-input-wide" data-layout="full">
                       <div summary="" class="form-address-table jsTest-addressField">
@@ -393,7 +393,7 @@ div.scrollmenu a:hover {
                               <span class="form-address-line form-address-country-line jsTest-address-lineField ">
                                   <span class="form-sub-label-container" style="vertical-align:top">
                                       <!-- Color -->
-                                      <select class="form-dropdown " name="color" id="input_4_country"  required=""  onchange="colorChange('input_4_country'  ,'colorPreview2' ), cleaerColorErr(2)" >
+                                      <select class="form-dropdown " name="color" id="colorSelector2"  required=""  onchange="colorChange('colorSelector2'  ,'colorPreview2' ), cleaerColorErr(2)" >
                                           <option>   </option>
                                           <option>  Red </option>
                                           <option>  Black </option>
@@ -429,7 +429,7 @@ div.scrollmenu a:hover {
               </li>
  
               <li class="form-line " data-type="control_fullname" id="id_2">
-               <div class="scrollmenu mb-3"  >
+               <div class="scrollmenu shadow mb-3"  >
                     <a id="previewSize2">Preview</a>
                    
                   </div>
@@ -530,13 +530,12 @@ div.scrollmenu a:hover {
                              </div>
                          </div>
 
-                         <center><button class="btn btn-success">confirm</button></center>
-                         <center style="margin-left: 2%;"><button class="btn btn-danger">Cancel</button></center>
+                         <center><button type="button" onclick="addVarent(2)" class="btn btn-success">confirm</button></center>
+                         <center style="margin-left: 2%;"><button class="btn btn-danger" type="button" onclick="cancelButoonToVarientForm(2 , 4 ,6)">Cancel</button></center>
                      </li>
     
-    
+                    </form>
                    </div>
-
 
               
                </div>
@@ -546,17 +545,21 @@ div.scrollmenu a:hover {
                  <!-- text area of Discription -->
                  <li class="form-line" data-type="control_textarea" id="id_14">
                      <label class="form-label form-label-top" id="label_14" for="input_14"> More  in  Discription </label>
-                     <div id="cid_14" class="form-input-wide" data-layout="full"><textarea id="input_14" class="form-textarea" name="discription" style="width:648px;height:163px" data-component="textarea" aria-labelledby="label_14"></textarea></div>
+                     <div id="discription" class="form-input-wide" data-layout="full"><textarea id="input_14" class="form-textarea" name="discription" style="width:648px;height:163px" data-component="textarea" aria-labelledby="label_14"></textarea></div>
                  </li>
                  
                  <li class="form-line" data-type="control_button" id="id_13">
                      <div id="cid_13" class="form-input-wide" data-layout="full">
-                         <div data-align="center" class="form-buttons-wrapper form-buttons-center jsTest-button-wrapperField"><button id="input_13" type="submit" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" data-component="button" data-content="">Add Product</button></div>
+                        
+                         <div data-align="center" class="form-buttons-wrapper form-buttons-center jsTest-button-wrapperField">
+                            <button id="input_13" type="button" class="form-submit-button submit-button jf-form-buttons jsTest-submitField" data-component="button" data-content="" onclick="submitData()"  >Add Product</button></div>
+                            <center> <p id="mainErr" style="color: red;"></p></center>
+
                      </div>
                  </li>
                  </ul>
              </div>
-         </form>
+            </div>
      </div>
       </body>
       <canvas id="canvas" width="1000px" height="500px"></canvas>
@@ -981,23 +984,27 @@ example.onmousemove = function(e) {
    document.getElementById("subCatSel").innerText = ""
  
    var data = {
-     mainCatagory: document.getElementById("mainCat").value
+    catagory: document.getElementById("mainCat").value
    }
  
  
-   if (data.mainCatagory != "") {
+   if (data.catagory != "") {
+    document.getElementById("loaderForSubCatagory").style.display = "block"
+
      $.ajax({
-       url: '/admin/getsubCat',
+       url: '/admin/catagory/getSubs',
        data: data,
        method: "post",
        success: (data) => {
- 
-         var select = document.getElementById("subCatSel");
-         for (var i = 0; i < data.val.length; i++) {
+        setTimeout(()=>{
+            var select = document.getElementById("subCatSel");
+         for (var i = 0; i < data.status.length; i++) {
            const newOption = document.createElement('option');
-           newOption.innerText = data.val[i];
+           newOption.innerText = data.status[i];
            select.appendChild(newOption)
          }
+        document.getElementById("loaderForSubCatagory").style.display = "none"
+        } , 500)        
        }
      })
    }
@@ -1006,3 +1013,4 @@ example.onmousemove = function(e) {
  // end of the ajax get sub catagory
  </script>
  </html>
+

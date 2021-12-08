@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const dotEnv = require('dotenv');
 dotEnv.config();
+
+
 // ----- routers initilizing for user----
 const userEntry = require('./routes/users/userEntry');
 const userProducts = require('./routes/users/products');
@@ -33,6 +35,12 @@ const adminSalesReport = require('./routes/admin/adminSalesReprort');
 
 var app = express();
 
+
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb',extended: false}));
+
+
+
 app.use(session({
   secret:' cookie_secret',
   resave: true,
@@ -44,8 +52,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
+// app.use(express.urlencoded({  }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

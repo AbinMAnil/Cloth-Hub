@@ -16,7 +16,6 @@ module.exports = {
           return new Promise(async (resolve,reject)=>{
                var action;
                var status = await user.findOne({_id:objectId(id)})
-               console.log(status);
                if(status.blockStatus) action = false;
                else{
                     action = true;
@@ -30,7 +29,8 @@ module.exports = {
                               blockStatus:action
                          }
                     );
-                   if(result.acknowledged)resolve(true);
+                   
+                   if(result.acknowledged)resolve(action);
                }catch(err){
                     console.log(err);
                     location.reload();

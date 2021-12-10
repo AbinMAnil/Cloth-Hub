@@ -23,62 +23,66 @@ function getProduct(productName, brand) {
   });
 }
 
+
+// function to upload the image to cloudinary;
+function uploadImage(){
+     return  new Promise((resolve ,reject)=>{
+
+     })
+}
+
+
 module.exports = {
   addProduct: (data) => {
-    return new Promise(async (reslove, reject) => {
-      let { productName, brand, catagory, subCatagory, discription, varient } =data;
-     var obj = JSON.parse(varient);
-     // the only way is use notation;
-     var fistVarientImageArray = [];
-     var secondVarientImageArray = [];
-     var mainVarient = [];
-
-     console.log(obj[0].image.length);
-     for(var i =0 ;i< obj[0].image.length ;i++){
-          var base64  = obj[0].image[i].split(';base64,').pop();
-           var uploadStr = "data:image/jpeg;base64," +base64;
-          cloudinary.uploader.upload(uploadStr , (err , result)=>{
-               if(err)console.log(err);
-               else{
-                    console.log(result.secure_url);
-                    fistVarientImageArray.push(result.secure_url);
-               }
-          })
-     }
-     for(var i =0 ;i< obj[1].image.length ;i++){
-          var base64  = obj[1].image[i].split(';base64,').pop();
-           var uploadStr = "data:image/jpeg;base64," +base64;
-          cloudinary.uploader.upload(uploadStr , (err , result)=>{
-               if(err)console.log(err);
-               else{
-                    console.log(result.secure_url);
-                    secondVarientImageArray.push(result.secure_url);
-               }
-          })
-
-     }
-     if(obj.length == 1){
-     var mainVarient1 =  {
-          color:obj[0].color,
-          images:firstVareintImageArray,
-          sizeVarient : obj[0].sizeVarient,
-     }
-     mainVarient.push(mainVarient1)
-    }else{
-     var mainVarient2 =  {
-          color:obj[1].color,
-          images:firstVareintImageArray,
-          sizeVarient : obj[1].sizeVarient,
-     }
-     mainVarient.push(mainVarient2);
-    } ; 
-
-    // saving products 
-    var addPro = product({
-         
-    })
+    return new Promise(async (resolve, reject) => {
+     //  let { productName, brand, catagory, subCatagory, discription, varient } =data;
+      data.varient = JSON.parse(data.varient);
+      console.log(typeof(data));
      
-
+       try{
+          var packProduct = product(data);
+          var result = await packProduct.save()
+          resolve(true);
+       }catch(err){
+           console.log(err)
+           resolve("sorry somthing went wrong  please try againg ");
+           location.reload();
+       }
+       
     });
   },
-};
+
+  // {{ to upload image while selecting the image }};
+  uploadImage:(data)=>{
+       return new Promise((resolve, reject)=>{
+            // {{if the  an image id is existing it will distroy first the iamge form cloudnary }}
+            if(data.productId != ""){
+               cloudinary.uploader.destroy(data.productId, function(error,result) {
+                    console.log(result, error) });
+            }
+          var temData  = data.base64.split(';base64,').pop();
+          var uploadStr = "data:image/jpeg;base64," +temData;
+         cloudinary.uploader.upload(uploadStr , (err , result)=>{
+              if(err)console.log(err);
+              else{
+                   var urlAndId ={
+                        url:result.secure_url,
+                        publicId : result.public_id
+                   }
+                  resolve(urlAndId);
+              }
+       })
+    })
+  },
+
+  getProduct:()=>{
+    return new Promise(async (resolve , reject)=>{
+      resolve(
+      await product.find()
+      )
+    })
+  }
+
+    
+
+  }

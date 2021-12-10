@@ -9,9 +9,9 @@ router.get('/' , async (req,res)=>{
 
 
 // TO BLOCK UNBLOCK TEH USER BY THEIR ID 
-router.post('/action' ,(req,res)=>{
+router.post('/action' , async (req,res)=>{
     
-   res.json({status: userManage.blockUnblockUser(req.body.id)});
+   res.json({status: await userManage.blockUnblockUser(req.body.id)});
 
 })
 

@@ -47,15 +47,14 @@
               type="button"
               class="btn btn-outline-danger"
               data-mdb-ripple-color="dark"
-              onclick="blockUser('<%= result[i]._id %>' ,'<%= result[i].name %>','<%=result[i].blockStatus %>')"
-            >
-              <%if(result[i].blockStatus){ %> Unblock User <% }else{ %> Block
-              User <% } %>
+              onclick="blockUser('<%=result[i]._id%>' ,'<%= result[i].name %>','<%=result[i].blockStatus %>')" >
+              <span id="blockStatus<%=result[i]._id%>">
+              <%if(result[i].blockStatus){ %> Unblock User <% }else{ %> Block User <% } %>
+                </span>
             </button>
           </td>
         </tr>
-
-        <% } %> <% } %>
+        <% }} %>
       </tbody>
     </table>
     
@@ -80,20 +79,31 @@
 
     $("#example tbody").on("click", "tr", function () {
       var data = table.row(this).data();
-      alert("You clicked on " + data[0] + "'s row");
+      
     });
   });
 
+
+
+
+
+
+
+
   //function to block the user by id
   function blockUser(uid, name, currentStatus) {
-    swal({
-      title: "Are you sure?",
-      text: "",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "" ,
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'continue'
+})
+.then((willDelete) => {
+ 
+      if (willDelete.isConfirmed) {
         var data = { id: uid };
         $.ajax({
           url: "/admin/userManage/action",
@@ -102,16 +112,24 @@
           success: (result) => {
             var temBtn = document.getElementById(uid);
             if (result.status) {
-              swal({
-                title: "Sucess",
-                text: "User UnBlocked sucessful",
-                icon: "success",
-                button: "!Oh ya",
-              });
-              if (currentStatus) temBtn.innerHTML = "Block User";
-              else {
-                temBtn.innerText = "Unblock User";
-              }
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'User Blocked SuccessFully',
+                showConfirmButton: false,
+                timer: 1000
+              })
+              temBtn.innerHTML =  "Unblock User"
+            }else{
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'User UnBlocked  SuccessFully',
+                showConfirmButton: false,
+                timer: 1000
+
+              })
+              temBtn.innerHTML =  "Block User"
             }
           },
         });

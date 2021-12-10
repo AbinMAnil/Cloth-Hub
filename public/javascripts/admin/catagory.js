@@ -16,7 +16,7 @@ function storeInArray() {
       previewOfSubCat.style.display = "block";
 
       if (subCatArray.includes(subcat))
-        swal("Please Check", "Sub Catagory **  " + subcat + "  **  is already");
+        swal.fire("Please Check", "Sub Catagory **  " + subcat + "  **  is already");
       else {
         subCatArray.push(subcat);
 
@@ -39,7 +39,7 @@ function insertSubCat() {
   } else {
     if (subCatArray.length <= 0) {
       addSubCatErr.innerText = "";
-      swal("Error ", "please Enter Atleast One SubCatagory");
+      swal.fire("Error ", "please Enter Atleast One SubCatagory");
     } else {
       addSubCatErr.innerText = "";
       var subMitData = {
@@ -123,7 +123,7 @@ function addCatagory() {
 		document.getElementById('table').innerHTML += innerTabel
 
 
-          swal({
+          swal.fire({
             title: "job Done !",
             text: "Catagory Added Sucessfully",
             icon: "success",
@@ -138,7 +138,7 @@ function addCatagory() {
           eidtCatSelect.appendChild(option);
           select.appendChild(option2);
         } else {
-          swal("Sorry ", result.status);
+          swal.fire("Sorry ", result.status);
         }
       },
     });
@@ -201,10 +201,10 @@ function editCatagory(cata) {
   var altCat = document.getElementById("form").value;
   var orgCat = document.getElementById("mainCata").value;
   if (altCat == "") {
-    swal("Eroor", "please Enter the New Name Of Catagory " + orgCat);
+    swal.fire("Eroor", "please Enter the New Name Of Catagory " + orgCat);
   } else {
     if (altCat == orgCat) {
-      swal("Sorry ", " you didnt Make any Changes ");
+      swal.fire("Sorry ", " you didnt Make any Changes ");
     } else {
 	document.getElementById('id01').style.display = 'block'
 
@@ -242,7 +242,7 @@ function deleteCatgory() {
     Swal.fire("please Select One Catagory ");
     return;
   } else {
-	document.getElementById('id01').style.display = 'block'
+	// document.getElementById('id01').style.display = 'block'
 
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -341,7 +341,7 @@ function showSubCatEdit(id){
 	cancel.classList.remove("hide");
 
 	}else{
-		swal("Warrning ", "You Have to Close the Currnet Editing First ");
+		swal.fire("Warrning ", "You Have to Close the Currnet Editing First ");
 		return ;
 	}
 
@@ -387,10 +387,10 @@ function editConfirm(id , catagory){
 	var newSubCat = document.getElementById("input"+id).value;
 
 
-	if(newSubCat == ""){swal("Error" , "You have to write a new CAtagory name ")  ; return ;}
+	if(newSubCat == ""){swal.fire("Error" , "You have to write a new CAtagory name ")  ; return ;}
 	else{
 		if(oldSubCat == newSubCat ){
-			swal("Seriously .." ,"You Didnt Make any Canages ") ;
+			swal.fire("Seriously .." ,"You Didnt Make any Canages ") ;
 			 return ;
 		}
 		else{

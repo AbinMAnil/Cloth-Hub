@@ -3,8 +3,8 @@ var sizeVarientArray1 = [];
 var sizeVarientArray2 = [];
 var colorSelector1 = document.getElementById('colorSelector1');
 var colorSelector2 = document.getElementById('colorSelector2');
-var firstVareintImageArray = [];
-var secondVarientImageArray = [];
+var imageArray1 = [];
+var imageArray2 = [];
 var addVarientChecker = false;
 var varientSampleData1;
 var varientSampleData2;
@@ -12,29 +12,8 @@ var speacility = [];
 var varientArray = [];
 var err = document.getElementById('mainErr');
 
-function insertImageBase64IntoArray(id, start , end){
-    if(id == 1){
-     firstVareintImageArray = []
-     for(var i = start ;i<=end ;i++){
-          if(document.getElementById("imageValue" + i ).value != ""){
-               firstVareintImageArray.push(document.getElementById("imageValue" + i ).value);
-          };
-     }
-     }else{
-          secondVarientImageArray = []
-          for(var i = start ;i<=end ;i++){
-               if(document.getElementById("imageValue" + i ).value != ""){
-                    secondVarientImageArray.push(document.getElementById("imageValue" + i ).value);
-               };
-          } 
-     }
-
-
-}
-
 // the  size wise  array to the product list
 function shallowEqual(object1, object2) {
-     console.log(object1 ,object2);
 
      const keys1 = Object.keys(object1);
      const keys2 = Object.keys(object2);
@@ -135,24 +114,22 @@ function addVarent(id){
           if(sizeVarientArray2.length <= 0 ){document.getElementById("sizeVarientError"+id).innerHTML = "You Have To Enter Atlest One size Vice Varient" ; return}
 
      }
-     if(id == 1){insertImageBase64IntoArray(1 , 1 , 3)}
-     if(id == 2){insertImageBase64IntoArray(2 , 4 , 6)}
     
-     if(id== 1 && firstVareintImageArray.length <= 0) {swal.fire("Sorry " , "!you have to upload atleast one image of that product")  ; return}
-     if(id== 2 && secondVarientImageArray.length <= 0) {swal.fire("Sorry " , "!you have to upload atleast one image of that product")  ; return}
+     if(id== 1 && imageArray1.length <= 0) {swal.fire("Sorry " , "!you have to upload atleast one image of that product")  ; return}
+     if(id== 2 && imageArray2.length <= 0) {swal.fire("Sorry " , "!you have to upload atleast one image of that product")  ; return}
 
      if( document.getElementById('colorSelector1').value ==  document.getElementById('colorSelector2').value){swal.fire("Sorry !" ,"The Color Varient You Already Added") ; return};
 
       if(id == 1){
           varientSampleData1 = {
                color: document.getElementById('colorSelector'+id).value,
-               image: firstVareintImageArray ,
+               image: imageArray1 ,
                sizeVarient: sizeVarientArray1
           };
       }else{
           varientSampleData2 = {
                color: document.getElementById('colorSelector'+id).value,
-               image: secondVarientImageArray ,
+               image: imageArray2 ,
                sizeVarient: sizeVarientArray2
           };
       }
@@ -185,10 +162,9 @@ function prevewOfSearchTags(){
 function cancelButoonToVarientForm(id , start,end) {
      document.getElementById('previewSize'+id).innerHTML = 'Preview';
      $("#varientForm"+id).trigger('reset');
-     console.log(document.getElementById('varientForm'+id));
      document.getElementById('colorPreview'+id).style.backgroundColor = "white";
-     if(id==1 ){firstVareintImageArray = []; sizeVarientArray1 = [] ; varientSampleData1 = null  }
-     else{secondVarientImageArray = [] ;  sizeVarientArray2 = [] ; varientSampleData2 = null }
+     if(id==1 ){imageArray1 = []; sizeVarientArray1 = [] ; varientSampleData1 = null  }
+     else{imageArray2 = [] ;  sizeVarientArray2 = [] ; varientSampleData2 = null }
      for(var i =start ;i<=end ;i++){
           $('#chekPreview'+i).attr('src', "");
      }
@@ -209,7 +185,7 @@ function submitData(){
      var brand = document.getElementById('brandName').value;
      var catagory = document.getElementById('mainCat').value;
      var subCatagory = document.getElementById('subCatSel').value;
-     var discription = document.getElementById('discription').value;
+     var discription = document.getElementById('input_14').value;
 
      //{{ validation }}     
      if(productName == ""){err.innerHTML = "Plese Enter A Product Name" ; return};
@@ -230,7 +206,6 @@ function submitData(){
     if(varientSampleData2 != null)varientArray.push(varientSampleData2);
 
   ;
-     console.log(varientSampleData1);
     // creating the basice structur of the data;
     var modelData = {
          varient : JSON.stringify(varientArray),
@@ -239,17 +214,33 @@ function submitData(){
          catagory : catagory,
          subCatagory : subCatagory,
          discription : discription,
-        
     }
 
-    console.log(modelData.varient)
-
+document.getElementById('id01').style.display = "block";
     $.ajax({
      url: '/admin/products/addProduct',
      data: modelData,
      method: "post",
      success:(result)=>{
-
+                document.getElementById('id01').style.display = "none";
+                if(result.status == true){
+                    Swal.fire(
+                         'Success',
+                         'Product Added success-fully ',
+                         'success'
+                       ).then(()=>{
+                            location.href = "admin/products";
+                       })
+                }else{
+                    Swal.fire({
+                         icon: 'error',
+                         title: 'Oops...',
+                         text: 'Something went wrong!',
+                       }).then(()=>{
+                            location.reload()
+                       })
+                }
+     
      }
     })
 }

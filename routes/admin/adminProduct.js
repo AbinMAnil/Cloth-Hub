@@ -5,8 +5,8 @@ const catagory = require('../../controllers/admin/adminCatagory');
 const product = require('../../controllers/admin/adminProduct')
 
 //RENDERING THE PRODUCT- LIST PAGE;
-router.get('/',(req,res)=>{
-     res.render("admin/productListAdmin");
+router.get('/',async (req,res)=>{
+     res.render("admin/productListAdmin" , {data : await product.getProduct()});
 })
 
 //RENDERIN  THE PRODUCT - ADDING PAGE ;
@@ -16,18 +16,12 @@ router.get('/addproucts', async (req,res)=>{
 
 //ADD PRODUCT ROUTER
 router.post('/addProduct', async (req,res)=>{
-//      var obj =  JSON.parse( req.body.varient)
-//      let{image , color ,sizeVarient } = obj; 
-//     var base64  = image[0].split(';base64,').pop();
-//     fs.writeFile('./public/images/admin/productImages/img1.png', base64 , {encoding : 'base64'} ,(err)=>{
-//          if(err)console.log(err);
-//          else{
-//           console.log("Image Cateated");
-//          }
-//     })
-     product.addProduct(req.body);
+    res.json({status :await   product.addProduct(req.body)});  
+})
 
-    
+//ROUTER TO ADD IMAGE IN COLUDNARY 
+router.post('/uploadImage',async (req,res)=>{
+     res.json({status: await product.uploadImage(req.body)})
 })
 
 module.exports = router

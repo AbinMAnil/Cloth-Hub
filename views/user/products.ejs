@@ -1,0 +1,556 @@
+
+     <%- include('./partials/headers')%> 
+     <%-include('./partials/!docType')%>
+
+  <style>
+    * {
+    box-sizing: border-box
+}
+
+
+
+
+#search {
+    outline: none;
+    border: none;
+    display: inline-block
+}
+
+#burgundy {
+    color: rgb(153, 40, 59)
+}
+
+
+
+
+.search-nav-item {
+    height: 40px
+}
+
+nav {
+    padding: 0px 100px
+}
+
+.fa-user-o,
+.fa-shopping-cart {
+    font-size: 20px;
+    padding: 4px
+}
+
+.form-group {
+    margin-bottom: 5px
+}
+
+label {
+    padding-left: 10px
+}
+
+.form-group:last-child {
+    margin-bottom: 0
+}
+
+h6 {
+    margin-bottom: 0px
+}
+
+#sort {
+    outline: none;
+    border: none
+}
+
+
+.card-body {
+    padding: 8px
+}
+
+.sign {
+    width: 25px;
+    height: 25px
+}
+
+.discount {
+    border: 1px solid orange;
+    border-radius: 5px;
+    width: 65px;
+    position: absolute;
+    top: 2%
+}
+
+@media(min-width:1200px) {
+    #search {
+        width: 300px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .search-nav-item {
+        margin-left: 400px;
+        width: 350px
+    }
+
+    .fa-user-o {
+        margin-left: 300px
+    }
+
+    .text {
+        display: none
+    }
+
+    .fa-user-o,
+    .fa-shopping-cart {
+        font-size: 20px;
+        padding-left: 20px
+    }
+
+    #sidebar {
+        width: 30%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 70%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        width: 300px;
+        height: 330px;
+        border: none
+    }
+
+    .card-img-top{
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        object-fit: contain;
+    }
+
+    del {
+        padding-right: 2px
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(min-width:992px) and (max-width:1199px) {
+    #search {
+        width: 300px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .search-nav-item {
+        margin-left: 200px;
+        width: 350px
+    }
+
+    .fa-user-o {
+        margin-left: 160px
+    }
+
+    .text {
+        display: none
+    }
+
+    #sidebar {
+        width: 30%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 70%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        width: 200px;
+        height: 330px;
+        border: none
+    }
+
+    .card-img-top {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px
+    }
+
+    .fa-plus,
+    .fa-minus {
+        font-size: 12px
+    }
+
+    .sign {
+        height: 25px
+    }
+
+    .price {
+        width: 99px
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(min-width:768px) and (max-width:991px) {
+    #search {
+        width: 300px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .search-nav-item {
+        margin-left: 60px;
+        width: 350px
+    }
+
+    .fa-user-o {
+        margin-left: 80px
+    }
+
+    .text {
+        display: none
+    }
+
+    #sidebar {
+        width: 35%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 65%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        border: none
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(min-width:576px) and (max-width:767px) {
+    .text {
+        display: none
+    }
+   
+    .search-nav-item {
+        margin-left: 35px;
+        width: 270px
+    }
+
+    #search {
+        width: 240px;
+        padding: 5px;
+        padding-left: 20px
+    }
+
+    .fa-search {
+        padding: 3px;
+        font-size: 18px
+    }
+
+    #sidebar {
+        width: 40%;
+        padding: 20px;
+        float: left
+    }
+
+    #products {
+        width: 60%;
+        padding: 10px;
+        margin: 0;
+        float: right
+    }
+
+    .card {
+        border: none
+    }
+
+    #off {
+        padding-left: 2px
+    }
+
+    #sorting span,
+    #res {
+        font-size: 14px
+    }
+
+    .filter,
+    #mobile-filter {
+        display: none
+    }
+}
+
+@media(max-width:575px) {
+    .search-nav-item {
+        margin: 0;
+        width: 100%;
+        margin-top: 10px
+    }
+
+    .cart1{
+        height: 50vh;
+         padding: 0; 
+        display: flex;
+         justify-content: center;
+    }
+
+    #search {
+        width: 80%;
+        padding-left: 10px;
+        margin-top: 10px;
+        padding-right: 10px
+    }
+
+    .fa-search {
+        padding: 10px;
+        font-size: 18px
+    }
+
+    #sidebar {
+        display: none
+    }
+
+    .filter {
+        margin-left: 70%;
+        margin-top: 2%
+    }
+
+    #sorting,
+    #res {
+        font-size: 12px;
+        margin-top: 2%
+    }
+    #notification{
+  text-align: center;
+        font-size: 1px;
+}
+}
+#notification{
+   background: radial-gradient(circle, rgba(105,105,105,1) 0%, rgba(62,62,62,1) 52%); 
+   background: rgb(105,105,105);
+   border-radius: 9px; opacity: .8;  
+   color: white;
+   text-align: center;
+   position: fixed; 
+   bottom: 10%;
+   left: 45%;
+   padding: 5px;
+   display: none ;
+}
+div.scrollmenu {
+    text-align: start;
+    width: 100%;
+    color: white;
+  background-color: rgb(255, 255, 255);
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+    cursor: pointer;
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 6px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: rgb(233, 233, 233);
+}
+
+@media (min-width: 1200px){
+     .card{
+          width: 250px;
+     }
+}
+
+  </style>
+  <section style="padding: 0;">
+
+<div  class="fil m-3 mr-auto" style="display: flex; justify-content: right" > <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="true" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
+</div>
+<div id="mobile-filter">
+  <p class="pl-sm-0 pl-2"> Home | <b>All Breads</b></p>
+  <div class="border-bottom pb-2 ml-2">
+      <h4 id="burgundy">Filters</h4>
+  </div>
+  <div class="py-2 border-bottom ml-3">
+      <h6 class="font-weight-bold">Categories</h6>
+      <div id="orange"><span class="fa fa-minus"></span></div>
+      <form>
+          <div class="form-group"> <input type="checkbox" id="artisan"> <label for="artisan">Fresh Artisan Breads</label> </div>
+          <div class="form-group"> <input type="checkbox" id="breakfast"> <label for="breakfast">Breakfast Breads</label> </div>
+          <div class="form-group"> <input type="checkbox" id="healthy"> <label for="healthy">Healthy Breads</label> </div>
+      </form>
+  </div>
+  <div class="py-2 border-bottom ml-3">
+      <h6 class="font-weight-bold">Accompainments</h6>
+      <div id="orange"><span class="fa fa-minus"></span></div>
+      <form>
+          <div class="form-group"> <input type="checkbox" id="tea"> <label for="tea">Tea Cakes</label> </div>
+          <div class="form-group"> <input type="checkbox" id="dough"> <label for="dough">Cookie Dough</label> </div>
+          <div class="form-group"> <input type="checkbox" id="choco"> <label for="choco">Chocolates</label> </div>
+      </form>
+  </div>
+  <div class="py-2 ml-3">
+      <h6 class="font-weight-bold">Top Offers</h6>
+      <div id="orange"><span class="fa fa-minus"></span></div>
+      <form>
+          <div class="form-group"> <input type="checkbox" id="25off"> <label for="25">25% off</label> </div>
+          <div class="form-group"> <input type="checkbox" id="5off"> <label for="5off" id="off">5% off on artisan breads</label> </div>
+      </form>
+  </div>
+</div>
+<!-- Sidebar filter section -->
+<section id="sidebar">
+  <p> Home | <b>All Breads</b></p>
+  <div class="border-bottom pb-2 ml-2">
+      <h4 id="burgundy">Filters</h4>
+  </div>
+  <div class="py-2 border-bottom ml-3">
+      <h6 class="font-weight-bold">Categories</h6>
+      <div id="orange"><span class="fa fa-minus"></span></div>
+      <form>
+          <div class="form-group"> <input type="checkbox" id="artisan"> <label for="artisan">Fresh Artisan Breads</label> </div>
+          <div class="form-group"> <input type="checkbox" id="breakfast"> <label for="breakfast">Breakfast Breads</label> </div>
+          <div class="form-group"> <input type="checkbox" id="healthy"> <label for="healthy">Healthy Breads</label> </div>
+      </form>
+  </div>
+  <div class="py-2 border-bottom ml-3">
+      <h6 class="font-weight-bold">Accompainments</h6>
+      <div id="orange"><span class="fa fa-minus"></span></div>
+      <form>
+          <div class="form-group"> <input type="checkbox" id="tea"> <label for="tea">Tea Cakes</label> </div>
+          <div class="form-group"> <input type="checkbox" id="dough"> <label for="dough">Cookie Dough</label> </div>
+          <div class="form-group"> <input type="checkbox" id="choco"> <label for="choco">Chocolates</label> </div>
+      </form>
+  </div>
+ 
+</section>
+</section>
+<!-- products section -->
+<section id="products">
+  <div class="container">
+      <div class="d-flex flex-row">
+          <div class="text-muted m-2" id="res">Showing <%=result.product.length%>  results</div>
+          <div class="ml-auto mr-lg-4">
+              <div id="sorting" class="border rounded p-1 m-1"> <span class="text-muted">Sort by</span> <select name="sort" id="sort">
+                      <option value="popularity"><b>Popularity</b></option>
+                      <option value="prcie"><b>Price</b></option>
+                      <option value="rating"><b>Rating</b></option>
+                  </select> </div>
+          </div>
+      </div>
+      
+      <div class="row">
+           <%for(var i = 0 ; i<result.product.length ;i++){  %> 
+             
+              
+               <div   class="  col-lg-4  col-md-4 col-6  card1" style=" gap: 1rem; z-index: 1;">
+                    <a href="/product/productDetails?id=<%=result.product[i]._id  %> " style="text-decoration: none;">
+                    <div class=" shadow card mt-4 mb-5" > <img class="card-img-top" style=" border-radius: 0px; height: 20vh; width: 100%; object-fit: contain;" src="<%=result.product[i].image[0].imageUrl%>">
+                         
+                         <div class=" shadow card-body" style="text-align: center; border-radius: 0px;">
+                      <h5><b><%=result.product[i].productName %> </b> </h5>
+                      <div class="d-flex flex-column " >
+                          <div class="colors" style="display: flex; justify-content: space-evenly; overflow-x: auto;">
+                            <div class="scrollmenu">
+                                <a ><h5><b style="color: black;">colors</b></h5></a>
+
+                              <% for(var j = 0 ; j<result.product[i].color.length ; j++){ %> 
+                                  
+                                   <a style="color: rgb(4, 4, 63);"><%=result.product[i].color[j]%></a>  
+                                  
+
+                               <% } %>
+                            </div> 
+                          </div>
+<!-- ----------------------------------------------------------------------------- -->
+                          <div class="colors" style=" text-align: right; display: flex; justify-content: space-evenly; overflow-x: auto;">
+                           
+                              <div class="scrollmenu">
+                                <a ><h5><b style="color: black;">size</b></h5></a>
+                              <% for(var j = 0 ; j<result.product[i].size.length ; j++){ %> 
+                                
+                                   <a style="color: rgb(4, 4, 63);"><%=result.product[i].size[j]%></a>  
+                                  
+
+                               <% } %> 
+                            </div>
+                          </div>
+
+<!-- ---------------------------------------------------------------------------- -->
+                    <div class="shadow" style=" border-top: 1px solid gold; display: flex;flex-direction: row; justify-content: space-evenly; background-color: rgb(255, 255, 255);">
+                          <div class="ml-auto" style="font-size: 24px; cursor: pointer ; color: rgb(0, 99, 38);">₹ <%=result.product[i].price%> .00</i></div>
+                          <div class="ml-auto" style="font-size: 24px; cursor: pointer ; color: red;">  <i class="fas fa-heart"></i></div>
+                      </div>
+                      </div> 
+                  </div>
+              </div>
+          </a>
+             
+          </div>
+    
+          <% } %> 
+            
+      </div>
+      </div>
+      </section>
+    
+      <a href="#">ijilj</a>
+    <p id="notification" > </p>
+
+
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<script>
+
+
+
+ var noti =    document.getElementById("notification")
+  function addToCart(id){
+   
+    var data = {pid:id};
+    $.ajax({
+      url:"/user/addToCart",
+      data:data,
+      method:"post", 
+
+      success:(result)=>{
+        if(result.status){
+
+        }else{
+          noti.innerHTML = "Item is already exists on you cart"
+          noti.style.display = "block"
+          setTimeout(()=>{
+              noti.style.display = "none"
+          } , 500)
+            
+        }
+      } 
+     
+
+
+    })
+  }
+</script>
+
+</section>

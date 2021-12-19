@@ -10,7 +10,7 @@
              <form action="">
                  <div class="header">
                    <div style="margin-left: 3vw;"><h1>cloth Hub</h1></div>
-                   <center><h1><span style="font-size: 25px;background-color: yellow; padding: 2px;">sign</span> up</h1></center>
+                   <center><h1><span style="font-size: 25px;background-color: yellow; padding: 2px;">sign</span> In</h1></center>
                  </div>
                  <div class="form-body">
                    <center id="allTimer">
@@ -36,7 +36,7 @@
                   </div>
                    <p style="text-align: center; color: red;" id="err"></p>
  
-                   <p style="text-align: center;" > don't have an Account <span style="margin-left: 1%;"><a href="">Create Account</a></span></p>
+                   <p style="text-align: center;" > don't have an Account <span style="margin-left: 1%;"><a href="/createAccount">Create Account</a></span></p>
                   </footer>
              </form>
              <%-include('./partials/spinner') %> 
@@ -149,7 +149,7 @@ var phone;
      document.getElementById('err').innerHTML = "";
      $.ajax({
        url:'/otpCheckForExistUser',
-       data:{phone:phone, otp:otp},
+       data:{phone:phone, otp:otp ,  gustUserId : localStorage.getItem("userId")},
        method:"post",
        success :(result)=>{
         document.getElementById('id01').style.display = 'none'
@@ -195,7 +195,7 @@ var phone;
     err.innerHTML = "";
     $.ajax({
       url:"/signupWithEmail",
-      data:{email:email , password : password},
+      data:{email:email , password : password , gustUserId : localStorage.getItem("userId")},
       method:"post",
       success : (result)=>{
         document.getElementById('id01').style.display = 'none'

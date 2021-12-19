@@ -1,0 +1,360 @@
+
+<%- include('./partials/headers')%> 
+<%-include('./partials/!docType')%>
+    <style>
+          input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      /* Track */
+      ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: px;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: rgb(0, 0, 0);
+        border-radius: 10px;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #000000;
+      }
+      button{
+        box-shadow: -5px 3px 11px -7px rgba(0,0,0,0.75);
+-webkit-box-shadow: -5px 3px 11px -7px rgba(0,0,0,0.75);
+-moz-box-shadow: -5px 3px 11px -7px rgba(0,0,0,0.75);
+      }
+
+.address{
+     margin-top: 2vh;
+  
+     padding: 1rem;
+    
+}
+.address h4{
+    padding: .3rem;
+}
+
+.innerAddress{
+    padding: 1rem;
+  width: 100%;
+  height: 30vh;
+  overflow-y: scroll;
+}
+
+
+.multipleAddress{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.product-details{
+    height: 41vh;
+    width: 60vh;
+    
+}
+
+.container-fluid{
+    display: flex;
+    justify-content: space-evenly;
+   
+}
+#responsive1{
+	width: 31vw
+}
+
+
+@media (max-width:1500px) {
+    .container-fluid{
+        display: flex;
+        flex-direction: column;
+    }
+    .product-details{
+        height: 44vh;
+    }
+	.address{
+		width: 90vw;
+	}
+}
+
+@media(max-width:500px){
+  #responsive1{
+	width: 90vw;
+}
+.product-details{
+	width: 90vw;
+}
+}
+
+.summer-items{
+    box-shadow: 2px 5px 10px -7px rgba(0,0,0,0.75);
+-webkit-box-shadow: 2px 5px 10px -7px rgba(0,0,0,0.75);
+-moz-box-shadow: 2px 5px 10px -7px rgba(0,0,0,0.75);
+}
+
+.innerAddress::-webkit-scrollbar{
+    display: none;
+}
+
+.prolist::-webkit-scrollbar {
+  display: none;
+}
+.prolist{
+    height:23vh;overflow-y: auto; border-bottom: 1px solid rgb(177, 177, 177);
+}
+    </style>
+<% console.log(product)%> 
+
+<div class="container-fluid"   >
+	<div class="col-md-5 col-11 p-1">
+		<div  class="address  shadow p-3 mb-5 bg-white rounded ">
+			<h4 class="mb-0">All Address </h4>
+			<hr width="25%">
+		   <!-- cheking user have and address  -->
+			<center>
+				<h2>
+				     click the  button to add an adddress !
+				</h2>
+			</center> 
+			<% console.log(user.address) %> 
+               <% if(user.address.length > 0 ){ %> 
+			<div class="innerAddress">
+				<div class="multipleAddress">
+					<input type="checkbox" class="mr-3" style="width: 10%;">
+					<p>Lore veritatis assumenda atque pariatur, velit deb
+						<br>
+						itis nisi provident blanditiis! </p>
+				</div>
+				<center>
+					<hr width="80%">
+				</center>
+			</div>
+               <% } %> 
+		</div>
+		<div style="display: flex;">
+			<button onclick="showForm()" class="btn btn-primary btn-lg btn-block m-3"> Add Address</button>
+			<button onclick="clearForm()" id="cancelbutton" class="btn btn-outline-danger  m-3" style="display: none;"> Cancel</button>
+		</div>
+		<div id="addressForm" class=" mt-2 col-12" style="display: none;"  >
+			<div class="col-12">
+				<div class="card mb-4 col-12">
+					<div class="card-header py-3 bg-white">
+						<h5 class="mb-0">Address  Details</h5>
+					</div>
+					<div class="card-body">
+						<form id="address" class="col-12" style="padding: 0px;">
+							<!-- 2 column grid layout with text inputs for the first and last names -->
+							<div class="row mb-4"  style="padding: 0px;">
+								<div class="col">
+									<div class="form-outline">
+										<input  onkeydown="preventNumber(event); "  onkeyup="preventNumber(event);"  type="text" id="input0" class="form-control checkFrom" />
+										<label class="form-label" for="form7Example1">First name</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-outline">
+										<input onkeydown="preventNumber(event); "  onkeyup="preventNumber(event);"  type="text" id="input1" class="form-control checkFrom" />
+										<label class="form-label" for="form7Example2">Last name</label>
+									</div>
+								</div>
+							</div>
+							<!-- phone number an email id  -->
+							<div class="row mb-4">
+								<div class="col">
+									<div class="form-outline">
+										<input maxlength="10" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;"  type="number" id="input2" class="form-control checkFrom" />
+										<label class="form-label" for="form7Example1">Phone Number</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-outline">
+										<input type="email" id="input3" class="form-control checkFrom" />
+										<label class="form-label" for="form7Example2">E mail </label>
+									</div>
+								</div>
+							</div>
+							<!-- end of the email id and the phone number sission of  the user -->
+							<!-- Text input -->
+							<div class="form-outline mb-4">
+								<input id="input4" type="text" id="form7Example3" class="form-control checkFrom" />
+								<label class="form-label" for="form7Example3">Address </label>
+							</div>
+							<!-- Text input -->
+							<div class="form-outline mb-4">
+								<input type="text" id="input5" class="form-control checkFrom" />
+								<label class="form-label" for="form7Example4">Land-Mark</label>
+							</div>
+							<!-- postal code and city -->
+							<div class="row mb-4">
+								<div class="col">
+									<div class="form-outline">
+										<input type="text"  id="input6" class="form-control checkFrom" />
+										<label class="form-label" for="form7Example1">City</label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-outline">
+										<input type="number" id="input7" class="form-control checkFrom"  pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==6) return false;" />
+										<label class="form-label" for="form7Example2" >Postal Code </label>
+									</div>
+								</div>
+							</div>
+							<!-- end of the postal code and the city -->
+							<!-- city and the countrt  -->
+							<div class="row mb-4">
+								<div class="col">
+									<div class="form-outline">
+										<select name="" id="input8" class="form-control checkFrom">
+											<option value=""></option>
+											<option >Arunachal Pradesh</option>
+											<option >Andaman and Nicobar Islands</option>
+											<option >Assam</option>
+											<option >Bihar</option>
+											<option >Chandigarh</option>
+											<option >Chhattisgarh</option>
+											<option >Dadra and Nagar Haveli</option>
+											<option >Daman and Diu</option>
+											<option >Delhi</option>
+											<option >Goa</option>
+											<option >Gujarat</option>
+											<option >Haryana</option>
+											<option >Himachal Pradesh</option>
+											<option >Jammu and Kashmir</option>
+											<option >Jharkhand</option>
+											<option >Karnataka</option>
+											<option >Kerala</option>
+											<option >Ladakh</option>
+											<option >Lakshadweep</option>
+											<option >Madhya Pradesh</option>
+											<option >Maharashtra</option>
+											<option >Manipur</option>
+											<option >Meghalaya</option>
+											<option >Mizoram</option>
+											<option >Odisha</option>
+											<option >Nagaland</option>
+											<option >Puducherry</option>
+											<option >Punjab</option>
+											<option >Rajasthan</option>
+											<option >Sikkim</option>
+											<option >Tamil Nadu</option>
+											<option >Telangana</option>
+											<option >Tripura</option>
+											<option >Uttar Pradesh</option>
+											<option >Uttarakhand</option>
+										</select>
+										<label class="form-label" for="form7Example1"> State </label>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-outline">
+										<select name=""  id="input9" class="form-control checkFrom" >
+											<option value=""></option>
+											<option value="india"> India </option>
+										</select>
+										<label class="form-label" for="form7Example2">Country </label>
+									</div>
+								</div>
+							</div>
+							<!-- end of the city and the country -->
+							<!-- Checkbox -->
+							<div class="form-check  mb-2 " >
+								<input  class="form-check-input " type="checkbox" value="" id="checkBoxSave"
+									checked />
+								<label class="form-check-label" for="form7Example8">
+								<b>Save</b>
+								</label>
+							</div>
+							<center class="mt-3">
+                                        <p id="err" style="color: red;"></p>
+								<button  class="btn btn-outline-success" type="button" onclick="addAddressAndProced('<%=user._id%>' , '<%=product.product%>')"> Proceed to Pay</button>
+							</center>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+
+<div  >
+<div  id="res" class="   product-details col-md-5 col-11 p-1 mt-3  shadow p-3 mb-5 bg-white rounded ">
+    <h4 class="mb-3">
+        Summary
+    </h4>
+    
+    <hr width="90%">
+  <div style="" class="prolist">
+    <div class="">
+         <% for(var i = 0 ;i< product.product.length ;i++){ %> 
+        <div class="p-2 " style="display: flex ;  justify-content: space-between;">
+          <P> <%=product.product[i].productArray.productName %>   <span style="color: rgb(232, 56, 8);">	&nbsp;  (<%=product.product[i].quantity %>  ) </span></p>
+              <p> &#8377; <%=product.product[i].totalPrice %> .00   </p>
+         </div>
+         <% } %> 
+
+     </div>
+  </div>
+  <div>
+    <div class="p-2 " style="display: flex ;  justify-content: space-between;">
+        <p>Total price</p>
+        <p> &#8377; <%= product.grandTotal  %> </p>
+     </div>
+  </div>
+</div>
+
+
+<div id="responsive1" class=" responsive-div-media col-md-5 col-11 p-1 mt-3  shadow p-3 mb-5 bg-white rounded " >
+    <h4 class="mb-3">
+        Payment Methods 
+      
+    </h4>
+    <hr width="90%">
+    <div class="" >
+        <div class="p-2">
+            <input id="cashOnDelevary" class="inputMet form-check-input " name="inputMethod" type="radio" style="margin-right: 2%;">
+             Cash On Delever
+        </div>
+
+        <div class="p-2">
+            <input  class="inputMet form-check-input  mr-3 " name="inputMethod" type="radio" style="margin-right: 2%;">
+            Rasor Pay
+        </div>
+       
+    </div>
+</div>
+
+</div>
+
+</div>
+
+
+<script src="/javascripts//user/userCheckout.js"></script>
+<script>
+ function showForm(){
+     document.getElementById("addressForm").style.display = "block"
+     document.getElementById("cancelbutton").style.display = "block"
+ }
+function clearForm (){
+    $('#address')[0].reset();
+    document.getElementById("addressForm").style.display = "none"
+    document.getElementById("cancelbutton").style.display = "none"
+
+
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<%- include('./partials/headers')%> 
+<%-include('./partials/!docType')%>
+
+<% if(data.product.length <= 0 ){ %> 
+<div class="container-fluid " >
+     <div class="row">
+          <div class="col-md-3"></div>
+         <div class="col-md-7 ">
+             <div class="card shadow ">
+                 <div class="card-body cart">
+                     <div class="col-sm-12 empty-cart-cls text-center"> <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                         <h3><strong>Your Cart is Empty</strong></h3>
+                         <h4>Add something to make me happy :)</h4> <a href="/product" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+<% }else{ %> 
+
+     <div class="container-fluid " id="emptyCart" style="display: none;">
+          <div class="row">
+               <div class="col-md-3"></div>
+              <div class="col-md-7 ">
+                  <div class="card shadow ">
+                      <div class="card-body cart">
+                          <div class="col-sm-12 empty-cart-cls text-center"> <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                              <h3><strong>Your Cart is Empty</strong></h3>
+                              <h4>Add something to make me happy :)</h4> <a href="/product" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+<div class="container shadow mt-5" id="cartItems">
+     <div class="row " >
+       <h1>cart</h1>
+
+     <% console.log(data.product[0]._id) %> 
+     
+
+         <!-- ----------------------------------------------------loop strart herer ------------------------------------------- -->
+         <% for(var i = 0 ; i< data.product.length ; i++){ %> 
+          <div class=" col-md-8 " id="tableRow<%=data.product[i].vaientId%>">
+               
+               <div class="image-session ">
+                  <div class="imageContainer shadow-lg">
+                     <img src="<%=data.product[i].productArray.image[0].imageUrl%>" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+                  </div>
+               </div>
+               <div class="center-details align-left mt-4">
+                    <div class="" style="display: flex; flex-direction: row; justify-content: space-evenly;">
+                    <span><%=data.product[i].productArray.productName%></span>
+                   
+                    <span>size : <%=data.product[i].productArray.size[i]%>  </span>
+               </div>
+               <div class="mt-3" style="display: flex; flex-direction: row; justify-content: space-evenly;">
+                    <span>color :   <%=data.product[i].productArray.color[i]%> </span>
+                    <span ><b>Price : <span style="color: green;">₹ <span id="price<%=data.product[i].vaientId%>"><%=data.product[i].totalPrice%> </span>.00 </span> </b></span>
+                    </div>
+               </div>
+               <div class="quanitity mt-4">
+                  <div class="quChanger shodow">
+                    <button id="minusButton<%=data.product[i].vaientId%>" onclick="chageQuantity(-1 ,'<%=data.product[i].vaientId%>' ,'<%=data.product[i].productArray._id%>')" class="btn btn-light shadow"><i class="fas fa-minus "></i></button>
+                    <button style="background-color: rgb(0, 15, 53); color: gold;" class="btn  shadow-lg" disabled><span id="quantity<%=data.product[i].vaientId%>"><%=data.product[i].quantity%></span></button>
+                    <button onclick="chageQuantity( 1 ,'<%=data.product[i].vaientId%>' , '<%=data.product[i].productArray._id%>')" class="btn btn-light shadow"><i class="fas  fa-plus"></i></button>
+
+                  </div>
+                
+               </div>
+               
+               <div class="opt">
+                    <div class="allOpt">
+                         <button class="btn btn-primary shadow" style="background-color: #3b5998;" href="#!" role="button" >Save for later</button>
+                         <i onclick="deleteItem('<%=data.product[i].vaientId%>' , '<%=data.product[i]._id%>')" class="fas fa-trash-alt"></i> 
+
+                    </div>
+                    <hr class="shadow">
+               </div>
+            
+           </div>
+           <% } %> 
+<!-- -------------------------------------------------------------------------------------end of the loop -------------------------------------------------- -->
+           <div class= " sampleCard shadow col-md-3"  style="   background: white;">
+             
+               <h3 class="p-3">The total amount of</h3>
+                    <table style="  text-align: center; width: 100%;">
+                         <tr style="color: rgb(157, 152, 152);">
+                              <td>
+                               <b> Total Amount </b>
+                              </td>
+
+
+                              <td style="font-size: 20px; color: green;">
+                                   ₹
+                                   <span id="grandTotal" ><%=data.grandTotal%></span>
+                                   .00
+                                   
+                              </td>
+                         </tr>
+                         <tr style="color: rgb(157, 152, 152);">
+                              <td   style="padding-top: 1rem;">
+                               <b> Delevery Charge </b>
+                              </td>
+
+
+                              <td style="font-size: 20px; padding-top: 1rem; color: red;">
+                                   ₹
+                                   <span>00</span>
+                                   .00
+                                   
+                              </td>
+                         </tr>
+
+                         <tr>
+
+                              <td   style="padding-top: .3rem;">
+                                   <hr width="140%" style="margin-left: 5%;">
+                               <b> Final Price </b>
+                              </td>
+
+
+                              <td style="font-size: 20px; padding-top: 3rem;">
+                                   ₹
+                                   <span id="finalPrice"><%=data.grandTotal%></span>
+                                   .00
+                                   
+                              </td>
+                         </tr>
+                         <tr>
+                              <td style="padding-top: 1rem;">
+                                <a href="/checkout">  <button  style="width: 100%;margin-left: 30%;" class="btn btn-danger mb-3">Go To CheckOut</button> </a>    
+                              </td>
+                         </tr>
+                    </table>
+                    
+                   
+
+             </div>
+          
+     </div>
+
+</div>
+
+<% } %> 
+<script src="/javascripts/user/userCart.js"></script>
+<style>
+
+     .sampleCard{
+          position: fixed;
+          left: 65%;
+          
+     }
+     .details{
+          width: 80%;
+     }
+   
+     .image-session{
+          width: 20%;
+          float: left;
+          background-color: rgb(255, 255, 255);
+     }
+     .center-details{
+          
+          text-align: left;
+          flex-direction: column;
+          display: flex;
+          width: 30%;
+          float: left;
+          background-color: rgb(255, 255, 255);
+     }
+     .quanitity{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 30%;
+          float: left;
+          background-color: rgb(255, 255, 255);
+     }
+     .opt{
+         
+          width: 20%;
+          float: left;
+          background-color: rgb(255, 255, 255);
+     }
+     .allOpt{
+          flex-direction: column;
+          justify-content: space-between;
+          display: flex;
+     }
+     .imageContainer{
+          margin: 1rem;
+          width: 100px;
+         
+          height: 100px;
+     }
+     .fa-trash-alt{
+          margin-left: 75%;
+          margin-top: 9%;
+          font-size: 1.4rem;
+          cursor: pointer;
+     }
+
+     @media screen and (max-width:500px){
+          .sampleCard{
+          position: relative;
+          left: 0%;
+          }
+          .cart-left{
+               width: 100%;
+
+          }
+          .image-session{
+               width: 44%;
+          }
+          .center-details{
+               margin-top: 2rem;
+               width: 53%;
+          }
+          .quanitity{
+               padding-bottom: .9rem;
+               width: 57%
+          }
+          .opt{
+               width: 43%;
+          }
+          .table-left{
+               width: 100%;
+          }
+          .fa-trash-alt{
+               margin-left: 0%;
+                margin-top: 12%;
+               font-size: 1.2rem;
+          }
+          .allOpt{
+               flex-direction: row;
+          }
+          .waste{
+               width: 0px;
+               height: 0px;
+          }
+          .right{
+               width: 100%;
+          }
+          .details{
+               width: 100%;
+          }
+          
+     }
+
+    
+</style>
+
+<!-- table-left col-md-6 col-11 shadow -->

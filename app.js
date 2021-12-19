@@ -28,6 +28,8 @@ const adminUserManageMent  = require('./routes/admin/adminUserManageMent');
 const adminOffer = require('./routes/admin/adminOffers');
 const adminCoupones  = require('./routes/admin/adminCoupones');
 const adminSalesReport = require('./routes/admin/adminSalesReprort');
+const { checkout } = require('./routes/users/userEntry');
+const adminOrders = require('./routes/admin/adminOrders');
 //end of roter initilizing of admin --------
 
 
@@ -52,21 +54,31 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 
+
+
 // app.use(express.json());
 // app.use(express.urlencoded({  }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
+
 //admin page routes only 
-app.use('/',userEntry);
 app.use('/admin',adminEntry);
 app.use('/admin/userManage', adminUserManageMent);
 app.use('/admin/catagory',adminCatagory);
 app.use('/admin/products',adminPoduct);
+app.use('/admin/orders' , adminOrders);
 //end of the admin-page routes
 
 
+
+//user routers 
+app.use('/',userEntry);
+app.use('/product',userProducts);
+app.use('/cart',userCart);
+app.use('/checkout', userCheckOut);
 
 
 

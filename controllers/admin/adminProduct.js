@@ -1,6 +1,6 @@
 const product = require("../../model/admin/prductSchema");
 const mongoose = require("mongoose");
-const objectId = mongoose.Types.ObjectId();
+const objectId = mongoose.Types.ObjectId;
 const cloudinary = require("../../API/cloudnary");
 
 // {{ to chekck that the product is already exist in the collections}};
@@ -24,31 +24,31 @@ function getProduct(productName, brand) {
 }
 
 
-// function to upload the image to cloudinary;
-function uploadImage(){
-     return  new Promise((resolve ,reject)=>{
-
-     })
-}
 
 
 module.exports = {
   addProduct: (data) => {
     return new Promise(async (resolve, reject) => {
-     //  let { productName, brand, catagory, subCatagory, discription, varient } =data;
-      data.varient = JSON.parse(data.varient);
-      console.log(typeof(data));
+    
+      data.image = JSON.parse(data.image);
+      data.size = JSON.parse(data.size);
+      data.color = JSON.parse(data.color);
+      data.price = parseInt(data.price);
+      data.quantity = parseInt(data.quantity);
+        
+  
+    
+     try{
+        var insertData = product(data);
+        var result = await  insertData.save();
      
-       try{
-          var packProduct = product(data);
-          var result = await packProduct.save()
-          resolve(true);
-       }catch(err){
-           console.log(err)
-           resolve("sorry somthing went wrong  please try againg ");
-           location.reload();
-       }
-       
+        resolve(true);
+
+     }catch(err){
+        console.log("err");
+        resolve("sorry Somthing went wrong ! Plese Try Again");
+     }
+
     });
   },
 
@@ -75,11 +75,116 @@ module.exports = {
     })
   },
 
-  getProduct:()=>{
+  getProduct:(skip)=>{
     return new Promise(async (resolve , reject)=>{
-      resolve(
-      await product.find()
+      var obj = {
+        product : await product.find().skip(skip).limit(10),
+       totalLength : await product.count()
+      }
+    
+      resolve(obj)
+    })
+  },
+
+  getProductById: (id)=>{
+    return new Promise (async (resolve,reject)=>{
+ 
+        try{
+          var result = await product.findOne({_id:objectId(id)})
+       
+          resolve(result)
+        }catch(err){
+          if(err)console.log('err');
+        }
+    })
+  },
+
+  editProducts:(data)=>{
+    return new Promise( async (resolve , reject)=>{
+
+      
+      data.image = JSON.parse(data.image);
+      data.color = JSON.parse(data.color);
+      data.size = JSON.parse(data.size);
+      data.price = parseInt(data.price);
+      data.quantity= parseInt(data.quantity);
+      var id = data.id;
+      delete data['id'];
+ 
+
+
+    var result = await   product.updateOne(
+        {
+          _id:objectId(id)
+        },
+        {
+          $set:{
+            productName : data.productName,
+            brand : data.brand,
+            catagory : data.catagory,
+            subCatagory:data.subCatagory,
+            image : data.image,
+            size : data.size,
+            color : data.color,
+            price : data.price,
+            quantity : data.quantity,
+            discription : data.discription,
+          }
+        }
       )
+
+     if(result.acknowledged) {resolve(true) ; return }
+     else{
+       resolve("Oops Somthing went wrong");
+     }
+    
+   
+
+    })
+  },
+
+  search:(key)=>{
+    return new Promise(async (resolve,reject)=>{
+      key = key.trim();
+  
+         var result= await product.find(
+          {
+            productName:{$regex: key  , $options :"i"} 
+          }
+        )
+        resolve(result);
+    })
+  },
+
+  deleteProducts :(id)=>{
+      return new Promise(async (resolve,reject)=>{
+        var deleteImage = await product.findOne({_id:objectId(id)});
+        var result = await product.deleteOne(
+          {
+            _id:objectId(id)
+          }
+        )
+        if(result.deletedCount == 1) {
+          resolve(true)
+        }else{
+          resolve("Oops somthing went wrong ");
+        }
+    
+        for(var i = 0 ;i< deleteImage.image.length ; i++){
+          cloudinary.uploader.destroy(deleteImage.image[i].publicId, function(error,result) {
+            if(error)console.log(err);
+          });
+        }
+          
+
+      })
+  },
+
+  sortDate : (date)=>{
+    return new Promise( async (resolve, reject)=>{
+    
+        var result = await product.find().sort({createdAt : parseInt(date)});
+        resolve(result);
     })
   }
 

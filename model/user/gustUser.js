@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const scehma = mongoose.Schema;
 
 
-const cart = new scehma({
+const gustUsercart = new scehma({
      userId:{
           type:String,
           required:true
@@ -14,5 +14,5 @@ const cart = new scehma({
 
 })
 
-const cartModel = mongoose.model('cart' , cart);
-module.exports = cartModel;
+const gustCartModel = mongoose.model('gustUserCart' , gustUsercart);
+module.exports = gustCartModel;

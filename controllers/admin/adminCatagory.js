@@ -1,5 +1,5 @@
 const cat = require('../../model/admin/catagorySchema');
-
+const product =  require('../../model/admin/prductSchema');
 
 function getCatagory(catagory){
      return new Promise(async (resolve,reject)=>{
@@ -14,6 +14,7 @@ function getCatagory(catagory){
            result =  await cat.find()
           }
           resolve(result);
+          
          
      })
 }
@@ -50,7 +51,18 @@ function editCatagory(data){
                     catagory:data.newCatgory
                }
           )
-          resolve(result);
+          resolve(result)
+
+          var proUpdate = await product.updateMany(
+               {
+                    catagory:data.oldCatagory
+               },
+
+               {
+                    catagory:data.newCatgory
+               }
+          )
+          
      })
 }
 
@@ -66,7 +78,6 @@ function deleteCatagory(catagory){
 }
 
 function editSubCatagories (data){
-     console.log(data.oldSubCat , data.newSubCat ,data.catagory)
      return new Promise( async (resolve, reject)=>{
           var result = await cat.updateOne(
                {
@@ -78,11 +89,24 @@ function editSubCatagories (data){
                     $set:{'subCatagory.$':data.newSubCat}
                }
           )
-          if(result.modifiedCount == 1){resolve(true) ; return ;}
+          if(result.modifiedCount == 1){resolve(true)  ;}
           else{
                resolve("UnExpected Error While Compiling");
-               return ;
+               
           }
+
+          // {{ chanaging in the procuct also}};
+        var proUpdate = await   product.updateMany(
+               {
+                    catagory:data.catagory,
+                    subCatagory : data.oldSubCat
+               },
+               {
+                    subCatagory: data.newSubCat
+               }
+          )
+         
+
      })
 }
 
@@ -119,7 +143,7 @@ module.exports = {
                          'catagory':catagory
                     })
                     var result = await newCat.save();
-                    console.log(result);
+                  
                     resolve(true);
                  }catch(err){
                       location.reload();
@@ -136,7 +160,7 @@ module.exports = {
      getAllCatagory:  ()=>{
          return new Promise( async (resolve , reject)=>{
                var result = await  getCatagory('')
-              
+          
                resolve(result);
          })
      },
@@ -148,7 +172,7 @@ module.exports = {
           })
      },
 
-     editCatagory :(data)=>{
+     editCatagory:(data)=>{
           return new Promise( async (resolve , reject)=>{
                     var result = await getCatagory(data.newCatgory) 
                     if(result !== null){ resolve("The New Catagory Name Is Already Exists ") ;  return}
@@ -164,7 +188,7 @@ module.exports = {
      },
 
      deleteCatagory:(data)=>{
-          console.log(data);
+     
          return new Promise( async (resolve ,reject)=>{
             try{
                var result =await deleteCatagory(data);
@@ -183,7 +207,7 @@ module.exports = {
           return new Promise(async (resolve,reject)=>{
                var result = await  getCatagory(catagory );
                
-               resolve((result.subCatagory));
+               resolve(result.subCatagory);
           })
      },
 

@@ -1,0 +1,602 @@
+<%- include('./partials/headers')%> 
+<%-include('./partials/!docType')%>
+<!DOCTYPE html>
+<html>
+  <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Product Card/Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+      integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <style>
+
+.img-magnifier-container {
+  position:relative;
+}
+
+.img-magnifier-glass {
+  position: absolute;
+  border: 3px solid #000;
+  cursor: none;
+  /*Set the size of the magnifier glass:*/
+  width: 200px;
+  height: 200px;
+}
+
+
+         div.scrollmenu {
+  background-color: rgb(255, 255, 255);
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 5px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        font-family: "Open Sans", sans-serif;
+      }
+      body {
+        line-height: 1.5;
+      }
+      .card-wrapper {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      img {
+        width: 100%;
+        display: block;
+      }
+      .img-display {
+        overflow: hidden;
+        width: 20vw;
+      }
+      .img-showcase {
+           width: 20vw;
+        display: flex;
+       
+        transition: all 0.5s ease;
+      }
+      .img-showcase img {
+        min-width: 100%;
+      }
+      .img-select {
+        display: flex;
+      }
+      .img-item {
+        margin: 0.3rem;
+      }
+      .img-item:nth-child(1),
+      .img-item:nth-child(2),
+      .img-item:nth-child(3) {
+        margin-right: 0;
+      }
+      .img-item:hover {
+        opacity: 0.8;
+      }
+      .product-content {
+        padding: 2rem 1rem;
+      }
+      .product-title {
+        font-size: 3rem;
+        text-transform: capitalize;
+        font-weight: 700;
+        position: relative;
+        color: #12263a;
+        margin: 1rem 0;
+      }
+      .product-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 4px;
+        width: 80px;
+        background: #12263a;
+      }
+      .product-link {
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 400;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        background: #256eff;
+        color: #fff;
+        padding: 0 0.3rem;
+        transition: all 0.5s ease;
+      }
+      .product-link:hover {
+        opacity: 0.9;
+      }
+      .product-rating {
+        color: #ffc107;
+      }
+      .product-rating span {
+        font-weight: 600;
+        color: #252525;
+      }
+      .product-price {
+        margin: 1rem 0;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+      .product-price span {
+        font-weight: 400;
+      }
+      .last-price span {
+        color: #f64749;
+        text-decoration: line-through;
+      }
+      .new-price span {
+        color: #256eff;
+      }
+      .product-detail h2 {
+        text-transform: capitalize;
+        color: #12263a;
+        padding-bottom: 0.6rem;
+      }
+      .product-detail p {
+        font-size: 0.9rem;
+        padding: 0.3rem;
+        opacity: 0.8;
+      }
+      .product-detail ul {
+        margin: 1rem 0;
+        font-size: 0.9rem;
+      }
+      .product-detail ul li {
+        margin: 0;
+        list-style: none;
+        background: url(shoes_images/checked.png) left center no-repeat;
+        background-size: 18px;
+        padding-left: 1.7rem;
+        margin: 0.4rem 0;
+        font-weight: 600;
+        opacity: 0.9;
+      }
+      .product-detail ul li span {
+        font-weight: 400;
+      }
+      .purchase-info {
+        margin: 1.5rem 0;
+      }
+      .purchase-info input,
+      .purchase-info .btn {
+        border: 1.5px solid #ddd;
+        border-radius: 25px;
+        text-align: center;
+        padding: 0.45rem 0.8rem;
+        outline: 0;
+        margin-right: 0.2rem;
+        margin-bottom: 1rem;
+      }
+      .purchase-info input {
+        width: 60px;
+      }
+      .purchase-info .btn {
+        cursor: pointer;
+        color: #fff;
+      }
+      .purchase-info .btn:first-of-type {
+        background: #256eff;
+      }
+      .purchase-info .btn:last-of-type {
+        background: #f64749;
+      }
+      .purchase-info .btn:hover {
+        opacity: 0.9;
+      }
+      .social-links {
+        display: flex;
+        align-items: center;
+      }
+      .social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        color: #000;
+        border: 1px solid #000;
+        margin: 0 0.2rem;
+        border-radius: 50%;
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: all 0.5s ease;
+      }
+      .social-links a:hover {
+        background: #000;
+        border-color: transparent;
+        color: #fff;
+      }
+
+      @media all and (min-width: 992px) {
+        .card {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 1.5rem;
+        }
+        .card-wrapper {
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .product-imgs {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .product-content {
+          padding-top: 0;
+        }
+        
+      }
+      @media screen and (max-width:500px){
+            .img-showcase{
+             width: 100vw;
+        }
+        .img-display{
+             width: 100%;
+        }
+        .img-magnifier-glass{
+          display: none;
+        }
+
+      }
+     
+    </style>
+    <div class="card-wrapper " style="display: flex">
+      <div class="card shadow">
+        <!-- card left -->
+        <div class="product-imgs">
+          <div class="img-display  " >
+            <div class="img-showcase img-magnifier-container">
+              <img 
+              id="myimage"
+                src="<%=product.image[0].imageUrl%>"
+                alt="shoe image"
+              />
+              <img
+                src="<%=product.image[1].imageUrl%>"
+                alt="shoe image"
+              />
+             
+              <img
+                src="<%=product.image[2].imageUrl%>"
+                alt="shoe image"
+              />
+            </div>
+          </div>
+          <!-- style="margin-left: 9%;" -->
+          <div class="img-select" style="z-index: 9999;"  >
+               <div class="img-item" style="width: 100px; height: 100px;">
+                    <a href="#" data-id="1">
+                      <img class="shadow-lg" src="<%=product.image[0].imageUrl%>" alt="shoe image"  style="width: 100%;height: 100%;object-fit: contain;" />
+                    </a>
+                  </div>
+            <div class="img-item" style="width: 100px; height: 100px;">
+               <a href="#" data-id="2">
+                 <img class="shadow-lg"src="<%=product.image[1].imageUrl%>" alt="shoe image"  style="width: 100%;height: 100%;object-fit: contain;" />
+               </a>
+             </div>
+            <div class="img-item" style="width: 100px; height: 100px;">
+              <a href="#" data-id="3">
+                <img class="shadow-lg"src="<%=product.image[2].imageUrl%>" alt="shoe image"  style="width: 100%;height: 100%;object-fit: contain;" />
+              </a>
+            </div>
+           
+          </div>
+        </div>
+        <!-- card right -->
+        <div class="product-content">
+          <h2 class="product-title"><%=product.productName  %> </h2>
+          <a href="#" class="product-link">visit Our store</a>
+          <div class="product-rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+            <span>4.7(21)</span>
+          </div>
+
+          <div class="product-price">
+            <p class="last-price">Old Price: <span>$257.00</span></p>
+            <p class="new-price">New Price: <span>₹<%=product.price%> .00 (5%)</span></p>
+          </div>
+
+          <div class="product-detail">
+            <h2>about this item:</h2>
+            <p>
+                 <%=product.discription %> 
+            </p>
+            <!-- // {{table here}} -->
+            <ul>
+               <li>Color: <span style="color: rgb(5, 97, 100);"><b>Black</b></span></li>
+               <li>Available: <span  style="color: rgb(177, 58, 37);">in stock</span></li>
+               <li>Category: <span  style="color: rgb(43, 56, 157);">Shoes</span></li>
+               <li>Size <span  style="color: rgb(189, 0, 189);">XXl</span></li>
+             
+             </ul>
+          
+<div class="scrollmenu mb-3">
+     <a style="background-color: gold;" href="">ALL Sizes</a>
+     <% for(var i =0 ;i< product.size.length ; i++){%> 
+
+     <a id="size<%=0%>" class="shadow" style="background-color: white; cursor: pointer;" href="#home"> <input  style="width:30px  "type="radio"  name="optradio" class="radionBtn" value="hel" onchange="sizeConfirm('<%=product.size[i]%>' , '<%=product._id%>')" ><b><%=product.size[i]%></b> </a>
+     <% } %> 
+   </div>
+
+
+   <div class="scrollmenu">
+     <a style="background-color: gold; cursor: pointer;" href="">Colors</a>
+     <% for(var i =0 ;i< product.color.length ; i++){%> 
+
+     <a id="color<%=i%>" class="shadow" style="background-color: white; cursor: pointer;" href="#home"><input style="width:30px  "type="radio" name="optradio2"  onchange="colorConfirm('<%=product.color[i]%>' , '<%=product._id%>')" ><b><%=product.color[i]%></b> </a>
+     <% } %> 
+   </div>
+            <!-- end of the table -->
+          </div>
+
+          <div class="purchase-info">
+          
+            <button id="addToCart" type="button" class="btn" onclick="addToCart('<%=product._id%>')">
+             <span id="addToCartText"> Add to Cart </span> <i class="fas fa-shopping-cart"></i>
+            </button>
+            <button type="button" class="btn">Buy Now </button>
+          <p  style="color: blue;"><b id="info" ></b></p>
+
+          </div>
+
+          <div class="social-links">
+            <p>Share At:</p>
+            <a href="#">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+
+
+var color;
+var size;
+var info = document.getElementById('info');
+// function to create unique id for the user;
+const makeUniqueId = function(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2).trim();
+}
+
+async function   addToCart(id){
+  // {{validation to size and color }};
+    if(color ==  undefined){info.innerHTML = "Please Selct One Color" ;return;}
+    if(size == undefined){info.innerHTML = "please Select One Size " ;return;}
+
+    // {{ the ajax call}}
+    //check the user's browse have that id ;
+    var userId = localStorage.getItem('userId');
+  
+
+    if(userId == null){
+      userId =  makeUniqueId();
+      localStorage.setItem('userId' , userId);
+    }
+
+    console.log(userId);
+
+    var product = {
+      productId :id,
+      size: size,
+      color : color,
+      userId : userId
+    }
+
+   
+
+    $.ajax({
+      url:'/cart/addToCart',
+      data : product,
+      method :"post",
+      success:(result)=>{
+        if(result.status == false){
+          var localUserId = localStorage.getItem('userId');
+          localUserId  ="http://localhost:3000/cart?userId="+localUserId;
+          location.href = localUserId;
+        }
+        else if(result.status == true){
+          document.getElementById("addToCartText").innerHTML= " Go To Cart "
+                  const Toast = Swal.mixin({
+                  toast: true,
+                  position: 'bottom-end',
+                  showConfirmButton: false,
+                  timer: 2000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                  }
+                })
+
+                Toast.fire({
+                  icon: 'success',
+                  title: 'Item Added To Cart Successfully'
+                })
+
+        }
+      }
+      
+    })
+
+
+}
+
+function colorConfirm(Optcolor , id){
+  info.innerHTML = ""
+    color = Optcolor
+    if(size ==  "")return;
+
+  checkVarientInBackEnd(color , size , id )
+
+}
+function sizeConfirm(Optsize , id){
+  info.innerHTML = ""
+  size = Optsize
+  if(color ==  "")return;
+
+  checkVarientInBackEnd(color , size , id )
+
+   
+}
+
+function checkVarientInBackEnd(color , size , productId){
+    let userId = localStorage.getItem('userId');
+    var chekcPack = {
+       userId : userId,
+       productId :productId,
+       color: color,
+       size : size
+    }
+    $.ajax({
+          url:'/cart/checkVarient',
+          data: chekcPack,
+          method : "post",
+          success:(result)=>{
+           
+            if(result.status == true){
+              document.getElementById("addToCartText").innerHTML= " Go To Cart "
+            }else{
+              document.getElementById("addToCartText").innerHTML= " Add to Cart "
+            }
+          }
+
+    })
+}
+
+
+        const imgs = document.querySelectorAll(".img-select a");
+        const imgBtns = [...imgs];
+        let imgId = 1;
+
+        imgBtns.forEach((imgItem) => {
+          imgItem.addEventListener("click", (event) => {
+            event.preventDefault();
+            imgId = imgItem.dataset.id;
+            slideImage();
+          });
+        });
+
+        function slideImage() {
+          const displayWidth = document.querySelector("#myimage").clientWidth;
+
+          document.querySelector(".img-showcase").style.transform = `translateX(${
+            -(imgId - 1) * displayWidth
+          }px)`;
+        }
+
+        window.addEventListener("resize", slideImage);
+     //  image maginfier 
+
+
+function magnify(imgID, zoom) {
+  var img, glass, w, h, bw;
+  img = document.getElementById(imgID);
+  /*create magnifier glass:*/
+  glass = document.createElement("DIV");
+  glass.setAttribute("class", "img-magnifier-glass");
+  /*insert magnifier glass:*/
+  img.parentElement.insertBefore(glass, img);
+  /*set background properties for the magnifier glass:*/
+  glass.style.backgroundImage = "url('" + img.src + "')";
+  glass.style.backgroundRepeat = "no-repeat";
+  glass.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
+  bw = 3;
+  w = glass.offsetWidth / 2;
+  h = glass.offsetHeight / 2;
+  /*execute a function when someone moves the magnifier glass over the image:*/
+  glass.addEventListener("mousemove", moveMagnifier);
+  img.addEventListener("mousemove", moveMagnifier);
+  /*and also for touch screens:*/
+  glass.addEventListener("touchmove", moveMagnifier);
+  img.addEventListener("touchmove", moveMagnifier);
+  function moveMagnifier(e) {
+    var pos, x, y;
+    /*prevent any other actions that may occur when moving over the image*/
+    e.preventDefault();
+    /*get the cursor's x and y positions:*/
+    pos = getCursorPos(e);
+    x = pos.x;
+    y = pos.y;
+    /*prevent the magnifier glass from being positioned outside the image:*/
+    if (x > img.width - (w / zoom)) {x = img.width - (w / zoom);}
+    if (x < w / zoom) {x = w / zoom;}
+    if (y > img.height - (h / zoom)) {y = img.height - (h / zoom);}
+    if (y < h / zoom) {y = h / zoom;}
+    /*set the position of the magnifier glass:*/
+    glass.style.left = (x - w) + "px";
+    glass.style.top = (y - h) + "px";
+    /*display what the magnifier glass "sees":*/
+    glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
+  }
+  function getCursorPos(e) {
+    var a, x = 0, y = 0;
+    e = e || window.event;
+    /*get the x and y positions of the image:*/
+    a = img.getBoundingClientRect();
+    /*calculate the cursor's x and y coordinates, relative to the image:*/
+    x = e.pageX - a.left;
+    y = e.pageY - a.top;
+    /*consider any page scrolling:*/
+    x = x - window.pageXOffset;
+    y = y - window.pageYOffset;
+    return {x : x, y : y};
+  }
+}
+magnify("myimage", 3);
+
+
+
+
+
+// end of the image maginifer
+
+    </script>
+  </body>
+</html>

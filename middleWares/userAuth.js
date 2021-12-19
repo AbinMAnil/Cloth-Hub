@@ -46,6 +46,7 @@ module.exports = {
      },
      isUserHaveUid: (req,res,next)=>{
           if(req.session.uid){
+               req.session.loginStatus = true;
                next()
           }else{
                res.redirect("/signup")
@@ -53,7 +54,8 @@ module.exports = {
      },
      dontBringToSingupPage:(req , res ,next)=>{
           if(req.session.uid){
-               res.redirect(req.session.lastRouter);
+               res.redirect('/')
+               // res.redirect(req.session.lastRouter);
           }else{
                next();
           }

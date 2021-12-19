@@ -5,13 +5,15 @@ const { route } = require("../../app");
 var router = express.Router();
 const middleWare = require("../../middleWares/userAuth");
 const userEntryControllers = require('../../controllers/user/userEntry')
+const catagory = require('../../controllers/admin/adminCatagory');
+const cart = require('../../controllers/user/cart');
 // --------------------END OF THE REQUIREMENTS------------------------------\\
 
 // HOME PAGE RENDERNG 
-router.get("/", middleWare.getUser, (req, res) => {
+router.get("/", middleWare.isUserHaveUid, async  (req, res) => {
   req.session.lastRouter = '/';
 
-   res.render("user/home" , {logStatus:req.session.loginStatus ,});
+   res.render("user/home" , {logStatus:req.session.loginStatus ,  catagory: await  catagory.getAllCatagory()});
 });
 
 // res.render("user/home");
@@ -38,6 +40,7 @@ router.post('/isValidPhone', async (req, res)=>{
 
 // TO CHECK THE OTP 
 router.post('/otp', async (req,res)=>{
+     console.log(req.body.gustUserId)
       var result = await userEntryControllers.checkOtp(req.body.phone , req.body.otp)
       res.json({status : result.status  , phone:req.body.phone });
 })
@@ -71,18 +74,24 @@ router.post('/otpCheckForExistUser', async (req,res)=>{
 
 //TO CHECK THE USER SIGNUP WITH PASSWORD AND EMAIL;
 router.post('/signupWithEmail', async (req,res)=>{
+     
   var result =  await userEntryControllers.checkUserSignup(req.body.email , req.body.password)
   if(result.status == true ){
     req.session.uid = result.data._id;
+    // function to shift item to gust cart to user actual cart;
+    cart.shiftItem(req.body.gustUserId , req.session.uid);
     res.json({status:result.status})
+
   }else{
       res.json({status:result});
   }
+
 })
 
 // TO LOGOUT OF THE USER
 router.get('/logout', (req,res)=>{
     delete  req.session.uid;
+    // res.redirect('/signup')
 })
 
 

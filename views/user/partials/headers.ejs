@@ -1,41 +1,88 @@
 <link rel="stylesheet" href="/stylesheets/user/header.css" />
-<body>
+<body onload="setCartLink()">
   <main >
- <div class="navContainer" id="navContainer">
-    <div class="nav"  id="navbar">
+ <div class="navContainer" id="navContainer"  >
+    <div class="nav"  id="navbar" style="z-index: 9999;">
       <div class="left">
         <span class="brand"><span style="color: orange;">Cloth</span> Hub </span>
       </div>
       <div class="right">
         <span class="input">
-          <input type="text" />
-          <button class="btn">search</button></span>
+          <div class="input-group" style="flex-wrap: nowrap;">
+            <div class="form-outline">
+              <input type="search" id="form1" class="form-control" />
+            </div>
+            <button type="button" class=" btn btn-outline-warning" style="  color: orange;">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </span>
         <div class="nav-links">
           <% if(logStatus){ %> 
           <a style="cursor: pointer;"><i  class="fas fa-user-secret"></i></a>
          <%  }else{ %> 
           <a title="Log In"  style="cursor: pointer;"><i title="Log In"  class="far fa-sign-in-alt"></i></a>
           <% } %> 
-          <a  href=""><i title="Go to Cart " class="fas fa-shopping-cart text-white">  <span id="badge">11</span></i></a>
+          <a id="cartLink"  href="/cart"><i title="Go to Cart " class="fas fa-shopping-cart text-white">  <span id="badge">11</span></i></a>
           <a ><i title="Fav List" style="color: red;" class="fas fa-heart"></i></a>
         </div>
       </div>
     </div>
-    <div class="second-nav" id="second-nav">
+    <div  style="z-index: 9999;"class="second-nav" id="second-nav">
       <i onclick="openNav()" class="fas fa-bars m-4 allItem"  title="All Catagories"></i>
       <div class="innerCat">
-        <a href="">cataory</a>
-        <a href="">cataory</a>
-        <a href="">cataory</a>
-        <a href="">cataory</a>
-        <a href="">cataory</a>
-        <a href="">cataory</a>
-        <a href="">cataory</a>
-        <a href="">cataory</a>
+        <% for(var i = 0 ;i< catagory.length ; i++){%> 
+        <a style="cursor: pointer;">
+          <span onclick="showSubCat('<%=i%>')" ><%=catagory[i].catagory%> </span>
+          <div onmouseleave="showSubCat('<%=i%>')" id="cat<%=i%>" class="hider  dorpDown shadow-lg" >
+            <ul style="padding:0px;"  class="dropDownContent">
+              <% for(var j = 0 ;j< catagory[i].subCatagory.length ; j++){  %> 
+              <li><%=catagory[i].subCatagory[j] %> </li>
+
+              <% } %> 
+             
+            </ul>
+          </div>
+         </a>
+
+         <% } %> 
       </div>
     </div>
 
+</div>
+</main>
+<style>
 
+.hider{
+  display: none !important;
+}
+  .dorpDown{
+    z-index: 99999 !important;
+  }
+  .dropDownContent{
+    /* display: none; */
+    flex-direction: column;
+    position: absolute;
+    background-color: rgb(240, 238, 238);
+    color: black;
+
+  }
+  .dropDownContent li{
+    cursor: pointer;
+     padding: .5rem 2rem .3rem 2rem;
+  }
+  .dropDownContent li:hover{
+    background-color: rgb(255, 255, 255);
+    color: gold;
+  }
+  ul{
+    padding: 0px;
+    z-index: 9999 !important;
+  }
+</style>
+
+
+  
     <div id="mySidenav" class="sidenav">
       <a href="#" class="closebtn" onclick="closeNav()">&times;</a>
       
@@ -51,6 +98,14 @@
 
  
   <script>
+
+function showSubCat(id){
+  document.getElementById('cat'+id).classList.toggle('hider');
+}
+
+
+
+
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
 }
@@ -59,20 +114,10 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
 
-var prevScrollpos = window.pageYOffset;
-window.onscroll = function() {
-  var currentScrollPos = window.pageYOffset;
-  if (prevScrollpos > currentScrollPos) {
-    document.getElementById("navbar").style.top = "0";
-    document.getElementById("second-nav").style.top= "8%"
-  } else {
-    document.getElementById("navbar").style.top = "-100px";
-    document.getElementById("second-nav").style.top= "0%"
-
-
-
-  }
-  prevScrollpos = currentScrollPos;
+function setCartLink(){
+  var gustUserId = localStorage.getItem('userId');
+  var linkStr = '/cart?userId='+gustUserId;
+    document.getElementById("cartLink").href =linkStr; 
 }
 
 

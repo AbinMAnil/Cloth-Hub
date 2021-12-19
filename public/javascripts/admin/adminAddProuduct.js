@@ -1,246 +1,204 @@
 
-var sizeVarientArray1 = [];
-var sizeVarientArray2 = [];
-var colorSelector1 = document.getElementById('colorSelector1');
-var colorSelector2 = document.getElementById('colorSelector2');
-var imageArray1 = [];
-var imageArray2 = [];
-var addVarientChecker = false;
-var varientSampleData1;
-var varientSampleData2;
-var speacility = [];
+
+// {{errors}}
+var err1 = document.getElementById('varientErr');
+var err2 = document.getElementById('mainErr');
+
+
+// var imageArray1 = [];
 var varientArray = [];
-var err = document.getElementById('mainErr');
+var colorArray = [];
 
-// the  size wise  array to the product list
-function shallowEqual(object1, object2) {
+// {{ function  to  clerar varient err }}
+ function cleaerColorErr(){
+      err1.innerHTML = "";
+ }
 
-     const keys1 = Object.keys(object1);
-     const keys2 = Object.keys(object2);
-     if (keys1.length !== keys2.length) {
-       return false;
-     }
-     for (let key of keys1) {
-       if (object1[key] !== object2[key]) {
-         return false;
-       }
-     }
-     return true;
+ // {{ function to clear the main error of the  full form }}
+ function clearMainErr(){
+      err2.innerHTML = "";
+ }
+
+ function colorFix(){
+ var proColor = document.getElementById("ProductColor").value;
+ console.log(proColor)
+   if(proColor == ""){
+        document.getElementById('colorErr').innerHTML = "Please Select One Color"
+        return;
    }
-  var clearPreview = true; 
 
-function addSizeVarient (which){
- var addCheker = true;
- var addCheker2 = true;
- 
-if(clearPreview){ document.getElementById("previewSize1").innerHTML =''
-document.getElementById("previewSize2").innerHTML =''}
-var clearPreview = false;
+   if(colorArray.includes(proColor)) {
+     document.getElementById('colorErr').innerHTML = "This Color is Already Exists"
+     return;
 
-     var proSize = document.getElementById("proSize"+which);
-     var proQuantity = document.getElementById('proQuantity' + which);
-     var proPrice = document.getElementById('proPrice' + which);
-    if(proQuantity.value !==""  && proSize.value !== ""  && proPrice.value != ""){
+   }
 
-          var data = {
-               productSize:proSize.value,
-               productQuantity:proQuantity.value,
-               productPrice:proPrice.value
-          };
-          if(which == 1){
-               for(var i =0 ;i<sizeVarientArray1.length;i++){
-                    if(shallowEqual(data, sizeVarientArray1[i])){
-                       swal.fire('Seriously', " same stock left ");
-                         addCheker = false;
-                         break;
-                    }else{
-                         addCheker = true;
-                    }
-                    
-               }
-               if(addCheker){
-               sizeVarientArray1.push(data);
-               document.getElementById("previewSize1").innerHTML += "size : "+ proSize.value +" - " +"Quantity : " + proQuantity.value + " - " + "Price :  ₹ " + proPrice.value + " <-||-> "
-               }
-          }else{
+   document.getElementById('colorErr').innerHTML = ""
+   colorArray.push(proColor)
 
 
-               for(var i =0 ;i<sizeVarientArray2.length;i++){
-                    if(shallowEqual(data, sizeVarientArray2[i])){
-                       swal.fire('Seriously', " same stock left ");
-                         addCheker2 = false;
-                         break;
-                    }else{
-                         addCheker2 = true;
-                    }
-                    
-               }
-               if(addCheker2){
-               sizeVarientArray2.push(data);
-               document.getElementById("previewSize2").innerHTML += "size : "+ proSize.value +" - " +"Quantity : " + proQuantity.value + " - " + "Price :  ₹ " + proPrice.value + " <-||-> "
-               }
-
-          }
-    }else{
-         document.getElementById("sizeVarientError"+which).innerHTML = "Please Keep All There Fields Fill";
-    }
-
-}
-//   end of the  size wise  array to the product list  //
-
-
-function clearEroorAddSizeVarient(which){
-     document.getElementById("sizeVarientError"+which).innerHTML = ""
-}
-
-function cleaerColorErr(id){
-     document.getElementById("colorErr"+id).innerHTML = ""
-}
-
-
-// start of the the insert of varient array 
-
-function addVarent(id){
-      // validation of the  color field;
-     if(document.getElementById('colorSelector'+id).value == ""){
-         document.getElementById("colorErr"+id).innerHTML = "Please Select One Color";
-         return;
+   let newPre = `<a class="shadow" style=" background-color:${proColor}; color:white">${proColor}</a>`;
+   document.getElementById('funcPreColr').innerHTML += newPre;
+   const Toast = Swal.mixin({
+     toast: true,
+     position: 'top-end',
+     showConfirmButton: false,
+     timer: 2000,
+     timerProgressBar: true,
+     didOpen: (toast) => {
+       toast.addEventListener('mouseenter', Swal.stopTimer)
+       toast.addEventListener('mouseleave', Swal.resumeTimer)
      }
-//     vlaidateion of  the size vise array
-     if(id== 1){
-          if(sizeVarientArray1.length <= 0 ){document.getElementById("sizeVarientError"+id).innerHTML = "You Have To Enter Atlest One size Vice Varient" ; return}
-         
-     } else{
-          if(sizeVarientArray2.length <= 0 ){document.getElementById("sizeVarientError"+id).innerHTML = "You Have To Enter Atlest One size Vice Varient" ; return}
-
-     }
-    
-     if(id== 1 && imageArray1.length <= 0) {swal.fire("Sorry " , "!you have to upload atleast one image of that product")  ; return}
-     if(id== 2 && imageArray2.length <= 0) {swal.fire("Sorry " , "!you have to upload atleast one image of that product")  ; return}
-
-     if( document.getElementById('colorSelector1').value ==  document.getElementById('colorSelector2').value){swal.fire("Sorry !" ,"The Color Varient You Already Added") ; return};
-
-      if(id == 1){
-          varientSampleData1 = {
-               color: document.getElementById('colorSelector'+id).value,
-               image: imageArray1 ,
-               sizeVarient: sizeVarientArray1
-          };
-      }else{
-          varientSampleData2 = {
-               color: document.getElementById('colorSelector'+id).value,
-               image: imageArray2 ,
-               sizeVarient: sizeVarientArray2
-          };
-      }
-       
-      addVarientChecker = true;
-
-    
-}
-
-var previewCheckerTags = true;
-function prevewOfSearchTags(){
-
-     var preview = document.getElementById("previewOfTags");
-     var searchTag = document.getElementById('searchTags').value
-
-     if(previewCheckerTags)preview.innerHTML = "";
-     previewCheckerTags = false;
+   })
    
+   Toast.fire({
+     icon: 'success',
+     title: ' Color Varient  Added SuccesFully'
+   })
 
-     if(searchTag ==  "")return;
-     if(speacility.includes(searchTag)){swal.fire("Seriously " , "! The Search Tag is Alreday Exists "); return};
-     speacility.push(searchTag);
-     var a = document.createElement('a');
-     a.innerHTML = searchTag
-     preview.appendChild(a);
-     var searchTag = document.getElementById('searchTags').value =""    
-}
+ }
+//  if(  price == "" || quantity == "" || proSize == ""){
+//      err1.innerHTML = "Please Fill The All Input Fields"
+//      return ;
+//   }
 
-// cler button for clear the form//
-function cancelButoonToVarientForm(id , start,end) {
-     document.getElementById('previewSize'+id).innerHTML = 'Preview';
-     $("#varientForm"+id).trigger('reset');
-     document.getElementById('colorPreview'+id).style.backgroundColor = "white";
-     if(id==1 ){imageArray1 = []; sizeVarientArray1 = [] ; varientSampleData1 = null  }
-     else{imageArray2 = [] ;  sizeVarientArray2 = [] ; varientSampleData2 = null }
-     for(var i =start ;i<=end ;i++){
-          $('#chekPreview'+i).attr('src', "");
-     }
-}
-
-// {{ for clear the  main error}}
-function clearMainError(e){
-  
-     err.innerHTML = ""
-
-}
+// 
 
 
-function submitData(){
 
-     //{{ delclaring the form fields }};
+// {{function to add varient }}
+function  addVarient (){
+     var sizeErr =  document.getElementById('sizeErr');
+
+
+           // {{ varient wise }}
+          var proSize = document.getElementById('productSize').value;
+
+         
+     // {{ validation of the varients }};
+   if(proSize == ""){
+     sizeErr.innerHTML = "Please Select One Size ";
+      return ;
+   }
+    
+          // {{ check the  varient is exists now }};
+          if(varientArray.length   !== 0 ) {
+              if(varientArray.includes(proSize)){
+               sizeErr.innerHTML = "This Size is already Exists"
+               return;
+              }
+          }
+
+          sizeErr.innerHTML = ""
+
+          // {{ pushing the details of the varient into an array }}
+
+          varientArray.push(proSize);
+
+
+          const Toast = Swal.mixin({
+               toast: true,
+               position: 'top-end',
+               showConfirmButton: false,
+               timer: 2000,
+               timerProgressBar: true,
+               didOpen: (toast) => {
+                 toast.addEventListener('mouseenter', Swal.stopTimer)
+                 toast.addEventListener('mouseleave', Swal.resumeTimer)
+               }
+             })
+             
+             Toast.fire({
+               icon: 'success',
+               title: 'Varient Detail Added SuccesFully'
+             })
+             document.getElementById('productSize').value = ""
+
+             //{{ adding to the preview  div  }}
+
+             var prevewPack = `
+               <a>  ${proSize} </a>  
+             `;
+             document.getElementById('sizePreview').innerHTML += prevewPack;
+}   
+
+//{{ validation of the main form }}
+
+function subminManiForm(){
+     // {{initilising the all inputfields}}
+     var quantity = document.getElementById('quanitity').value;
+    var price = document.getElementById('productPrice').value;
      var productName = document.getElementById('productName').value;
-     var brand = document.getElementById('brandName').value;
+     var brandName = document.getElementById('brandName').value;
      var catagory = document.getElementById('mainCat').value;
      var subCatagory = document.getElementById('subCatSel').value;
-     var discription = document.getElementById('input_14').value;
+     var discription = document.getElementById("discription").value;
 
-     //{{ validation }}     
-     if(productName == ""){err.innerHTML = "Plese Enter A Product Name" ; return};
-     if(brand == ""){err.innerHTML = "Plese Enter A brand Name" ; return};
-     if(catagory == ""){err.innerHTML = "Plese Select catagory " ; return};
-     if(subCatagory == ""){err.innerHTML = "Plese Select A Sub Catagory " ; return};
-     if(discription == ""){err.innerHTML = "Plese Enter some more data   in the discription " ; return};
+     //{{ validation of all Main fiels are  empth }};
 
-     //{{ to Clear the all Error}};
-     if(productName != "" && brand != "" &&  catagory != "" && subCatagory != "" && discription != ""){clearMainError()}; 
-
-
-
-     // {{ pushing the varients into the vareint array }};
-    if(varientSampleData2 == null &&  varientSampleData1 == null){swal.fire("Sorry !" ,"You have to Add Atleast One varient") ; return}
-
-    if(varientSampleData1 != null)varientArray.push(varientSampleData1);
-    if(varientSampleData2 != null)varientArray.push(varientSampleData2);
-
-  ;
-    // creating the basice structur of the data;
-    var modelData = {
-         varient : JSON.stringify(varientArray),
-         productName : productName,
-         brand : brand,
-         catagory : catagory,
-         subCatagory : subCatagory,
-         discription : discription,
-    }
-
-document.getElementById('id01').style.display = "block";
-    $.ajax({
-     url: '/admin/products/addProduct',
-     data: modelData,
-     method: "post",
-     success:(result)=>{
-                document.getElementById('id01').style.display = "none";
-                if(result.status == true){
-                    Swal.fire(
-                         'Success',
-                         'Product Added success-fully ',
-                         'success'
-                       ).then(()=>{
-                            location.href = "admin/products";
-                       })
-                }else{
-                    Swal.fire({
-                         icon: 'error',
-                         title: 'Oops...',
-                         text: 'Something went wrong!',
-                       }).then(()=>{
-                            location.reload()
-                       })
-                }
-     
+     if(quantity == "" || price == "" || productName == "" || brandName == "" || catagory == "" || subCatagory == "" || discription == ""){
+          err2.innerHTML = "please fill  The All fields ";
+          return;
      }
-    })
+     err2.innerHTML = "";
+     // {{ upload 3 images must }}
+     if(imageArray1.length != 3){
+          err2.innerHTML = "You Have to upload 3 picture of the product ";
+          return ;
+     }
+     err2.innerHTML = "";
+
+          // {{ enter atleast on varient }};
+
+          if(varientArray.length  <= 0 ){
+               err2.innerHTML = "You Have to Enter Atleast One Varient  of Size";
+               return;
+          }
+          
+     err2.innerHTML = "";
+
+     if(colorArray.length <= 0){err2.innerHTML = "You Have to Select atleast One Color" ; return ;}
+     err2.innerHTML = "";
+
+
+     // {{ end of the validation of the form}}
+
+     var PackProduct = {
+          productName : productName,
+          brand : brandName,
+          catagory : catagory,
+          subCatagory : subCatagory,
+          image : JSON.stringify(imageArray1),
+          discription : discription ,
+          size :  JSON.stringify(varientArray),
+          color : JSON.stringify(colorArray),
+          price : parseInt(price),
+          quantity : parseInt(quantity),
+     };
+
+     // {{ sending the details to the backend}};
+
+     $.ajax({
+          url: '/admin/products/addProduct',
+          data: PackProduct,
+          method:'post',
+          success:(result)=>{
+               if(result.status == true){
+                    Swal.fire(
+                         'Success!',
+                         'Product Added SuccessFully',
+                         'success'
+                       )
+               }else{
+                    Swal.fire(
+                         'Sorry!',
+                         result.status,
+                         'error'
+                       )
+               }
+          }
+     })
+
+
+
 }

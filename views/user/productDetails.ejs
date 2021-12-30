@@ -270,6 +270,7 @@ div.scrollmenu a:hover {
       }
      
     </style>
+   
     <div class="card-wrapper " style="display: flex">
       <div class="card shadow">
         <!-- card left -->
@@ -326,8 +327,10 @@ div.scrollmenu a:hover {
           </div>
 
           <div class="product-price">
-            <p class="last-price">Old Price: <span>$257.00</span></p>
-            <p class="new-price">New Price: <span>₹<%=product.price%> .00 (5%)</span></p>
+            <% if(product.offerPrice !== null){ %> 
+            <p class="last-price">Old Price: <span>₹<%=product.price%> .00</span></p>
+            <% } %> 
+            <p class="new-price">New Price: <span>₹<%= product.offerPrice !== null ? product.offerPrice : product.price%> .00 (<%=product.offerPercentage  %>%)</span></p>
           </div>
 
           <div class="product-detail">
@@ -357,7 +360,7 @@ div.scrollmenu a:hover {
      <a style="background-color: gold; cursor: pointer;" href="">Colors</a>
      <% for(var i =0 ;i< product.color.length ; i++){%> 
 
-     <a id="color<%=i%>" class="shadow" style="background-color: white; cursor: pointer;" href="#home"><input style="width:30px  "type="radio" name="optradio2"  onchange="colorConfirm('<%=product.color[i]%>' , '<%=product._id%>')" ><b><%=product.color[i]%></b> </a>
+     <a id="color<%=i%>" class="shadow" style="background-color: white; cursor: pointer;" href="#home"><input style="width:30px  "type="radio" name="optradio2"  id="color<%=i%>"  onchange="colorConfirm('<%=product.color[i]%>' , '<%=product._id%>')" ><label for="color<%=i%>" ><b><%=product.color[i]%></b></label> </a>
      <% } %> 
    </div>
             <!-- end of the table -->
@@ -368,7 +371,7 @@ div.scrollmenu a:hover {
             <button id="addToCart" type="button" class="btn" onclick="addToCart('<%=product._id%>')">
              <span id="addToCartText"> Add to Cart </span> <i class="fas fa-shopping-cart"></i>
             </button>
-            <button type="button" class="btn">Buy Now </button>
+            <!-- <button type="button" class="btn">Buy Now </button> -->
           <p  style="color: blue;"><b id="info" ></b></p>
 
           </div>
@@ -405,6 +408,18 @@ const makeUniqueId = function(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2).trim();
 }
 
+function getCartCount(){
+  $.ajax({
+    url:"/getCartCount",
+    data:{id: localStorage.getItem('userId')},
+    method:'post',
+    success :(result)=>{
+      document.getElementById('badge').innerHTML = result.count;
+    }
+  })
+}
+
+
 async function   addToCart(id){
   // {{validation to size and color }};
     if(color ==  undefined){info.innerHTML = "Please Selct One Color" ;return;}
@@ -436,18 +451,20 @@ async function   addToCart(id){
       data : product,
       method :"post",
       success:(result)=>{
+        getCartCount();
         if(result.status == false){
           var localUserId = localStorage.getItem('userId');
           localUserId  ="http://localhost:3000/cart?userId="+localUserId;
           location.href = localUserId;
         }
         else if(result.status == true){
+
           document.getElementById("addToCartText").innerHTML= " Go To Cart "
                   const Toast = Swal.mixin({
                   toast: true,
                   position: 'bottom-end',
                   showConfirmButton: false,
-                  timer: 2000,
+                  timer: 1000,
                   timerProgressBar: true,
                   didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer)

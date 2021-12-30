@@ -13,13 +13,10 @@ input[type=number] {
   width: 50%;
   padding-bottom: 1%;
 }
-#allTimer{
-  display: none;
-}
 
 #allTimer p {
   margin: 1vh;
-  font-size: 20px;
+  font-size: 16px !important;
   color: rgb(44, 3, 90);
 
 }
@@ -165,16 +162,7 @@ display: none;
 #hide-opt{ 
   display: none;
 }
-.timer{
-  display: none;
-  text-align: center;
-  width: 10vw;
-  background-color: red;
-  padding: 1rem;
-  color: white;
-  font-size: 20px;
-   font-weight: 900;
-}
+
 .timing{
   text-align: center;
 }

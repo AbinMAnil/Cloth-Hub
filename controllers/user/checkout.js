@@ -12,25 +12,39 @@ const orderModel = require('../../model/admin/orderSchama')
 
 
  function generateUniqueId(){
+
      return Date.now().toString(36) + Math.random().toString(36).substr(2);
  }
 
  async  function addAddress(address , id){
      var toatalAddressCount = await userModel.findOne({_id: objectId(id)});
-     if(toatalAddressCount.address.length >= 4 ) orderModel.updateOne(
+ 
+
+     if(toatalAddressCount.address.length > 3 ) { var result = await  userModel.updateOne(
 
           {
                _id: objectId(id)
           },
           {
-              $unset : {
-               'address.1' : 1
-              }
+             $pop:{
+                  address : -1
+             }
           }
-     )
-     
-     // save the address into users address array;
-     var addressUpdate  = await userModel.updateOne(
+     ).then(async ()=>{
+          var addressUpdate  =  await  userModel.updateOne(
+               {
+                    _id : objectId(id),
+               },
+               {
+                    $addToSet:{
+                         address:address
+                    }
+               }
+          
+          ) 
+     })
+}else{
+     var addressUpdate  =  await  userModel.updateOne(
           {
                _id : objectId(id),
           },
@@ -41,6 +55,9 @@ const orderModel = require('../../model/admin/orderSchama')
           }
      
      ) 
+}
+     // save the address into users address array;
+     
  }
   
 //  function to clear cart of the ordered users 
@@ -80,39 +97,52 @@ async function canelProductQuantityUpdate(product){
 module.exports = {
      // to show the checkout page 
      showCheckOut : async (req, res)=>{
+
           if(req.session.uid){
-              
+               console.log(req.query.couponeCode);
+               var result = await cartController.getCartForCheckOut(req.session.uid);
+             if(result.product.length >= 1){
           res.render('user/checkOut' , {logStatus: req.session.loginStatus,
                catagory: await catagory.getAllCatagory(),
-               
-               product : await cartController.getCartForCheckOut(req.session.uid),
+               product : result,
                user : await userModel.findOne({_id : objectId(req.session.uid)})
           }
 
                );
+
+
+                  }else{
+                       res.redirect('/cart')
+                  }     
           }
           else{
                res.redirect('/signup')
           }
      },
-
      placeOrder : async (req,res)=>{
-         var userId = req.body.userId;
+         
+
+          
+         var userId = req.session.uid
          var paymentMethod = req.body.paymentMethod;
          var saveAddress =req.body.saveAddress ;
          delete req.body['saveAddress'];
-         delete req.body['userId']
          delete req.body['paymentMethod']
           var cartProduct = await cartController.getCartForCheckOut(userId);
+          if(cartProduct.grandTotal > 1 ){
+               var lastAmount ; 
+               if(req.body.amount != undefined) {lastAmount = parseInt(req.body.amount)}
+               else{
+                    lastAmount = parseInt(cartProduct.grandTotal)
+               }
          try{
           var confirmOrder = orderModel({
                userId : objectId(userId),
                product: cartProduct.product,
-               totalPrice : parseInt(cartProduct.grandTotal),
+               totalPrice :lastAmount ,
                paymentMethod : paymentMethod,
                address : req.body ,
                status : ['pending']
-          
           });
           var result = await confirmOrder.save();
          
@@ -139,10 +169,10 @@ module.exports = {
 
           // to save the  address;
           if(saveAddress){
-               req.body.addressUniqueId =  generateUniqueId()
+               // req.body.addressUniqueId =  generateUniqueId()
                addAddress(req.body, userId);
           }
-          res.json({status : true});
+          res.json({status : result._id , totalPrice :  parseInt(lastAmount) , paymentMethod : paymentMethod});
 
          // 
          }catch(err){
@@ -150,6 +180,9 @@ module.exports = {
               
               console.log(err);
          }
+     }else{
+          res.json({status : false})
+     }
 
      }, 
 
@@ -157,7 +190,7 @@ module.exports = {
           
           res.render("user/orderConfirmed" ,{logStatus: req.session.loginStatus,
                catagory: await catagory.getAllCatagory() , 
-               orders : await  orderModel.find({userId : req.session.uid})
+               orders : await  orderModel.find({userId : req.session.uid}).sort( {'createdAt' : -1})
           });
      },
 
@@ -175,14 +208,44 @@ module.exports = {
                }
           );
           var orderProduct = await orderModel.findOne({_id: objectId(req.body.orderId)});
-
-
-
           canelProductQuantityUpdate(orderProduct.product)
           if(result.modifiedCount == 1){
                res.json({status : true});
           }
-     }
+     },
+     getAddressOfUser : async (req,res)=>{
+
+          console.log(req.body.id);
+          var result = await userModel.aggregate([
+
+               {$match:{_id  :  objectId(req.session.uid)}} ,
+               {$unwind: "$address"},
+               {$match: {"address._id" :objectId(req.body.id.trim()) }},
+               {$project:{"address" : 1 , _id :0}}
+               
+               ])
+         res.json(result[0])
+          
+     },
+
+     saveAddress : async (req,res)=>{
+          addAddress(req.body , req.session.uid)
+          res.json({status : true});
+     },
+     deleteAddress :async (req,res)=>{
+          console.log(req.body.id)
+          var result = await userModel.updateOne(
+               {_id :objectId(req.session.uid)},
+
+               {$pull: {'address' : {_id : objectId(req.body.id)} }  }
+          );
+          var addressCount = await userModel.findOne({_id : objectId(req.session.uid)});
+          if(result.modifiedCount)res.json({status :true  , address : addressCount.address.length});
+          
+     },
+
+   
+
 
      
 }

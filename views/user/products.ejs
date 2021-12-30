@@ -1,12 +1,12 @@
 
      <%- include('./partials/headers')%> 
      <%-include('./partials/!docType')%>
+     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
   <style>
     * {
     box-sizing: border-box
 }
-
 
 
 
@@ -356,12 +356,13 @@ h6 {
    display: none ;
 }
 div.scrollmenu {
-    text-align: start;
+    text-align: center;
     width: 100%;
     color: white;
   background-color: rgb(255, 255, 255);
   overflow: auto;
   white-space: nowrap;
+
 }
 
 div.scrollmenu a {
@@ -373,20 +374,108 @@ div.scrollmenu a {
   text-decoration: none;
 }
 
-div.scrollmenu a:hover {
-  background-color: rgb(233, 233, 233);
-}
+
 
 @media (min-width: 1200px){
      .card{
           width: 250px;
      }
 }
+.red{
+    background-color: red;
+}
+.black{
+    background-color: black;
+}.green{
+    background-color: green;
+}.blue{
+    background-color: blue;
+}.violet{
+    background-color: violet;
+}.yellow{
+    background-color: yellow;
+}.brown{
+    background-color: brown;
+}
+#addTowishList{
+    display: none;
+}
 
   </style>
+
+
+<% if(result.product.length <=  0 ){ %> 
+<style>
+    @import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+
+.mt-100 {
+    margin-top: 100px
+}
+
+.card {
+    margin-bottom: 30px;
+    border: 0;
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    letter-spacing: .5px;
+    border-radius: 8px;
+    -webkit-box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
+    box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05)
+}
+
+.card .card-header {
+    background-color: #fff;
+    border-bottom: none;
+    padding: 24px;
+    border-bottom: 1px solid #f6f7fb;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px
+}
+
+.card-header:first-child {
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
+}
+
+.card .card-body {
+    padding: 30px;
+    background-color: transparent
+}
+
+.btn-primary,
+.btn-primary.disabled,
+.btn-primary:disabled {
+    background-color: #4466f2 !important;
+    border-color: #4466f2 !important
+}
+
+.showAddtoCart{
+    display: block !important;
+}
+
+
+</style>
+    <div class="container-fluid mt-50">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="width: 100%;">
+                    <div class="card-header">
+                        
+                    </div>
+                    <div class="card-body cart">
+                        <div class="col-sm-12 empty-cart-cls text-center"> <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                            <h3><strong>Sorry No Product Fount</strong></h3>
+                            <h4>Dont Stop Continue shoping  🙂</h4> <a href="/product" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }else{ %> 
   <section style="padding: 0;">
 
-<div  class="fil m-3 mr-auto" style="display: flex; justify-content: right" > <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="true" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
+<div  id="filterBtn"  class="fil m-3 mr-auto" style=" margin-top: 0px !important;" > <button  onclick="showFilter()"  class="btn btn-outline-warning" id="" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="true" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
 </div>
 <div id="mobile-filter">
   <p class="pl-sm-0 pl-2"> Home | <b>All Breads</b></p>
@@ -462,46 +551,48 @@ div.scrollmenu a:hover {
       </div>
       
       <div class="row">
+          
            <%for(var i = 0 ; i<result.product.length ;i++){  %> 
              
               
-               <div   class="  col-lg-4  col-md-4 col-6  card1" style=" gap: 1rem; z-index: 1;">
-                    <a href="/product/productDetails?id=<%=result.product[i]._id  %> " style="text-decoration: none;">
-                    <div class=" shadow card mt-4 mb-5" > <img class="card-img-top" style=" border-radius: 0px; height: 20vh; width: 100%; object-fit: contain;" src="<%=result.product[i].image[0].imageUrl%>">
+               <div onmouseleave="$('#addTocartBtn<%=i%>').fadeOut(500)"   class="  col-lg-4  col-md-4 col-6  card1" style=" gap: 1rem; z-index: 1; position: relative;">
+
+                <% if(result.product[i].offerPercentage !== null){ %> 
+                <i class="fas fa-certificate" style=" -webkit-text-stroke: 1px rgb(242, 255, 0);color: rgba(0, 0, 0, 0.453); font-size: 45px ; position: absolute; z-index: 999; left:7%; top: 6%;"><span style="font-size: 18px; -webkit-text-stroke:0px ; color: white; position: absolute; left: 18%; top: 22%;"><%=result.product[i].offerPercentage%>%</span></i>
+                        <% } %> 
+
+                    <div class=" shadow card mt-4 mb-5">
+                        <i class=" fas fa-heart"  id="addTowishList"  onclick="addToWihslist('<%=result.product[i]._id%>')" ></i> 
+                        <button  onclick="addToWihslist('<%=result.product[i]._id%>')"    id="addTocartBtn<%=i%>"  class="btn btn-outline-light" style="position: absolute; left: 23%; top: 54%; display: none; z-index: 9999;">ADD TO wishlist  <i class="text-danger fas fa-heart"></i> </button>
+                        <a href="/product/productDetails?id=<%=result.product[i]._id  %> " style="text-decoration: none;">
+                         <img onmouseenter="$('#addTocartBtn<%=i%>').fadeIn(500)"   class="card-img-top" style=" border-radius: 0px; height: 28vh; width: 100%; object-fit: contain;" src="<%=result.product[i].image[0].imageUrl%>">
                          
                          <div class=" shadow card-body" style="text-align: center; border-radius: 0px;">
                       <h5><b><%=result.product[i].productName %> </b> </h5>
                       <div class="d-flex flex-column " >
                           <div class="colors" style="display: flex; justify-content: space-evenly; overflow-x: auto;">
                             <div class="scrollmenu">
-                                <a ><h5><b style="color: black;">colors</b></h5></a>
+                                <!-- <a ><h5><b style="color: black;">colors</b></h5></a> -->
 
                               <% for(var j = 0 ; j<result.product[i].color.length ; j++){ %> 
-                                  
-                                   <a style="color: rgb(4, 4, 63);"><%=result.product[i].color[j]%></a>  
+                                
+                                   <a style=" height: 13px; width: 13px; border-radius: 50px; " class="<%=result.product[i].color[j]%>"></a>  
                                   
 
                                <% } %>
                             </div> 
                           </div>
 <!-- ----------------------------------------------------------------------------- -->
-                          <div class="colors" style=" text-align: right; display: flex; justify-content: space-evenly; overflow-x: auto;">
-                           
-                              <div class="scrollmenu">
-                                <a ><h5><b style="color: black;">size</b></h5></a>
-                              <% for(var j = 0 ; j<result.product[i].size.length ; j++){ %> 
-                                
-                                   <a style="color: rgb(4, 4, 63);"><%=result.product[i].size[j]%></a>  
-                                  
-
-                               <% } %> 
-                            </div>
-                          </div>
-
+                          
 <!-- ---------------------------------------------------------------------------- -->
                     <div class="shadow" style=" border-top: 1px solid gold; display: flex;flex-direction: row; justify-content: space-evenly; background-color: rgb(255, 255, 255);">
-                          <div class="ml-auto" style="font-size: 24px; cursor: pointer ; color: rgb(0, 99, 38);">₹ <%=result.product[i].price%> .00</i></div>
-                          <div class="ml-auto" style="font-size: 24px; cursor: pointer ; color: red;">  <i class="fas fa-heart"></i></div>
+                      <% if(result.product[i].offerPrice !== null){ %> 
+                        <div class="ml-auto" style="font-size: 15px; cursor: pointer ; color: rgb(92, 92, 92);"><strike>₹<%=result.product[i].price%>.00</strike></i></div>
+                        <div class="ml-auto price" style="font-size: 20px; cursor: pointer ; color: rgb(255, 196, 0);">₹ <%=result.product[i].offerPrice%> .00</i></div>
+                        <% }else{ %> 
+                          <div class="ml-auto" style="font-size: 15px; cursor: pointer ; color: rgb(92, 92, 92);"><strike>₹<%=result.product[i].price%>.00</strike></i></div>
+                          <div class="ml-auto price" style="font-size: 20px; cursor: pointer ; color: rgb(255, 196, 0);">₹ <%=result.product[i].price%> .00</i></div>
+                          <% } %> 
                       </div>
                       </div> 
                   </div>
@@ -516,12 +607,45 @@ div.scrollmenu a:hover {
       </div>
       </section>
     
-      <a href="#">ijilj</a>
-    <p id="notification" > </p>
+<% } %> 
 
+<style>
+    #filterBtn{
+    display: none ;
+}
+    @media screen and (max-width : 560px) {
+        #mobile-filter{
+            padding: 1rem;
+            display: none;
+        }
+        #filterBtn{
+            display: flex; justify-content: right
+        }
+        #addTowishList{
+            display: block !important;
+    position: absolute !important;
+    font-size: 25px;
+    top: 53%;
+    left: 73%;
+    color: transparent;
+    -webkit-text-stroke: 2px rgb(245, 0, 0);
 
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+}
+.price{
+    font-size: 16px !important;
+}
+    }
+    .displayBlock{
+        display:  block !important;
+    }
+</style>
+
 <script>
+
+
+function showFilter (){
+    document.getElementById('mobile-filter').classList.toggle('displayBlock')
+}
 
 
 
@@ -551,6 +675,49 @@ div.scrollmenu a:hover {
 
     })
   }
+
+  function addToWihslist(id){
+    $.ajax({
+        url:'/addToWishlist',
+        data : {id : id},
+        method :'post',
+        success :(result)=>{
+            if(result.status){
+                            const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+            })
+
+            Toast.fire({
+            icon: 'success',
+            title: 'item  added successfully'
+            })
+                        }else{
+                            Swal.fire({
+  title: 'User not logged in',
+  text: "You have to singin to for this action ",
+  icon: 'info',
+  showCancelButton: true,
+  confirmButtonColor: 'green',
+  cancelButtonColor: 'red',
+  confirmButtonText: 'Go To Signin'
+}).then((result) => {
+  if (result.isConfirmed) {
+    location.href = "/signup"
+  }
+})
+                        }
+                    }
+                })
+  }
 </script>
 
 </section>
+	

@@ -43,7 +43,24 @@ function chageQuantity(change , id , productId){
      }
 }
 
+
+function getCartCount(){
+     $.ajax({
+       url:"/getCartCount",
+       data:{id: localStorage.getItem('userId')},
+       method:'post',
+       success :(result)=>{
+         document.getElementById('badge').innerHTML = result.count;
+       }
+     })
+   }
+
 function deleteItem(varientId , productId){
+     var deleteItemPrice = parseInt(document.getElementById('price'+varientId).innerHTML)
+     var priceNow = parseInt(document.getElementById('grandTotal').innerHTML)
+     var finalPrice = priceNow - deleteItemPrice;
+    
+    
      Swal.fire({
           title: 'Are you sure?',
           text: "You won't be able to revert this!",
@@ -60,6 +77,9 @@ function deleteItem(varientId , productId){
                     data : {varientId : varientId ,userId : localStorage.getItem('userId') , productId  : productId} ,
                     method:'delete',
                     success:(result)=>{
+                         getCartCount();
+                         document.getElementById('grandTotal').innerHTML = finalPrice
+                        document.getElementById('finalPrice').innerHTML = finalPrice
                          if(result.status.process == true){
                               row.style.display = "none";
 
@@ -74,7 +94,6 @@ function deleteItem(varientId , productId){
                                      toast.addEventListener('mouseleave', Swal.resumeTimer)
                                    }
                                  })
-                                 
                                  Toast.fire({
                                    icon: 'success',
                                    title: 'Item Deleted  successfully'

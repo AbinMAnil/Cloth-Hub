@@ -4,7 +4,7 @@ const { route } = require("../../app");
 const middleWare = require("../../middleWares/userAuth");
 const  cart = require('../../controllers/user/cart')
 const checkOut = require('../../controllers/user/checkout');
-
+const rasorPay = require('../../controllers/user/razorPay');
 /*
 router to show the chekout page of the user;
 if the user is not signined it will send back to the signup page 
@@ -23,5 +23,30 @@ router.get('/orderHistory' , checkOut.showHistory)
 router to cancel order for user 
 */
 router.patch('/cancelOreder', checkOut.cancelorder)
+
+/* router to get address of the user 
+*/
+router.post('/getAddress' , checkOut.getAddressOfUser);
+
+/* router to save the address of the user
+*/
+router.post('/saveAddress', checkOut.saveAddress)
+
+
+/* router to get total amout form cart 
+*/
+router.post('/getTotalAmount' , cart.getTotalAmount);
+/*
+router to delete address 
+*/
+router.delete('/deleteAddress', checkOut.deleteAddress)
+
+/*router to create order in razor pay
+*/
+router.post('/razorPayCreateOrderId' , rasorPay.createOrder);
+
+/* router to verify the order 
+*/
+router.post('/finalVerify' , rasorPay.verifyRazorPay);
 
 module.exports = router;

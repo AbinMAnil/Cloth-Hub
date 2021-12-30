@@ -1,5 +1,11 @@
 <%- include('./partials/headers')%> 
 <%-include('./partials/!docType')%>
+<style>
+     .green{
+          background-color: seagreen;
+     }
+     
+</style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="/stylesheets/user/orderHistory.css">
 <% if(orders == null || orders.length <= 0){ %> 
@@ -22,8 +28,8 @@
      <% }else{ %> 
 <div class="container" onload="truncate()">
      <h3>Order History</h3>
-     <% console.log(orders.length) %> 
-     <% for(var m = 0 ; m< orders.length ;m++){ %> 
+     
+     <% for(var m = 0 ; m  < orders.length ;m++){ %> 
      <article class="card" id="infoSatatus<%=orders[m]._id%>">
           <% var x  , y = false; %> 
           <% if(orders[m].status.includes("Cancel"))  y = true %> 
@@ -63,7 +69,7 @@
                <% if(orders[m].status[orders[m].status.length -1] == 'Cancel' ){  x = true ; %>
                <div class="step <%= x == true ?'cancel' : ""  %> " > <span class="icon"><i class="fas fa-skull"></i></span> <span class="text">Cancellend</span> </div>
                <% } %> 
-               
+                    
            </div>
 
           
@@ -74,11 +80,13 @@
              <div class="scrollmenu">
                <% for(var i = 0 ; i< orders[m].product.length ;i++){ %> 
                     <a class="shadow">
+                         <% console.log("jfukkkkkkkk--------------------") %> 
+                         <% console.log(orders[m].product[0].productArray[0]) %> 
                          <li class="col-md-4" style="list-style: none;">
                               <figure class="itemside mb-3">
-                                  <div class="aside"><img src="<%=orders[m].product[i].productArray.image[0].imageUrl  %>" class="img-sm border"></div>
+                                  <div class="aside"><img src="<%=orders[m].product[0].productArray[0].image[0].imageUrl%>" class="img-sm border"></div>
                                   <figcaption class="info " style="text-align: start;">
-                                      <p class="title"><b> <%=orders[m].product[i].productArray.productName %> </b>   <br> <span class="text-info"> ( <%=orders[m].product[i].color %> ) </p> 
+                                      <p class="title"><b> <%=orders[0].product[0].productArray[0].productName %> </b>   <br> <span class="text-info"> ( <%=orders[m].product[i].color %> ) </p> 
                                       <span class="text-muted"><%=orders[m].product[i].size %> </span>
                                       <span class="text-danger" style="margin-left: 10%;">Q : <%=orders[m].product[i].quantity %> </span>
                                       <br>
@@ -97,16 +105,18 @@
                <div class="allDetails shadow d-flex " style="justify-content: space-evenly; width: 100%; ">
                   
                     <div class="d-flex p-2" style="flex-direction: column; " >
-                         <p>Order Id</p>
-                         <p> Total Price</p>
+                         <p>Total Price</p>
+                        
+                         <p> address and Details</p>
                     </div>
                     <div class="d-flex p-2" style="flex-direction: column;">
-                         <p data-toggle="tooltip" title=" <%=orders[m]._id  %> " id="orderId" class="text-primary longString"  ><%=orders[m]._id  %> </p>
-                         <p> ₹  <%=orders[m].totalPrice  %> .00 <p>
+                         <p data-toggle="tooltip" title=" <%=orders[m]._id  %> " id="" class="text-success longString" >  ₹ <%=orders[m].totalPrice  %>  .00</p>
+                         <p style="color: rgb(0, 255, 72); cursor: pointer ;" onclick="showOrderHistory('<%=orders[m]._id%>')" > <button class="btn btn-outline-warning">show</button> <p>
                     </div>
                </div>
-
-               <button   <%= y == true ? "disabled" : "" %>  onclick="cancelOrder('<%=orders[m]._id  %>')" id="cancelBtn<%=orders[m]._id%>" class="btn btn-warning cancel-btn" data-abc="true"> <i class="fa fa-chevron-left"></i>  <%= y == true ? "Order Cancelled" : " Cancel orders " %>     </button>
+               <% var succ  = false  %> 
+               <% if (orders[m].status.includes("Completed")  )succ = true; %> 
+               <button   <%= y == true ? "disabled" : "" %> <%= succ ? "disabled" : "" %>   onclick="cancelOrder('<%=orders[m]._id  %>')" id="cancelBtn<%=orders[m]._id%>" class="btn  cancel-btn <%= succ ? "btn-success   " : "btn-warning" %>  <%= y == true ? "btn-danger" : "" %> " data-abc="true"> <i class="fa fa-chevron-left"></i>  <%= y == true ? "Order Cancelled" : "" %>     <%= succ ? "SuccessFull" : "" %>  <%= succ== false && y == false? 'Cancel Order' : ""  %>     </button>
                </div>
 
 
@@ -122,15 +132,41 @@
  </div>
  <% } %> 
 
+
+
+
+<div class="w3-container">
+   
+     <div id="id01" class="w3-modal" style="z-index: 9999;">
+       <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+          <center class="p-3"><h4>Orderd Address</h4></center>
+          <table class="table table-borderless">
+              
+               <tbody id="tableBodyAddress">
+                 
+                
+                
+               </tbody>
+             </table>
+       
+         <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
+           <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Back</button>
+         </div>
+   
+       </div>
+     </div>
+   </div>
+           
+
 <script>
 
 $( document ).ready(function() {
     
-var name = document.getElementsByClassName('longString');
-for(var i = 0 ;i< name.length ;i++){
-     var shortname =   name[i].innerHTML.substring(0, 8) + " ...";
-     name[i].innerHTML = shortname;
-}
+// var name = document.getElementsByClassName('longString');
+// for(var i = 0 ;i< name.length ;i++){
+//      var shortname =   name[i].innerHTML.substring(0, 8) + " ...";
+//      name[i].innerHTML = shortname;
+// }
   
     
      $('[data-toggle="tooltip"]').tooltip();   
@@ -182,6 +218,88 @@ function cancelOrder(id){
     })
   }
 })
+}
+
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+
+function showOrderHistory(id){
+   
+     $.ajax({
+     url: '/admin/orders/getOrder',
+    data :{id : id},
+    method : "post",
+    success :(result)=>{
+
+         var tableBody = `
+         <tr>
+                   <th scope="row"></th>
+                   <td colspan="2">First Name</td>
+                   <td>${result.result.firstName}</td>
+                 </tr>
+
+                 <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Second Name</td>
+                    <td>${result.result.secondeName}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Phone number</td>
+                    <td>${result.result.phone}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Email</td>
+                    <td>${result.result.email}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Address</td>
+                    <td>${result.result.address}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Land Mark</td>
+                    <td>${result.result.landMark}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Postal Code</td>
+                    <td>${result.result.poatalCode}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">city</td>
+                    <td>poatalCode</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row"></th>
+                    <td colspan="2">Order Id</td>
+                    <td>${id}</td>
+                  </tr>
+         `
+         document.getElementById('tableBodyAddress').innerHTML = tableBody ;
+         document.getElementById("id01").style.display = 'block';
+    }
+
+
+     })
 }
 
 

@@ -3,11 +3,13 @@ const router =  express.Router();
 const fs = require("fs");
 const catagory = require('../../controllers/admin/adminCatagory');
 const product = require('../../controllers/admin/adminProduct')
+const offerModel = require("../../model/admin/offer");
+
 
 //RENDERING THE PRODUCT- LIST PAGE;
 router.get('/',async (req,res)=>{
      if(! req.body.skip) req.body.skip = 0;
-     res.render("admin/productListAdmin" , {data : await product.getProduct(req.body.skip)});
+     res.render("admin/productListAdmin" , {data : await product.getProduct(req.body.skip) , offer : await offerModel.find() });
 })
 
 //RENDERIN  THE PRODUCT - ADDING PAGE ;

@@ -154,18 +154,25 @@ function getUserCartProducts(userId, db) {
           as: "productArray",
         },
       },
-      {
-        $unwind: "$productArray",
-      },
-      {
-        //  calculating the total price of single products;
-        $addFields: {
-          totalPrice: {
-            $multiply: ["$productArray.price", "$quantity"],
-          },
-        },
-      },
+      
     ]);
+    // for loop to find the toal of the product 
+    for(var i = 0 ;  i < result.length ; i++){
+      //to checke the product has an offer ;
+      if(result[i].productArray[0].offerPrice !== null){
+        // offer applied product 
+        var totoalAmout = result[i].quantity *  result[i].productArray[0].offerPrice;
+      
+        result[i].totalPrice = totoalAmout;
+
+      }else{
+        var totoalAmout = result[i].quantity *  result[i].productArray[0].price;
+      
+        result[i].totalPrice = totoalAmout;
+      }
+    }
+  
+    
 
     var product = {
       grandTotal: await calculatTheAllTotal(result),
@@ -279,12 +286,13 @@ module.exports = {
       // make a proper cart to the user
       if ((await cart.findOne({ userId: req.session.uid })) == null) {
         // user dosn't have an cart in gust user;
-        res.json({ status: await insertData(cart, req.body, req.session.uid) });
+        res.json({ status: await insertData(cart, req.body, req.session.uid) , product : await cart.findOne({userId : userId}) });
       } else {
         // user already have an cart in gust user
 
         res.json({
           status: await isUserHaveTheProduct(cart, req.body, req.session.uid),
+         
         });
       }
     } else {
@@ -305,6 +313,7 @@ module.exports = {
             req.body,
             req.body.userId
           ),
+          
         });
       }
     }
@@ -349,10 +358,12 @@ module.exports = {
     if (req.session.uid)
       res.json({
         status: await deleteItem(cart, varientId, req.session.uid, productId),
+       
       });
     else {
       res.json({
         status: await deleteItem(gustCart, varientId, userId, productId),
+       
       });
     }
   },
@@ -384,7 +395,7 @@ module.exports = {
                   }
                 }
               )
-              console.log(result);
+             
             }else{
               // user dosnt havea an account in cart;
                 // console.log(gustUserItem);
@@ -395,7 +406,10 @@ module.exports = {
                 var careateNewCart = cart(packData);
                  careateNewCart.save();
 
-            }
+            };
+
+            var clearGustCatrt = await gustCart.remove({userId : gustUserId})
+            console.log(clearGustCatrt);
             
             
   },
@@ -404,5 +418,13 @@ module.exports = {
     return new Promise(async (resolve , reject)=>{
         resolve ( await getUserCartProducts(id , cart));
     })
+  },
+  
+  getTotalAmount :async (req,res)=>{
+    console.log('==================iam in the total amount field');
+    var result = await getUserCartProducts(req.session.uid , cart);
+    res.json({amount : result.grandTotal});
   }
+
+  
 };

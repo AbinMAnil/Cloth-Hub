@@ -316,7 +316,7 @@
 
 
 function editProudct(id){
-
+console.log(product.price)
 
      var productName = document.getElementById('productName');
      var brandName = document.getElementById('brandName');
@@ -348,7 +348,8 @@ function editProudct(id){
                 option.innerHTML = data.porduct.catagory ;
                catagory.appendChild(option);
 
-
+            document.getElementById('productPrice').value = parseInt(data.porduct.price);
+            document.getElementById('quanitity').value = parseInt(data.porduct.quantity);
 
                for(var i = 0 ;i<data.catagory.length;i++){
                     if(data.porduct.catagory != data.catagory[i].catagory){
@@ -360,8 +361,8 @@ function editProudct(id){
                        for(var j =0 ;j<data.catagory[i].subCatagory.length ;j++){
                           if(data.catagory[i].subCatagory[j] != data.porduct.subCatagory )
                           var option2 = document.createElement("option");
-                         option2.innerHTML =data.catagory[i].subCatagory[j]
-                          subCatagory.appendChild(option2);
+                        //  option2.innerHTML =data.catagory[i].subCatagory[j]
+                        //   subCatagory.appendChild(option2);
                        }
                     }
                    

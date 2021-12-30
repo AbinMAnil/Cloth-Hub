@@ -23,7 +23,7 @@
      background: #555;
    }
    
-   .innerCat a {
+   .innerCatA{
      color: rgb(255, 255, 255);
      margin-left: 3%;
      padding: 1rem;
@@ -31,7 +31,7 @@
      font-size: 20px;
      
    }
-   .innerCat a:hover {
+   .innerCatA:hover {
      color: rgb(0, 0, 0);
      background-color:goldenrod;
      transition: 500ms;
@@ -104,9 +104,7 @@ background: radial-gradient(circle, rgba(40,48,77,1) 0%, rgba(5,36,40,1) 0%, rgb
    .hamburger {
      display: none;
    }
-   .btn {
-     border: 1px solid rgb(255, 255, 255);
-   }
+
    .right a {
      list-style: none;
      text-decoration: none;
@@ -134,6 +132,8 @@ background: radial-gradient(circle, rgba(40,48,77,1) 0%, rgba(5,36,40,1) 0%, rgb
     }
 
      .right {
+       width: 50%;
+       align-items: flex-start  ;
        flex-direction: column-reverse;
      }
      .input {
@@ -177,15 +177,18 @@ background: radial-gradient(circle, rgba(40,48,77,1) 0%, rgba(5,36,40,1) 0%, rgb
        width: 50%;
        display: flex;
        justify-content: flex-end;
-       align-items: flex-end;
+       align-items: flex-start;
      }
      .nav-links {
        margin-top: 1vh;
        margin-right: 0.5vw;
        display: flex;
        justify-content: space-between;
-       width: 80%;
+       width: 100%;
      }
+     /* #logBtn{
+       margin-top: -2%;
+     } */
    
      .innerCat a :hover {
        color: rgb(255, 255, 255);
@@ -208,11 +211,15 @@ background: radial-gradient(circle, rgba(40,48,77,1) 0%, rgba(5,36,40,1) 0%, rgb
        padding: 0xp;
        font-size: 20px;
      }
+     .right{
+       width: 50%;
+     }
    }
-   @media all and (max-height:500px){
+   @media screen and (max-height:500px){
      .input{
       max-height: 17vh;
      }
+   
    }
    
    #badge{
@@ -226,12 +233,13 @@ background: radial-gradient(circle, rgba(40,48,77,1) 0%, rgba(5,36,40,1) 0%, rgb
      
    }
 
-   .btn{
+   #dropdownMenuButton{
     border: 2px solid orange;
     color: white;
    }
 
    @media all and (max-height:611px){
+
      .input{
        margin-top: 1%;
      }

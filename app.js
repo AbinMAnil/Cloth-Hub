@@ -5,10 +5,12 @@ var cookieParser = require('cookie-parser');
 const mongoose = require("mongoose");
 const crypto = require("crypto")
 const bcrypt = require('bcrypt');
+const Razorpay = require('razorpay')
+const request = require("request")
 const session = require('express-session');
 const dotEnv = require('dotenv');
 dotEnv.config();
-
+const offer = require('./controllers/admin/offersAndCoupones');
 
 // ----- routers initilizing for user----
 const userEntry = require('./routes/users/userEntry');
@@ -16,6 +18,7 @@ const userProducts = require('./routes/users/products');
 const userCart = require('./routes/users/userCart');
 const userProfile  = require('./routes/users/userProfile')
 const userCheckOut = require('./routes/users/userCheckout')
+const paypal = require('./routes/users/paypal');
 
 // -----  end of routers initilizing for user----//
 
@@ -30,6 +33,7 @@ const adminCoupones  = require('./routes/admin/adminCoupones');
 const adminSalesReport = require('./routes/admin/adminSalesReprort');
 const { checkout } = require('./routes/users/userEntry');
 const adminOrders = require('./routes/admin/adminOrders');
+const { ConferenceContext } = require('twilio/lib/rest/api/v2010/account/conference');
 //end of roter initilizing of admin --------
 
 
@@ -37,9 +41,17 @@ const adminOrders = require('./routes/admin/adminOrders');
 
 var app = express();
 
+// middelware for expire the coupone; 
+app.use(async (req,res, next)=>{
+  var result = await offer.expireOffer();
+  next()
+})
 
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb',extended: false}));
+
+
+
 
 
 
@@ -61,15 +73,13 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-
 //admin page routes only 
 app.use('/admin',adminEntry);
 app.use('/admin/userManage', adminUserManageMent);
 app.use('/admin/catagory',adminCatagory);
 app.use('/admin/products',adminPoduct);
 app.use('/admin/orders' , adminOrders);
+app.use('/admin/offers' , adminOffer);
 //end of the admin-page routes
 
 
@@ -79,6 +89,8 @@ app.use('/',userEntry);
 app.use('/product',userProducts);
 app.use('/cart',userCart);
 app.use('/checkout', userCheckOut);
+// app.use('/paypal', paypal );
+
 
 
 

@@ -43,6 +43,22 @@ const pruductScheme = new schema ( {
      quantity : {
           required:true,
           type : Number
+     },
+     offerPrice :{
+          type : Number ,
+          required : false,
+          default : null
+     },
+     offerName : {
+          type : String,
+          required:false,
+          default : null
+     },
+     offerPercentage : {
+          type : Number ,
+          required : false,
+          default : null
+     
      }
 } , {timestamps:true});
 

@@ -1,56 +1,158 @@
 <link rel="stylesheet" href="/stylesheets/user/header.css" />
-<body onload="setCartLink()">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+
+<style>
+  .grid{
+     display: grid;
+     transition: 1s;
+   
+  }
+  .userMenu{
+    display: none;
+  }
+  .dropDownMenu{
+   text-align: center;
+    left: -80%;
+    background-color: rgb(0, 0, 65);
+    color: rgb(255, 255, 255) !important;
+  }
+  #userMenu a{
+    border: 1px solid gold;
+  }
+  #userMenu a:hover{
+    background-color: rgb(6, 6, 26);
+  }#userMenu a:focus{
+    background-color: rgb(6, 6, 26);
+  }
+  .subCat{
+    width: 15vw;
+    background-color: white;
+  }
+
+
+  @-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
+.dropDownCntrl{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#searchBtn{
+  height: 36px !important;
+}
+@media screen and (max-width:500px){
+  .dropDownCntrl{
+    width: -5%;
+  }
+  #searchBtn{
+  height: 90%;
+}
+}
+.hideMT{
+    display: block !important;
+  }
+</style>
+<script>
+  function getCartCount (){
+    $.ajax({
+      url:"/getCartCount",
+      data :{id : localStorage.getItem('userId')},
+      method : "post",
+      success :(result)=>{
+       
+        document.getElementById('badge').innerHTML = result.count;
+      }
+    })
+  }
+</script>
+<body onload="setCartLink() , getCartCount()">
   <main >
  <div class="navContainer" id="navContainer"  >
     <div class="nav"  id="navbar" style="z-index: 9999;">
       <div class="left">
-        <span class="brand"><span style="color: orange;">Cloth</span> Hub </span>
+        <a href="/" style="text-decoration: none;">
+        <span class="brand" style="color: white;"><span style="color: orange;">Cloth</span> Hub </span>
+      </a>
       </div>
       <div class="right">
         <span class="input">
           <div class="input-group" style="flex-wrap: nowrap;">
             <div class="form-outline">
-              <input type="search" id="form1" class="form-control" />
+              <form action="/product/searchProduct"  method="get">
+              <input name="productName" type="text" id="searchBar" class="form-control" />
             </div>
-            <button type="button" class=" btn btn-outline-warning" style="  color: orange;">
-              <i class="fas fa-search"></i>
+            <button type="submit" class=" btn btn-outline-warning" id="searchBtn" style="height: 120%;  color: orange;">
+              <i style="padding: 0px !important;" class="fas fa-search"></i>
             </button>
+          </form>
           </div>
         </span>
         <div class="nav-links">
           <% if(logStatus){ %> 
-          <a style="cursor: pointer;"><i  class="fas fa-user-secret"></i></a>
+          <a style="cursor: pointer; "><div class="dropdown">
+            <button style="margin-top: -10%;" onclick="showUserMenu()"  class="btn btn-outline-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user-secret"></i>
+            </button>
+            <div id="userMenu" class="userMenu dropDownMenu" style="z-index: 9999; position: absolute; color: white;" aria-labelledby="">
+              <a  class="dropdown-item text-white" href="/userProfile">Dash-board</a>
+              <a class="dropdown-item text-white" href="/checkout/orderHistory">My Orders</a>
+              <a class="dropdown-item text-white" href="/logout">Log Out  </a>
+            </div>
+          </div>
+          </a>
          <%  }else{ %> 
-          <a title="Log In"  style="cursor: pointer;"><i title="Log In"  class="far fa-sign-in-alt"></i></a>
+          <a  onclick="$('#id02').show()" id="logBtn" title="Log In"  style="cursor: pointer; margin-top: -2%;"><button class="btn btn-outline-warning">log In</button></a>
           <% } %> 
-          <a id="cartLink"  href="/cart"><i title="Go to Cart " class="fas fa-shopping-cart text-white">  <span id="badge">11</span></i></a>
-          <a ><i title="Fav List" style="color: red;" class="fas fa-heart"></i></a>
+          <a id="cartLink"  href="/cart"><i title="Go to Cart " class="fas fa-shopping-cart text-white">  <span id="badge"></span></i></a>
+          <a href="/wishlist" ><i title="Fav List" style="color: red;" class="fas fa-heart"></i></a>
         </div>
       </div>
     </div>
-    <div  style="z-index: 9999;"class="second-nav" id="second-nav">
-      <i onclick="openNav()" class="fas fa-bars m-4 allItem"  title="All Catagories"></i>
-      <div class="innerCat">
-        <% for(var i = 0 ;i< catagory.length ; i++){%> 
-        <a style="cursor: pointer;">
-          <span onclick="showSubCat('<%=i%>')" ><%=catagory[i].catagory%> </span>
-          <div onmouseleave="showSubCat('<%=i%>')" id="cat<%=i%>" class="hider  dorpDown shadow-lg" >
-            <ul style="padding:0px;"  class="dropDownContent">
-              <% for(var j = 0 ;j< catagory[i].subCatagory.length ; j++){  %> 
-              <li><%=catagory[i].subCatagory[j] %> </li>
+    <div  style="z-index: 999; "class="second-nav" id="second-nav">
+      <!-- <i onclick="openNav()" class="fas fa-bars m-4 allItem"  title="All Catagories"></i>  -->
 
-              <% } %> 
-             
-            </ul>
-          </div>
-         </a>
+      <div class="dropDownCntrl">
+        <% for(var i = 0 ; i < catagory.length ; i++){ %> 
+      <div class="dropdown mt-3">
+        <button onmouseleave="hideSubCat('<%=i%>')" onclick="showFuck('<%=i%>')" style="border: none; outline: none; font-size: 20px; margin-left: 3%;" class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= catagory[i].catagory %> 
+        </button>
+        <div  onmouseleave="hideSubCat('<%=i%>')" id="subCatFuck<%=i%>" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/product/CatagoryWiseShow?id=<%=catagory[i].catagory%>">All </a>
+          <% for(var j = 0 ;j < catagory[i].subCatagory.length ;j++){ %> 
+            <a class="dropdown-item" href="/product/catWise?id=<%=catagory[i].subCatagory[j]%>"><%=catagory[i].subCatagory[j] %>  </a>
 
-         <% } %> 
+            <% } %> 
+          
+        </div>
       </div>
+
+<% } %> 
+   
+
+
+
+
+
+
+    </div> 
+      <!-- -----------------dorp down menu ----------------- -->
+
     </div>
 
 </div>
 </main>
+
 <style>
 
 .hider{
@@ -79,11 +181,12 @@
     padding: 0px;
     z-index: 9999 !important;
   }
+
 </style>
 
 
   
-    <div id="mySidenav" class="sidenav">
+    <div style="z-index: 99999;" id="mySidenav" class="sidenav">
       <a href="#" class="closebtn" onclick="closeNav()">&times;</a>
       
       <a href="#">About</a>
@@ -99,12 +202,40 @@
  
   <script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function showSubCat(id){
   document.getElementById('cat'+id).classList.toggle('hider');
 }
 
-
-
+function showUserMenu(){
+  document.getElementById("userMenu").classList.toggle('grid');
+  document.getElementById("userMenu").classList.toggle('userMenu');
+}
 
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
@@ -119,6 +250,29 @@ function setCartLink(){
   var linkStr = '/cart?userId='+gustUserId;
     document.getElementById("cartLink").href =linkStr; 
 }
+
+function showFuck(id){
+
+  x =  document.getElementById('subCatFuck'+id)
+ x.classList.toggle('hideMT')
+
+}
+
+function hideSubCat(id){
+  console.log("fu")
+  document.getElementById('subCatFuck'+id).style.display = 'none'
+}
+
+// function searchProduct(){
+//   var searchQuery = document.getElementById("searchBar").value ;
+//   if(searchQuery == "") return ;
+//   $.ajax({
+//     url : '/product/searchProduct',
+//     method :'post',
+//     data : {id : searchQuery},
+//     success ()
+//   })
+// }
 
 
   </script>

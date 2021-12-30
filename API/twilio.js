@@ -42,7 +42,7 @@ const {
             code: otp,
           })
           .then((data) => {
-           
+          console.log(data.valid)
             resolve(data.valid);
           })
           .catch((err) => console.log(" iam the errto r====================   " +err));

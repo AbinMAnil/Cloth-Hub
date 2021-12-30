@@ -17,6 +17,19 @@ router.get('/productDetails',async(req,res)=>{
      res.render("user/productDetails" ,{logStatus:req.session.loginStatus ,  catagory: await  catagory.getAllCatagory() , product : await product.getProductById(req.query.id)});
 })
 
+router.get('/catWise',async (req,res)=>{
+
+    res.render('user/products' ,{logStatus:req.session.loginStatus ,  catagory: await  catagory.getAllCatagory() ,result :await product.showCatagotyAndSubcatagoryWise(req.query.id)});
+} )
+
+router.get('/CatagoryWiseShow', async (req,res)=>{
+    res.render('user/products' ,{logStatus:req.session.loginStatus ,  catagory: await  catagory.getAllCatagory() ,result :await product.showCatagoryWise(req.query.id)});
+});
+
+router.get('/searchProduct' , async (req,res)=>{
+    console.log(req.query.productName)
+    res.render('user/products' ,{logStatus:req.session.loginStatus ,  catagory: await  catagory.getAllCatagory() ,result :await product.searchProduct(req.query.productName)});
+} )
 
 module.exports = router;
 

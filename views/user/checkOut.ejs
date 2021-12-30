@@ -1,6 +1,9 @@
 
 <%- include('./partials/headers')%> 
 <%-include('./partials/!docType')%>
+<script>
+	// window.onbeforeunload = functi	on() { return "Your work will be lost."};
+</script>
     <style>
           input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
@@ -9,6 +12,10 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.haveCoupone{
+	cursor:pointer;  position: absolute; left: 70%; top: 56%;
 }
 
 ::-webkit-scrollbar {
@@ -50,7 +57,7 @@ input[type=number] {
 .innerAddress{
     padding: 1rem;
   width: 100%;
-  height: 30vh;
+  height: 22vh;
   overflow-y: scroll;
 }
 
@@ -62,7 +69,7 @@ input[type=number] {
 }
 
 .product-details{
-    height: 41vh;
+   
     width: 60vh;
     
 }
@@ -113,10 +120,61 @@ input[type=number] {
   display: none;
 }
 .prolist{
-    height:23vh;overflow-y: auto; border-bottom: 1px solid rgb(177, 177, 177);
+    height:18vh;overflow-y: auto; border-bottom: 1px solid rgb(177, 177, 177);
 }
+.main{
+			width: 100%;
+			display: flex;
+			justify-content: space-evenly;
+		}
+		.modal-left,.modalright{
+			width: 50%;
+
+		}
+		.orderDetails{
+			margin-top: 20%;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-evenly;
+			align-items: center;
+		}
+		.keys{
+			display: flex;
+			flex-direction: column;
+		}
+		@media screen and   (max-width : 500px){
+			.modal-left{
+				display: none;
+				width: 0px;
+			}
+			.modalright{
+				width: 100%;
+			}
+			.haveCoupone{
+			cursor: pointer;
+			position: absolute;
+			left: 16%;
+			top: 148%;
+
+		}
+		.product-details{
+			height: 58vh;
+		}
+		}
+		.cancelbutton{
+			display: none;
+		}
+
+		.paypal-button{
+			width: 18%;
+		}
+		.paypal-button-label-container{
+			display: none !important;
+		}
+	
+
     </style>
-<% console.log(product)%> 
 
 <div class="container-fluid"   >
 	<div class="col-md-5 col-11 p-1">
@@ -129,24 +187,37 @@ input[type=number] {
 				     click the  button to add an adddress !
 				</h2>
 			</center> 
-			<% console.log(user.address) %> 
-               <% if(user.address.length > 0 ){ %> 
+               
 			<div class="innerAddress">
-				<div class="multipleAddress">
-					<input type="checkbox" class="mr-3" style="width: 10%;">
-					<p>Lore veritatis assumenda atque pariatur, velit deb
+				<% for(var i = 0 ;i< user.address.length ;i++){ %> 
+				<div class="multipleAddress" style="font-size: 18px;">
+					
+					<input id="radionbtn<%=i%>" value="<%=user.address[i]._id %> " onclick="hideAddressBtn()" type="radio" class="mr-3 radiobtnActivate<%=i%>  " style="width: 10%; cursor: pointer;"  name="chose">
+
+					<label for="radionbtn<%=i%>" style="cursor:pointer">
+					<p> <span><%=user.address[i].firstName %>...  &#160;&#160;&#160;&#160;  <%=user.address[i].email %>...  &#160;&#160;&#160;&#160; <%=user.address[i].address %>... </span>
 						<br>
-						itis nisi provident blanditiis! </p>
+						<%=user.address[i].phone %>... &#160;&#160;&#160;&#160;   <%=user.address[i].poatalCode %>.....  </p>
+
+					</label>
+
+						
 				</div>
+				<% } %> 
 				<center>
 					<hr width="80%">
 				</center>
+
 			</div>
-               <% } %> 
+			<% if(user.address.length >0){ %> 
+			<button  id="addressCancel" onclick="clearCheckOut()" class="btn btn-warning " style="margin-left: 70%; display: none;">Cancel</button>
+			<% } %> 
+
+             
 		</div>
 		<div style="display: flex;">
-			<button onclick="showForm()" class="btn btn-primary btn-lg btn-block m-3"> Add Address</button>
-			<button onclick="clearForm()" id="cancelbutton" class="btn btn-outline-danger  m-3" style="display: none;"> Cancel</button>
+			<button id="addAddressBtn"   onclick="showAddressForm()" class="btn btn-primary btn-lg btn-block m-3"> Add Address</button>
+			<button  style="display:  none;"  id="cancelbutton"  class="btn btn-danger m-3  cancelbutton "  onclick="clearForm()"  style="visibility: hidden; "  > Cnacel</button>
 		</div>
 		<div id="addressForm" class=" mt-2 col-12" style="display: none;"  >
 			<div class="col-12">
@@ -272,14 +343,14 @@ input[type=number] {
 							<!-- Checkbox -->
 							<div class="form-check  mb-2 " >
 								<input  class="form-check-input " type="checkbox" value="" id="checkBoxSave"
-									checked />
+									 />
 								<label class="form-check-label" for="form7Example8">
 								<b>Save</b>
 								</label>
 							</div>
 							<center class="mt-3">
                                         <p id="err" style="color: red;"></p>
-								<button  class="btn btn-outline-success" type="button" onclick="addAddressAndProced('<%=user._id%>' , '<%=product.product%>')"> Proceed to Pay</button>
+								<button id="payByAddresBtn"  class="btn btn-outline-success" type="button" onclick="addAddressAndProced('<%=user._id%>' , '<%=product.product%>')">Continue</button>
 							</center>
 						</form>
 					</div>
@@ -291,16 +362,19 @@ input[type=number] {
 
 <div  >
 <div  id="res" class="   product-details col-md-5 col-11 p-1 mt-3  shadow p-3 mb-5 bg-white rounded ">
+	<div class="d-flex justify-content-between">
     <h4 class="mb-3">
-        Summary
+        Summary 
+	   
     </h4>
-    
+    <button  onclick="showWallet()" class="btn btn-outline-dark" > <i class="fas fa-wallet"></i>  Use wallet</button>
+</div>
     <hr width="90%">
   <div style="" class="prolist">
     <div class="">
          <% for(var i = 0 ;i< product.product.length ;i++){ %> 
         <div class="p-2 " style="display: flex ;  justify-content: space-between;">
-          <P> <%=product.product[i].productArray.productName %>   <span style="color: rgb(232, 56, 8);">	&nbsp;  (<%=product.product[i].quantity %>  ) </span></p>
+          <P> <%=product.product[i].productArray[0].productName %>   <span style="color: rgb(232, 56, 8);">	&nbsp;  (<%=product.product[i].quantity %>  ) </span></p>
               <p> &#8377; <%=product.product[i].totalPrice %> .00   </p>
          </div>
          <% } %> 
@@ -310,50 +384,788 @@ input[type=number] {
   <div>
     <div class="p-2 " style="display: flex ;  justify-content: space-between;">
         <p>Total price</p>
-        <p> &#8377; <%= product.grandTotal  %> </p>
+        <p id="totalPriceP"> &#8377; <%= product.grandTotal  %> .00 </p>
      </div>
+	<p id="errPayMent" style="color: red; visibility: visible;"></p>
+	<% if(user.address.length > 0){ %> 
+	<button id="continueWithPreAdd"   onclick="ordereByPreviousAddress('Cash on delevery')" class="btn btn-success">Continue</button>
+
+<% } %> 
+
+<h5 id="haveCoupone"  class="haveCoupone">Have a Coupone ? <span style="color: blue;" onclick="document.getElementById('couponeRedeem').style.visibility = 'visible' ; $('#haveCoupone').hide()">Click</span></h5>
+<center><p id="couponeErr" style="color: red;"></p></center>
+<form id="couponeRedeem" style="visibility: hidden;" class="form-inline mt-3  d-flex  justify-content-center " >
+	<div class="form-group mx-sm-3 mb-2 ">
+	  <label for="inputPassword2" class="sr-only">Password</label>
+	  <input  onkeypress="$('#couponeErr').html('')" onclick="$('#avaliabelCouponeCode').show()" type="text" class="form-control" id="coupone" placeholder="Enter The coupone Code">
+	  <% if(user.coupones.length > 0){ %> 
+	  <div id="avaliabelCouponeCode" class="dropdown-menu ml-3"  style=" width: 13%;"  aria-labelledby="">
+		<% for(var h = 0 ; h< user.coupones ; h++) {%> 
+			<a onclick="$('#coupone').val('<%=user.coupones%>') ; $('#avaliabelCouponeCode').hide()  " class="dropdown-item"  href="#"><%=user.coupones%></a>
+		<a  class="dropdown-item" href="#"></a>
+		<% } %> 
+	   </div>
+	   <%} %> 
+	</div>
+	<button onclick="allplyCoupone()" type="button" class="btn btn-primary mb-2">Apply</button>
+   </form>
   </div>
 </div>
 
 
-<div id="responsive1" class=" responsive-div-media col-md-5 col-11 p-1 mt-3  shadow p-3 mb-5 bg-white rounded " >
-    <h4 class="mb-3">
-        Payment Methods 
-      
-    </h4>
-    <hr width="90%">
-    <div class="" >
-        <div class="p-2">
-            <input id="cashOnDelevary" class="inputMet form-check-input " name="inputMethod" type="radio" style="margin-right: 2%;">
-             Cash On Delever
-        </div>
-
-        <div class="p-2">
-            <input  class="inputMet form-check-input  mr-3 " name="inputMethod" type="radio" style="margin-right: 2%;">
-            Rasor Pay
-        </div>
-       
-    </div>
-</div>
 
 </div>
 
 </div>
 
+
+
+
+
+
+	<div class="w3-container">
+		
+	   
+		<div id="id02" class="w3-modal" style="z-index: 9999;">
+		  <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+			
+
+<div id="responsive1" class=" responsive-div-media col-md-5 col-11 p-1 mt-3   p-3 mb-5 bg-white rounded " >
+	<h4 class="mb-3">
+	   Select Your Payment Methods 
+	  
+	</h4>
+	<hr width="90%">
+	<div class="" >
+ 
+	    <div class="p-2">
+		   <input value="cod"    onchange="document.getElementById('errLast').innerHTML = '' ;  document.getElementById('confirmBtnPayment').setAttribute('onclick' , 'submitOrder(false)')  " id="cashOnDelevary" class="inputMet form-check-input " name="inputMethod" type="radio" style="margin-right: 2%;">
+		    <label style="cursor: pointer;" for="cashOnDelevary">Cash on Delevery</label>
+	    </div>
+
+	    <div class="p-2">
+		<input value="razorpay" onchange="document.getElementById('errLast').innerHTML = '' ; document.getElementById('confirmBtnPayment').setAttribute('onclick' , 'submitOrder(false)') "   id="rasorPay" class="inputMet form-check-input " name="inputMethod" type="radio" style="margin-right: 2%;">
+		<label style="cursor: pointer;" for="rasorPay">Razor Pay</label>
+	 </div>
+
+
+	 <div class="p-2">
+		
+		<div style="width: 20%;" id="paypal-button-container"></div> 	
+	 </div>
+	 	
+
+	    
+	</div>
+	<p id="errLast" style="color: red;"></p>
+
+	<button  id="confirmBtnPayment" type="button" class="btn btn-success" onclick="submitOrder(false)" >Place Order</button>
+
+	<button class="btn btn-danger"  onclick="document.getElementById('id02').style.display = 'none'" >Cancel</button>
+</form>
+ </div>
+
+
+		    
+		  </div>
+		</div>
+	   </div>
+
+
+
+	   <!-- <script src="https://www.paypalobjects.com/api/checkout.js"></script> -->
+
+
+	   <div id="paypal-button"></div>
+	   
+	 
+
+	   <form action="/paypal" method="post">
+		
+	   </form>
+</div>
+
+<!-- ----------------------payment success ---------------------- -->
+
+<div class="w3-container">
+   
+	<div id="id03" class="w3-modal" style="z-index: 9999;">
+	  <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+		<style>
+			
+			  .card h1 {
+			    color: #88B04B;
+			    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+			    font-weight: 900;
+			    font-size: 40px;
+			    margin-bottom: 10px;
+			  }
+			  .card p {
+			    color: #404F5E;
+			    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+			    font-size:20px;
+			    margin: 0;
+			  }
+			.card i {
+			  color: #9ABC66;
+			  font-size: 100px;
+			  line-height: 200px;
+			  margin-left:17px;
+			}
+			.card {
+				text-align: start;
+				width: 100%;
+			  background: white;
+			  padding: 45px;
+			  border-radius: 4px;
+			  box-shadow: 0 2px 3px #C8D0D8;
+			  display: inline-block;
+			  margin: 0 auto;
+			}
+			@media screen and (max-width : 500px){
+				.card{
+					padding: 10px;
+				}
+			}
+		   </style>
+		  
+			<div class="card">
+			<div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+			  <i class="checkmark">✓</i>
+			</div>
+			  <h1>Success</h1> 
+			  <p style="color: rgb(255, 94, 35);">Delevery Will be excepted in 7 days</p>
+
+
+  <table  class="table table-borderless pt-3 mt-4">
+	
+	<tbody id="tableBodyPaymentSuccess">
+	 
+	 
+	</tbody>
+   </table>
+ 
+
+<center class="mt-4" > 
+<a href="/checkout/orderHistory"   >
+	<button class="btn btn-primary">Show Order History</button>
+</a>
+<a href="product">
+	
+<button class="btn btn-danger " style="margin-left: 1%;">Continue Shoping</button>
+
+</a>
+</center>
+			  
+			</div>
+	  </div>
+	</div>
+   </div>
+
+   <!-- ----------------end of the payment successs---------------- -->
+
+
+
+
+
+<!-- _____________ start of the use wallet ______________________- -->
+
+<style>
+
+#username , #dob,  #email , #phone , #oldPassword  , #newPassword{
+  border: 1px solid #0c004c;
+}
+.registration-form{
+  padding: 1rem 3rem 2rem 3rem;
+}
+
+.registration-form form{
+    background-color: #fff;
+    max-width: 600px;
+    margin: auto;
+    padding: 50px 70px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.registration-form .form-icon{
+	text-align: center;
+    background-color:#133685;
+    border-radius: 50%;
+    font-size: 40px;
+    color: white;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    margin-bottom: 50px;
+    line-height: 100px;
+}
+
+.registration-form .item{
+	border-radius: 6px;
+    margin-bottom: 25px;
+    padding: 10px 20px;
+}
+
+.registration-form .create-account{
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #5791ff;
+    border: none;
+    color: white;
+    margin-top: 20px;
+}
+
+.registration-form .social-media{
+    max-width: 600px;
+    background-color: #fff;
+    margin: auto;
+    padding: 35px 0;
+    text-align: center;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    color: #9fadca;
+    border-top: 1px solid #dee9ff;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.registration-form .social-icons{
+    margin-top: 30px;
+    margin-bottom: 16px;
+}
+
+.registration-form .social-icons a{
+    font-size: 23px;
+    margin: 0 3px;
+    color: #5691ff;
+    border: 1px solid;
+    border-radius: 50%;
+    width: 45px;
+    display: inline-block;
+    height: 45px;
+    text-align: center;
+    background-color: #fff;
+    line-height: 45px;
+}
+
+.registration-form .social-icons a:hover{
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+@media (max-width: 576px) {
+  .registration-form{
+    padding:  1rem;
+  }
+    .registration-form form{
+        padding: 50px 20px;
+    }
+
+    .registration-form .form-icon{
+        width: 70px;
+        height: 70px;
+        font-size: 30px;
+        line-height: 70px;
+    }
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
+<div class="w3-container">
+
+	<div id="id04" class="w3-modal" style="z-index: 9999;">
+	  <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
+	    <div class="w3-container" id="editProfile">
+		 <div class="w3-section">
+		   <div class="registration-form">
+			<form id="changePassword">
+			    <div class="form-icon">
+				   <span><img src="https://bootdey.com/img/Content/avatar/avatar7.png" style="width: 100%; height: 100%; object-fit: contain;" alt=""></i></span>
+			    </div>
+			    <div class="form-group" style="position: relative;">
+				
+				<center><h5 class="mb-4 text-warning">  Your balance <b class="text-danger"> ₹ 400.00</b></h5></center>
+			 </div>
+
+			   
+			    <div class="form-group" style="position: relative;">
+				
+				   <input  maxlength="20" onKeyPress="if(this.value.length==20) return false;"    name="" type="number" class="form-control item" id="walletAmount" placeholder="Enter The Amount">
+				   
+			    </div>
+			    <div class="form-group">
+   
+				   <button id="submitBtnPass" type="button" class="btn btn-success " onclick="submitOldAddress()">Continue</button>
+				   <button  onclick='document.getElementById("id04").style.display = "none" ; document.getElementById("changePassword").reset()  ; document.getElementById("changePawordErr").innerHTML = ""'  type="button" class="btn btn-danger ">Cancel</button>
+			    </div>
+			   <center> <p id="walletErr" style="color: red; margin-top: 2%;"></p></center>
+			</form>
+			</div>
+		 </div>
+	  
+   
+	    </div>
+	    </div>
+	    </div>
+<!-- ___________________end of the user wallete__________________________ -->
+
+
+
+
+	
+<!-- paypal sdk  -->
+
+<script src="https://www.paypal.com/sdk/js?client-id=AfyXyQoNyGPiYtUJFHsdTm9b3ne-59ZwTdchLov5LDHyTrQocNgusx943ULYw_rZVw6nDmQAQ_CL94nD&components=buttons"></script>
+
+<!-- end of the paypal sdk  -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script src="/javascripts//user/userCheckout.js"></script>
 <script>
- function showForm(){
-     document.getElementById("addressForm").style.display = "block"
-     document.getElementById("cancelbutton").style.display = "block"
- }
-function clearForm (){
-    $('#address')[0].reset();
-    document.getElementById("addressForm").style.display = "none"
-    document.getElementById("cancelbutton").style.display = "none"
+
+
+
+
+
+
+function showWallet(){
+	$('#id04').show()
+}
+
+
+var loading = ` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>  loading..`
+
+
+
+
+
+
+var amount;
+var totalAmount ;
+
+
+function allplyCoupone(){
+		
+	var couponeCode = $('#coupone').val();
+	if(couponeCode.length < 5)return;
+	const err = document.getElementById('couponeErr');
+
+	if(couponeCode.length < 5){
+		err.innerHTML = "please Enter a valid coupone code "
+		return;
+	}
+	$.ajax({
+		url:'/admin/offers/applyCoupone',
+		data : {couponeCode : couponeCode.trim()},
+		method : 'post',
+		success : (result)=>{
+			if(result.status == true){
+				swal.fire('Congratulations' , result.message , "success").then(()=>{
+					swal.fire('Warning ' , 'Dont refresh the page while complete the process  you may loss the coupone ' )
+				})
+				var oldTotal =  document.getElementById('totalPriceP').innerHTML ;
+					var newHtml = `<strike style="color:gray">${oldTotal}</strike>    <b><span style="color : green "> &#8377;${result.amount} .00<span></b>` 
+					document.getElementById("totalPriceP").innerHTML = newHtml;
+					amount = parseInt(result.amount);
+					totalAmount = amount;
+			}else{
+				swal.fire("Sorry" , result.message , 'error');
+			}
+		}
+	})
 
 
 }
+
+
+
+
+$( document ).ready(function() {
+	$.ajax({
+		  url : '/checkout/getTotalAmount',
+		  method:'post',
+		  success :(result)=>{
+			 totalAmount = result.amount;
+		  } 
+	  })
+});
+
+
+
+paypal.Buttons({
+  createOrder: function(data, actions) {
+	
+    // This function sets up the details of the transaction, including the amount and line item details.
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: totalAmount
+        }
+      }]
+    });
+  },
+  onApprove: function(data, actions) {
+    // This function captures the funds from the transaction.
+    return actions.order.capture().then(function(details) {
+      // This function shows a transaction success message to your buyer.
+	
+	 var ordeingAddressType = addressId == undefined ? true : false;
+	 	// place oreder function;
+		placeOrder('Paypal' , ordeingAddressType);
+    });
+  }
+}).render('#paypal-button-container');
+
+
+		// ---------------end of the paypal----------------
+   var addressId ;
+	var addressType ;
+
+function packAddress (paymentMethod , address){
+	
+	return new Promise((resolve,reject)=>{
+		
+	if(address){
+		var saveAddressOrNot = document.getElementById('checkBoxSave').checked;
+		// new address 
+		var pack = {
+          firstName : document.getElementById("input0").value,
+          secondeName : document.getElementById("input1").value,
+          phone : document.getElementById("input2").value,
+          email : document.getElementById("input3").value,
+          address : document.getElementById("input4").value,
+          landMark : document.getElementById("input5").value,
+          city : document.getElementById("input6").value,
+          poatalCode : document.getElementById("input7").value,
+          state : document.getElementById("input8").value,
+          country : document.getElementById("input9").value,
+          paymentMethod : paymentMethod,
+          saveAddress : saveAddressOrNot,
+		amount : amount
+     }
+	resolve(pack)
+	}else{
+		// previous address of the user 
+	alert(addressId);
+	  $.ajax({
+       url:'/checkout/getAddress',
+       data:{id : addressId},
+       method:'post',
+       success:async (result)=>{
+          var   pack = await {
+            firstName :result.address.firstName,
+            secondeName :result.address.secondeName ,
+            phone :result.address.phone,
+            email : result.address.email,
+            address :result.address.address,
+            landMark : result.address.landMark,
+            city : result.address.city,
+            poatalCode : result.address.poatalCode,
+            state : result.address.state,
+            country : result.address.country,
+            paymentMethod : paymentMethod,
+            saveAddress : false,
+		  amount : amount
+       }
+	  resolve(pack)
+
+	  
+       }
+	  
+   })
+
+   
+	}
+	})
+}
+
+function submitOrder(paypal){
+		if(paypal == false){
+			var err = document.getElementById("errLast");
+		var paymentMethod = $("input[type='radio'][name='inputMethod']:checked").val();
+		if(paymentMethod == undefined){err.innerHTML = "Please Select One PaymentMethod" ; return};
+		err.innerHTML = "";
+		}
+		// user is ordering through the new address 
+		var ordeingAddressType = addressId == undefined ? true : false;
+	 	// place oreder function;
+		placeOrder(paymentMethod , ordeingAddressType);
+}
+
+
+async function placeOrder(paymentMethod , address){
+	console.log('iam in  the place order');
+	var address = await packAddress(paymentMethod , address);
+
+
+	if(paymentMethod == 'cod'  || paymentMethod == 'Paypal'){
+
+	$.ajax({
+        url:"/checkout/placeOrder",
+        data : address,
+	method:"post",
+        success : (result)=>{
+			$("#id02").hide()
+			if(result.status  != false){
+            var detailContainer = document.getElementById('tableBodyPaymentSuccess');     
+              var details = `				
+              <tr >
+	    <td>Order ID </td>
+	    <td>@${result.status}</td>
+	  </tr>
+	  <tr>
+	    
+	  
+	    <td>Total Amount</td>
+	    <td> ₹ ${result.totalPrice}. 00</td>
+	  </tr>
+
+
+	 
+	  <td>Payment Method </td>
+	  <td> ${result.paymentMethod}</td>
+	</tr>
+	 
+                 ` ;
+                 detailContainer.innerHTML += details;
+                 document.getElementById('id03').style.display='block'
+	   }else{
+		swal.fire("Sorry" , 'You dont have anyProducts' , "info").then(()=>{
+			location.reload()
+		})
+	   }
+        }
+   })
+	
+  }else if(paymentMethod == 'razorpay'){
+	  // make a order first;
+	  var settings = {
+		"url": "/checkout/razorPayCreateOrderId",
+		"method": "POST",
+		"timeout": 0,
+		"headers": {
+		"Content-Type": "application/json"
+		},
+		"data": JSON.stringify({
+		"amount": amount
+		}),
+		};
+
+		// creates new orderId everytime
+		$.ajax(settings).done(function (response) {
+			$("#id02").hide()
+		var orderId=response.orderId;
+		
+
+		// ajax cll
+		var options = {
+   "key": "rzp_test_6mHifv6KjuxHC2", // Enter the Key ID generated from the Dashboard
+   "amount": (response.amount*100) , // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+   "currency": "INR",
+   "name": " abin M Anil",
+   "description": "Test Transaction",
+   "image": "https://bootdey.com/img/Content/avatar/avatar7.png",
+   "order_id": orderId, //This is a sample Order ID. Pass the `id` obtained in the previous step
+   "handler": function (response){
+      // after the payment is succssfull chekc by hashed signutare
+     
+      $.ajax({
+       "url": "/checkout/finalVerify",
+       "method": "POST",
+       "timeout": 0,
+       "headers": {
+       "Content-Type": "application/json"
+       },
+       "data": JSON.stringify({response}),
+
+       success : (result)=>{
+           if(result.signatureIsValid == true){
+			$.ajax({
+        url:"/checkout/placeOrder",
+        data : address,
+	method:"post",
+        success : (result)=>{
+		var detailContainer = document.getElementById('tableBodyPaymentSuccess');     
+              var details = `				
+              <tr >
+	    <td>Order ID </td>
+	    <td>@${result.status}</td>
+	  </tr>
+	  <tr>
+	    
+	  
+	    <td>Total Amount</td>
+	    <td> ₹ ${result.totalPrice}. 00</td>
+	  </tr>
+
+
+	 
+	  <td>Payment Method </td>
+	  <td> ${result.paymentMethod}</td>
+	</tr>
+	 
+                 ` ;
+                 detailContainer.innerHTML += details;
+                 document.getElementById('id03').style.display='block'
+        }
+   })
+	
+           }else{
+               swal.fire("payment status ", "payment failed " , "error");
+           }
+       }
+       })
+		},
+		
+
+		"theme": {
+			"color": "#3399cc"
+		}
+		};
+		var rzp1 = new Razorpay(options);
+		rzp1.on('payment.failed', function (response){
+			swal.fire("Payment Status " , "payment Failed" , 'error');
+		});
+
+
+		rzp1.open();
+		e.preventDefault();
+				
+				});
+   }
+			
+}
+
+
+
+
+function ordereByPreviousAddress(paymentMethod){
+     var err = document.getElementById('errPayMent');
+
+  if(addressId == undefined){err.innerHTML = "please Select One Address " ; return }
+	err.innerHTML = ""
+   $.ajax({
+       url:'/checkout/getAddress',
+       data:{id : addressId},
+       method:'post',
+       success:(result)=>{
+        var pack = {
+            firstName :result.address.firstName,
+            secondeName :result.address.secondName ,
+            phone :result.address.phone,
+            email : result.address.email,
+            address :result.address.address,
+            landMark : result.address.landMark,
+            city : result.address.city,
+            poatalCode : result.address.poatalCode,
+            state : result.address.state,
+            country : result.address.country,
+            paymentMethod : paymentMethod,
+            saveAddress : false
+       }
+      $('#id02').show()
+      
+
+
+       }
+   })
+  
+ }
+
+// -------------------------------
+
+
+function addAddressAndProced(id , product){
+     var err = document.getElementById('err')
+     // empty validation 
+     for(var i = 0 ;i< 9; i++ ){
+          if(document.getElementById("input"+i).value == ""){
+              err.innerHTML = "Plese Fill The all field";
+              return ;
+          }
+     }
+     
+
+      err.innerHTML = ""
+     //  number validateion
+     var phone = document.getElementById("input2").value;
+      if(phone.length < 10 ){
+           err.innerHTML = "please Enter 10 digits In phone Number field";
+           return;
+      }
+      
+    err.innerHTML = ""
+
+      // emil validation
+      var email = document.getElementById("input3").value
+    var result =  String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+    if(result == null){err.innerHTML = "please Enter a Valid Email " ; return ;}
+    err.innerHTML = ""
+
+//   validateion postal code 
+
+     var postal = document.getElementById("input7").value;
+     if(postal.length < 6 ){err.innerHTML = "please Enter a Valid Postal Code" ; return ;}
+    err.innerHTML = ""
+     var saveAddress ;
+     if(document.getElementById("checkBoxSave").checked)saveAddress = true
+     else{saveAddress = false}
+
+    
+    err.innerHTML = ""
+    document.querySelector('.paypal-button.paypal-button-text-color-white').style.display = "none"
+    $('#id02').show()
+
+    
+    
+ };
+
+
+function hideAddressBtn(){
+	var err = document.getElementById('errPayMent')
+	err.innerHTML = ""
+	$('#address').trigger("reset");
+
+	 addressId =  document.querySelector('input[name="chose"]:checked').value;
+	$('#addressCancel').show()
+	$('#addressForm').hide()
+	$('#cancelbutton').hide()
+	$('#addAddressBtn').hide()
+
+	document.getElementById('addAddressBtn').style.display = "none"
+}
+
+
+function clearCheckOut(){
+	$('#addressCancel').hide()
+	addressId = undefined;
+   var ele = document.getElementsByName("chose");
+  for(var i=0;i<ele.length;i++)
+     ele[i].checked = false;
+   document.getElementById('addAddressBtn').style.display = "block"
+}
+
+
+
+
 
 </script>
 </body>

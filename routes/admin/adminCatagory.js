@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const catagory = require('../../controllers/admin/adminCatagory');
-
+const offerModel = require('../../model/admin/offer');
 // TO RENDER THE CATAGORY PAGE OF THE ADMIN WITH CATAGORIES AND SUBCATGORIES;
 router.get('/', async (req,res)=>{
 
-     res.render('admin/catagory' ,{catagory : await  catagory.getAllCatagory()});
+     res.render('admin/catagory' ,{catagory : await  catagory.getAllCatagory() , offer : await offerModel.find() });
 })
 
 // TO ADD A NEW CATAGORY IF THERE IS NO MORE EXISTS;

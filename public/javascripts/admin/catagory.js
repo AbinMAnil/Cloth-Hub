@@ -62,11 +62,14 @@ function insertSubCat() {
             <span id="name${subCatArray[i]}">${subCatArray[i]}</span>
             <input  type="text" name="" id="input${subCatArray[i]}" class="form-control hide" value="${subCatArray[i]}" >
           </td>
-          <td><i   onclick="deleteSubCatagory('${subCatArray[i]}')"  class="fas fa-trash table-icon" id="dlt${subCatArray[i]}"></i>
-          <i   onclick="showSubCatEdit('${subCatArray[i]}')"   class="fas fa-pen-fancy table-icon" id="editItem${subCatArray[i]}"></i>
+          <td><i   onclick="deleteSubCatagory('${subCatArray[i]}')"  class="text-danger  fas fa-trash table-icon" id="dlt${subCatArray[i]}"></i>
+          <i   onclick="showSubCatEdit('${subCatArray[i]}')"   class="text-success  fas fa-pen-fancy table-icon" id="editItem${subCatArray[i]}"></i>
 
           <i   onclick="editConfirm('${subCatArray[i]}' , '${catagory}')"   class="fas fa-check hide  table-icon"  id="confirm${subCatArray[i]}"></i>
           <i   onclick="cancelEdit('${subCatArray[i]}')"  class="far fa-window-close hide table-icon" id="cancel${subCatArray[i]}"></i>
+
+          <i onclick="showOfferForm('${subCatArray[i]}' , '${catagory}') "  id="offer${subCatArray[i]}' , '${catagory}" style="margin-left: 20%; color: yellow;" class="fas fa-tags"></i>
+
             </td>
               </tr>`
 
@@ -336,6 +339,7 @@ function showSubCatEdit(id){
 
 	edit.classList.add('hide')
 	dlt.classList.add('hide')
+  document.getElementById("offer"+id).classList.add('hide')
 
 	confirm.classList.remove('hide')
 	cancel.classList.remove("hide");
@@ -358,6 +362,7 @@ function clearSubCatInsert (){
 
 
 function cancelEdit(id){
+  document.getElementById("offer"+id).classList.remove('hide')
 
 	document.getElementById("dlt"+id).classList.remove("hide")
 	document.getElementById("editItem"+id).classList.remove("hide");
@@ -374,6 +379,7 @@ function cancelEdit(id){
 }
 
 function editConfirm(id , catagory){
+  document.getElementById("offer"+id).classList.remove('hide')
 
 	var dlt = document.getElementById("dlt"+id);
 	var edit = document.getElementById("editItem"+id);

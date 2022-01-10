@@ -128,7 +128,7 @@ function isUserHaveTheProduct(db, data, id) {
 }
 
 // function for get users product gust and  user also
-function getUserCartProducts(userId, db) {
+function getUserCartProducts(userId, db)  {
   return new Promise(async (resolve, reject) => {
     var result = await db.aggregate([
       {
@@ -178,21 +178,15 @@ function getUserCartProducts(userId, db) {
       grandTotal: await calculatTheAllTotal(result),
       product: result,
     };
+
     resolve(product);
   });
 }
 
 // function to chage the quantity of the user;
-function chageQuantity(db, userId, varientId, change, productId) {
+function chageQuantity(quantity ,  db, userId, varientId, productId) {
   return new Promise(async (resolve, reject) => {
-    var quantityOfProduct = await getQuantityOfProduct(productId);
-    var numberOfProductUserHave = await howMuchUserHave(db, varientId, userId);
 
-    if (
-      numberOfProductUserHave <= quantityOfProduct ||
-      parseInt(change) == -1
-    ) {
-      if (numberOfProductUserHave >= 1 || parseInt(change) == 1) {
         // updateing the quantity;
 
         var result = await db.updateOne(
@@ -201,31 +195,24 @@ function chageQuantity(db, userId, varientId, change, productId) {
             "product.vaientId": varientId,
           },
           {
-            $inc: {
-              "product.$.quantity": parseInt(change),
+            $set: {
+              "product.$.quantity": parseInt(quantity),
             },
           }
         );
 
+
         if (result.modifiedCount == 1) {
           var product = await getUserCartProducts(userId, db);
-          if (parseInt(change) == 1) {
+          
             resolve({
-              product: product,
-              status: true,
+              product: product
             });
-          } else {
-            resolve({
-              product: product,
-              status: false,
-            });
-          }
+          
         }
         resolve("somThing Went Worng ");
-      }
-    } else {
-      resolve("sorry Maximum Quantity reached");
-    }
+      
+    
   });
 }
 
@@ -329,24 +316,23 @@ module.exports = {
   },
 
   chageQuantity: async (req, res) => {
-    console.log(req.body.change);
     if (req.session.uid)
       res.json({
         status: await chageQuantity(
+          req.body.quantity,
           cart,
           req.session.uid,
           req.body.id,
-          parseInt(req.body.change),
           req.body.pid
         ),
       });
     else {
       res.json({
         status: await chageQuantity(
+          req.body.quantity,
           gustCart,
           req.body.userId,
           req.body.id,
-          parseInt(req.body.change),
           req.body.pid
         ),
       });
@@ -368,19 +354,21 @@ module.exports = {
     }
   },
   shiftItem: async (gustUserId, userId) => {
+   
+    
             //check the gust use add somthing in the cart;
             if(userId == null) return;
-
             // get the items for the gustuser collection
             var gustUserItem = await gustCart.findOne({
               userId : gustUserId
             })
+           if(gustUserItem == null)return ; 
             var gustArray = gustUserItem.product;
-           
            
             var validUserCart = await  cart.findOne({
               userId : userId 
             })
+
             if(validUserCart != null){
               // user have a cart previosusly;
               var result = await cart.updateOne(
@@ -398,7 +386,6 @@ module.exports = {
              
             }else{
               // user dosnt havea an account in cart;
-                // console.log(gustUserItem);
                 var packData = {
                   userId :  userId,
                   product : gustUserItem.product,
@@ -408,8 +395,20 @@ module.exports = {
 
             };
 
-            var clearGustCatrt = await gustCart.remove({userId : gustUserId})
-            console.log(clearGustCatrt);
+
+            var clearGustCart = await gustCart.updateOne(
+            {
+              userId : gustUserId
+            },
+            {
+              $set: {
+                product : []
+              }
+            }
+
+         )
+
+
             
             
   },
@@ -421,9 +420,15 @@ module.exports = {
   },
   
   getTotalAmount :async (req,res)=>{
-    console.log('==================iam in the total amount field');
     var result = await getUserCartProducts(req.session.uid , cart);
     res.json({amount : result.grandTotal});
+  },
+
+  getAmoutOnlyForWallet : (uid)=>{
+    return new Promise(async (resolve , reject )=>{
+      var result = await getUserCartProducts(uid, cart);
+      resolve(result.grandTotal);
+    })
   }
 
   

@@ -21,7 +21,6 @@ var colorArray = [];
 
  function colorFix(){
  var proColor = document.getElementById("ProductColor").value;
- console.log(proColor)
    if(proColor == ""){
         document.getElementById('colorErr').innerHTML = "Please Select One Color"
         return;

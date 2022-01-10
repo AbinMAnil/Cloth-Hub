@@ -1,682 +1,368 @@
+<%- include('./partials/headers')%> 
 
-     <%- include('./partials/headers')%> 
-     <%-include('./partials/!docType')%>
-     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-  <style>
-    * {
-    box-sizing: border-box
-}
 
 
-
-#search {
-    outline: none;
-    border: none;
-    display: inline-block
-}
-
-#burgundy {
-    color: rgb(153, 40, 59)
-}
-
-
-
-
-.search-nav-item {
-    height: 40px
-}
-
-nav {
-    padding: 0px 100px
-}
-
-.fa-user-o,
-.fa-shopping-cart {
-    font-size: 20px;
-    padding: 4px
-}
-
-.form-group {
-    margin-bottom: 5px
-}
-
-label {
-    padding-left: 10px
-}
-
-.form-group:last-child {
-    margin-bottom: 0
-}
-
-h6 {
-    margin-bottom: 0px
-}
-
-#sort {
-    outline: none;
-    border: none
-}
-
-
-.card-body {
-    padding: 8px
-}
-
-.sign {
-    width: 25px;
-    height: 25px
-}
-
-.discount {
-    border: 1px solid orange;
-    border-radius: 5px;
-    width: 65px;
-    position: absolute;
-    top: 2%
-}
-
-@media(min-width:1200px) {
-    #search {
-        width: 300px;
-        padding: 5px;
-        padding-left: 20px
-    }
-
-    .search-nav-item {
-        margin-left: 400px;
-        width: 350px
-    }
-
-    .fa-user-o {
-        margin-left: 300px
-    }
-
-    .text {
-        display: none
-    }
-
-    .fa-user-o,
-    .fa-shopping-cart {
-        font-size: 20px;
-        padding-left: 20px
-    }
-
-    #sidebar {
-        width: 30%;
-        padding: 20px;
-        float: left
-    }
-
-    #products {
-        width: 70%;
-        padding: 10px;
-        margin: 0;
-        float: right
-    }
-
-    .card {
-        width: 300px;
-        height: 330px;
-        border: none
-    }
-
-    .card-img-top{
-        width: 100%;
-        height: 100%;
-        border-radius: 10px;
-        object-fit: contain;
-    }
-
-    del {
-        padding-right: 2px
-    }
-
-    .filter,
-    #mobile-filter {
-        display: none
-    }
-}
-
-@media(min-width:992px) and (max-width:1199px) {
-    #search {
-        width: 300px;
-        padding: 5px;
-        padding-left: 20px
-    }
-
-    .search-nav-item {
-        margin-left: 200px;
-        width: 350px
-    }
-
-    .fa-user-o {
-        margin-left: 160px
-    }
-
-    .text {
-        display: none
-    }
-
-    #sidebar {
-        width: 30%;
-        padding: 20px;
-        float: left
-    }
-
-    #products {
-        width: 70%;
-        padding: 10px;
-        margin: 0;
-        float: right
-    }
-
-    .card {
-        width: 200px;
-        height: 330px;
-        border: none
-    }
-
-    .card-img-top {
-        width: 200px;
-        height: 200px;
-        border-radius: 10px
-    }
-
-    .fa-plus,
-    .fa-minus {
-        font-size: 12px
-    }
-
-    .sign {
-        height: 25px
-    }
-
-    .price {
-        width: 99px
-    }
-
-    .filter,
-    #mobile-filter {
-        display: none
-    }
-}
-
-@media(min-width:768px) and (max-width:991px) {
-    #search {
-        width: 300px;
-        padding: 5px;
-        padding-left: 20px
-    }
-
-    .search-nav-item {
-        margin-left: 60px;
-        width: 350px
-    }
-
-    .fa-user-o {
-        margin-left: 80px
-    }
-
-    .text {
-        display: none
-    }
-
-    #sidebar {
-        width: 35%;
-        padding: 20px;
-        float: left
-    }
-
-    #products {
-        width: 65%;
-        padding: 10px;
-        margin: 0;
-        float: right
-    }
-
-    .card {
-        border: none
-    }
-
-    .filter,
-    #mobile-filter {
-        display: none
-    }
-}
-
-@media(min-width:576px) and (max-width:767px) {
-    .text {
-        display: none
-    }
-   
-    .search-nav-item {
-        margin-left: 35px;
-        width: 270px
-    }
-
-    #search {
-        width: 240px;
-        padding: 5px;
-        padding-left: 20px
-    }
-
-    .fa-search {
-        padding: 3px;
-        font-size: 18px
-    }
-
-    #sidebar {
-        width: 40%;
-        padding: 20px;
-        float: left
-    }
-
-    #products {
-        width: 60%;
-        padding: 10px;
-        margin: 0;
-        float: right
-    }
-
-    .card {
-        border: none
-    }
-
-    #off {
-        padding-left: 2px
-    }
-
-    #sorting span,
-    #res {
-        font-size: 14px
-    }
-
-    .filter,
-    #mobile-filter {
-        display: none
-    }
-}
-
-@media(max-width:575px) {
-    .search-nav-item {
-        margin: 0;
-        width: 100%;
-        margin-top: 10px
-    }
-
-    .cart1{
-        height: 50vh;
-         padding: 0; 
-        display: flex;
-         justify-content: center;
-    }
-
-    #search {
-        width: 80%;
-        padding-left: 10px;
-        margin-top: 10px;
-        padding-right: 10px
-    }
-
-    .fa-search {
-        padding: 10px;
-        font-size: 18px
-    }
-
-    #sidebar {
-        display: none
-    }
-
-    .filter {
-        margin-left: 70%;
-        margin-top: 2%
-    }
-
-    #sorting,
-    #res {
-        font-size: 12px;
-        margin-top: 2%
-    }
-    #notification{
-  text-align: center;
-        font-size: 1px;
-}
-}
-#notification{
-   background: radial-gradient(circle, rgba(105,105,105,1) 0%, rgba(62,62,62,1) 52%); 
-   background: rgb(105,105,105);
-   border-radius: 9px; opacity: .8;  
-   color: white;
-   text-align: center;
-   position: fixed; 
-   bottom: 10%;
-   left: 45%;
-   padding: 5px;
-   display: none ;
-}
-div.scrollmenu {
-    text-align: center;
-    width: 100%;
-    color: white;
-  background-color: rgb(255, 255, 255);
-  overflow: auto;
-  white-space: nowrap;
-
-}
-
-div.scrollmenu a {
-    cursor: pointer;
-  display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 6px;
-  text-decoration: none;
-}
-
-
-
-@media (min-width: 1200px){
-     .card{
-          width: 250px;
-     }
-}
-.red{
-    background-color: red;
-}
-.black{
-    background-color: black;
-}.green{
-    background-color: green;
-}.blue{
-    background-color: blue;
-}.violet{
-    background-color: violet;
-}.yellow{
-    background-color: yellow;
-}.brown{
-    background-color: brown;
-}
-#addTowishList{
-    display: none;
-}
-
-  </style>
-
-
-<% if(result.product.length <=  0 ){ %> 
-<style>
-    @import url(http://fonts.googleapis.com/css?family=Calibri:400,300,700);
-
-
-.mt-100 {
-    margin-top: 100px
-}
-
-.card {
-    margin-bottom: 30px;
-    border: 0;
-    -webkit-transition: all .3s ease;
-    transition: all .3s ease;
-    letter-spacing: .5px;
-    border-radius: 8px;
-    -webkit-box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05);
-    box-shadow: 1px 5px 24px 0 rgba(68, 102, 242, .05)
-}
-
-.card .card-header {
-    background-color: #fff;
-    border-bottom: none;
-    padding: 24px;
-    border-bottom: 1px solid #f6f7fb;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px
-}
-
-.card-header:first-child {
-    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0
-}
-
-.card .card-body {
-    padding: 30px;
-    background-color: transparent
-}
-
-.btn-primary,
-.btn-primary.disabled,
-.btn-primary:disabled {
-    background-color: #4466f2 !important;
-    border-color: #4466f2 !important
-}
-
-.showAddtoCart{
-    display: block !important;
-}
-
-
-</style>
-    <div class="container-fluid mt-50">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card" style="width: 100%;">
-                    <div class="card-header">
-                        
-                    </div>
-                    <div class="card-body cart">
-                        <div class="col-sm-12 empty-cart-cls text-center"> <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
-                            <h3><strong>Sorry No Product Fount</strong></h3>
-                            <h4>Dont Stop Continue shoping  🙂</h4> <a href="/product" class="btn btn-primary cart-btn-transform m-3" data-abc="true">continue shopping</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<% if(result.product.length <= 0 ){ %>
+    
+    <center class="p-5"> <h4>NO result found !</h4>
+      <a href="/"><button class="  m-4 btn btn-primary">Go To Home</button></a>  
+    </center>
     <% }else{ %> 
-  <section style="padding: 0;">
-
-<div  id="filterBtn"  class="fil m-3 mr-auto" style=" margin-top: 0px !important;" > <button  onclick="showFilter()"  class="btn btn-outline-warning" id="" type="button" data-toggle="collapse" data-target="#mobile-filter" aria-expanded="true" aria-controls="mobile-filter">Filters<span class="fa fa-filter pl-1"></span></button>
-</div>
-<div id="mobile-filter">
-  <p class="pl-sm-0 pl-2"> Home | <b>All Breads</b></p>
-  <div class="border-bottom pb-2 ml-2">
-      <h4 id="burgundy">Filters</h4>
-  </div>
-  <div class="py-2 border-bottom ml-3">
-      <h6 class="font-weight-bold">Categories</h6>
-      <div id="orange"><span class="fa fa-minus"></span></div>
-      <form>
-          <div class="form-group"> <input type="checkbox" id="artisan"> <label for="artisan">Fresh Artisan Breads</label> </div>
-          <div class="form-group"> <input type="checkbox" id="breakfast"> <label for="breakfast">Breakfast Breads</label> </div>
-          <div class="form-group"> <input type="checkbox" id="healthy"> <label for="healthy">Healthy Breads</label> </div>
-      </form>
-  </div>
-  <div class="py-2 border-bottom ml-3">
-      <h6 class="font-weight-bold">Accompainments</h6>
-      <div id="orange"><span class="fa fa-minus"></span></div>
-      <form>
-          <div class="form-group"> <input type="checkbox" id="tea"> <label for="tea">Tea Cakes</label> </div>
-          <div class="form-group"> <input type="checkbox" id="dough"> <label for="dough">Cookie Dough</label> </div>
-          <div class="form-group"> <input type="checkbox" id="choco"> <label for="choco">Chocolates</label> </div>
-      </form>
-  </div>
-  <div class="py-2 ml-3">
-      <h6 class="font-weight-bold">Top Offers</h6>
-      <div id="orange"><span class="fa fa-minus"></span></div>
-      <form>
-          <div class="form-group"> <input type="checkbox" id="25off"> <label for="25">25% off</label> </div>
-          <div class="form-group"> <input type="checkbox" id="5off"> <label for="5off" id="off">5% off on artisan breads</label> </div>
-      </form>
-  </div>
-</div>
-<!-- Sidebar filter section -->
-<section id="sidebar">
-  <p> Home | <b>All Breads</b></p>
-  <div class="border-bottom pb-2 ml-2">
-      <h4 id="burgundy">Filters</h4>
-  </div>
-  <div class="py-2 border-bottom ml-3">
-      <h6 class="font-weight-bold">Categories</h6>
-      <div id="orange"><span class="fa fa-minus"></span></div>
-      <form>
-          <div class="form-group"> <input type="checkbox" id="artisan"> <label for="artisan">Fresh Artisan Breads</label> </div>
-          <div class="form-group"> <input type="checkbox" id="breakfast"> <label for="breakfast">Breakfast Breads</label> </div>
-          <div class="form-group"> <input type="checkbox" id="healthy"> <label for="healthy">Healthy Breads</label> </div>
-      </form>
-  </div>
-  <div class="py-2 border-bottom ml-3">
-      <h6 class="font-weight-bold">Accompainments</h6>
-      <div id="orange"><span class="fa fa-minus"></span></div>
-      <form>
-          <div class="form-group"> <input type="checkbox" id="tea"> <label for="tea">Tea Cakes</label> </div>
-          <div class="form-group"> <input type="checkbox" id="dough"> <label for="dough">Cookie Dough</label> </div>
-          <div class="form-group"> <input type="checkbox" id="choco"> <label for="choco">Chocolates</label> </div>
-      </form>
-  </div>
- 
-</section>
-</section>
-<!-- products section -->
-<section id="products">
-  <div class="container">
-      <div class="d-flex flex-row">
-          <div class="text-muted m-2" id="res">Showing <%=result.product.length%>  results</div>
-          <div class="ml-auto mr-lg-4">
-              <div id="sorting" class="border rounded p-1 m-1"> <span class="text-muted">Sort by</span> <select name="sort" id="sort">
-                      <option value="popularity"><b>Popularity</b></option>
-                      <option value="prcie"><b>Price</b></option>
-                      <option value="rating"><b>Rating</b></option>
-                  </select> </div>
-          </div>
-      </div>
-      
+  <section class="product-grids section">
+    <div class="container">
       <div class="row">
-          
-           <%for(var i = 0 ; i<result.product.length ;i++){  %> 
-             
-              
-               <div onmouseleave="$('#addTocartBtn<%=i%>').fadeOut(500)"   class="  col-lg-4  col-md-4 col-6  card1" style=" gap: 1rem; z-index: 1; position: relative;">
+        <div class="col-lg-3 col-12">
+          <div class="product-sidebar">
+            <div class="single-widget search">
+              <h3>Search Product</h3>
+              <form action="#">
+                <input type="text" placeholder="Search Here..." />
+                <button type="submit">
+                  <i class="lni lni-search-alt"></i>
+                </button>
+              </form>
+            </div>
 
-                <% if(result.product[i].offerPercentage !== null){ %> 
-                <i class="fas fa-certificate" style=" -webkit-text-stroke: 1px rgb(242, 255, 0);color: rgba(0, 0, 0, 0.453); font-size: 45px ; position: absolute; z-index: 999; left:7%; top: 6%;"><span style="font-size: 18px; -webkit-text-stroke:0px ; color: white; position: absolute; left: 18%; top: 22%;"><%=result.product[i].offerPercentage%>%</span></i>
-                        <% } %> 
+            <div class="single-widget">
+              <h3>All Categories</h3>
+              <ul class="list">
+                <li>
+                  <a href="product-grids.html">Computers & Accessories </a
+                  ><span>(1138)</span>
+                </li>
+                <li>
+                  <a href="product-grids.html">Smartphones & Tablets</a
+                  ><span>(2356)</span>
+                </li>
+                <li>
+                  <a href="product-grids.html">TV, Video & Audio</a
+                  ><span>(420)</span>
+                </li>
+                <li>
+                  <a href="product-grids.html">Cameras, Photo & Video</a
+                  ><span>(874)</span>
+                </li>
+                <li>
+                  <a href="product-grids.html">Headphones</a
+                  ><span>(1239)</span>
+                </li>
+                <li>
+                  <a href="product-grids.html">Wearable Electronics</a
+                  ><span>(340)</span>
+                </li>
+                <li>
+                  <a href="product-grids.html">Printers & Ink</a
+                  ><span>(512)</span>
+                </li>
+              </ul>
+            </div>
 
-                    <div class=" shadow card mt-4 mb-5">
-                        <i class=" fas fa-heart"  id="addTowishList"  onclick="addToWihslist('<%=result.product[i]._id%>')" ></i> 
-                        <button  onclick="addToWihslist('<%=result.product[i]._id%>')"    id="addTocartBtn<%=i%>"  class="btn btn-outline-light" style="position: absolute; left: 23%; top: 54%; display: none; z-index: 9999;">ADD TO wishlist  <i class="text-danger fas fa-heart"></i> </button>
-                        <a href="/product/productDetails?id=<%=result.product[i]._id  %> " style="text-decoration: none;">
-                         <img onmouseenter="$('#addTocartBtn<%=i%>').fadeIn(500)"   class="card-img-top" style=" border-radius: 0px; height: 28vh; width: 100%; object-fit: contain;" src="<%=result.product[i].image[0].imageUrl%>">
-                         
-                         <div class=" shadow card-body" style="text-align: center; border-radius: 0px;">
-                      <h5><b><%=result.product[i].productName %> </b> </h5>
-                      <div class="d-flex flex-column " >
-                          <div class="colors" style="display: flex; justify-content: space-evenly; overflow-x: auto;">
-                            <div class="scrollmenu">
-                                <!-- <a ><h5><b style="color: black;">colors</b></h5></a> -->
-
-                              <% for(var j = 0 ; j<result.product[i].color.length ; j++){ %> 
-                                
-                                   <a style=" height: 13px; width: 13px; border-radius: 50px; " class="<%=result.product[i].color[j]%>"></a>  
-                                  
-
-                               <% } %>
-                            </div> 
-                          </div>
-<!-- ----------------------------------------------------------------------------- -->
-                          
-<!-- ---------------------------------------------------------------------------- -->
-                    <div class="shadow" style=" border-top: 1px solid gold; display: flex;flex-direction: row; justify-content: space-evenly; background-color: rgb(255, 255, 255);">
-                      <% if(result.product[i].offerPrice !== null){ %> 
-                        <div class="ml-auto" style="font-size: 15px; cursor: pointer ; color: rgb(92, 92, 92);"><strike>₹<%=result.product[i].price%>.00</strike></i></div>
-                        <div class="ml-auto price" style="font-size: 20px; cursor: pointer ; color: rgb(255, 196, 0);">₹ <%=result.product[i].offerPrice%> .00</i></div>
-                        <% }else{ %> 
-                          <div class="ml-auto" style="font-size: 15px; cursor: pointer ; color: rgb(92, 92, 92);"><strike>₹<%=result.product[i].price%>.00</strike></i></div>
-                          <div class="ml-auto price" style="font-size: 20px; cursor: pointer ; color: rgb(255, 196, 0);">₹ <%=result.product[i].price%> .00</i></div>
-                          <% } %> 
-                      </div>
-                      </div> 
-                  </div>
+            <div class="single-widget range">
+              <h3>Price Range</h3>
+              <input
+                type="range"
+                class="form-range"
+                name="range"
+                step="1"
+                min="100"
+                max="10000"
+                value="10"
+                onchange="rangePrimary.value=value"
+              />
+              <div class="range-inner">
+                <label>$</label>
+                <input type="text" id="rangePrimary" placeholder="100" />
               </div>
-          </a>
-             
+            </div>
+
+            <div class="single-widget condition">
+              <h3>Filter by Price</h3>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault1"
+                />
+                <label class="form-check-label" for="flexCheckDefault1">
+                  $50 - $100L (208)
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault2"
+                />
+                <label class="form-check-label" for="flexCheckDefault2">
+                  $100L - $500 (311)
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault3"
+                />
+                <label class="form-check-label" for="flexCheckDefault3">
+                  $500 - $1,000 (485)
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault4"
+                />
+                <label class="form-check-label" for="flexCheckDefault4">
+                  $1,000 - $5,000 (213)
+                </label>
+              </div>
+            </div>
           </div>
-    
-          <% } %> 
+        </div>
+        <div class="col-lg-9 col-12">
+          <div class="product-grids-head">
+            <div class="product-grid-topbar">
+              <div class="row align-items-center">
+                <div class="col-lg-7 col-md-8 col-12">
+                  <div class="product-sorting">
+                    <label for="sorting">Sort by:</label>
+                    <select class="form-control" id="sorting">
+                      <option>Popularity</option>
+                      <option>Low - High Price</option>
+                      <option>High - Low Price</option>
+                      <option>Average Rating</option>
+                      <option>A - Z Order</option>
+                      <option>Z - A Order</option>
+                    </select>
+                    <h3 class="total-show-product">
+                      Showing: <span>1 - 12 items</span>
+                    </h3>
+                  </div>
+                </div>
+                <div class="col-lg-5 col-md-4 col-12">
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button
+                        class="nav-link"
+                        id="nav-grid-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-grid"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-grid"
+                        aria-selected="true"
+                      >
+                      <i class="fas fa-line-columns"></i>
+                      </button>
+                      <button
+                        class="nav-link active"
+                        id="nav-list-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#nav-list"
+                        type="button"
+                        role="tab"
+                        aria-controls="nav-list"
+                        aria-selected="false"
+                      >
+                      <i class="fas fa-align-justify"></i>
+                      </button>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+              <div
+                class="tab-pane fade"
+                id="nav-grid"
+                role="tabpanel"
+                aria-labelledby="nav-grid-tab"
+              >
+
+
+              <!-- ------------------------------ flex direction column ---------------- -->
+                <div class="row">
+                    <%for(var i = 0 ; i<result.product.length ;i++){  %> 
+                  <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-product">
+                      <div class="product-image">
+                          <a href="/product/productDetails?id=<%=result.product[i]._id%>">
+                        <img  
+                        src="<%=result.product[i].image[0].imageUrl%>" style="width: 100%; height: 320px; object-fit: fill;"
+                          alt="#"
+                        />
+                    </a>
+                        <% if(result.product[i].offerPercentage !== null){ %> 
+                            <span class="sale-tag">-<%=result.product[i].offerPercentage%>%</span>
+                            <% } %> 
+                        <div class="button">
+                          <a onclick="addToWihslist('<%=result.product[i]._id%>')" class="btn" style="width: 200px;"
+                            ><i class="fas fa-heart"></i> Add to wishlist</a
+                          >
+                        </div>
+                      </div>
+                      <div class="product-info">
+                        <span class="category"><%=result.product[i].subCatagory  %> </span>
+                        <h4 class="title">
+                          <a href="/product/productDetails?id=<%=result.product[i]._id%>"><%=result.product[i].productName  %></a>
+                        </h4>
+                        <ul class="review">
+                           <i class="fas fa-star  text-warning"></i>
+                           <i class="fas fa-star  text-warning"></i>
+                           <i class="fas fa-star  text-warning"></i>
+                           <i class="fas fa-star  text-warning"></i>
+                           <i class="fas fa-star  text-warning"></i>
+                          <li><span>5.0 Review(s)</span></li>
+                        </ul>
+                        <% if(result.product[i].offerPrice != null){ %> 
+                            <div class="price">
+                              <span>₹ <%=result.product[i].offerPrice%> .00 </span>
+                              <span class="discount-price">₹ <%=result.product[i].price%> .00 </span>
+                            </div>
+                            <% }else{ %> 
+                                <div class="price">
+                                    <span>₹ <%=result.product[i].price%> .00 </span>
+                                     </div>
+                                <% } %>
+                      </div>
+                    </div>
+                  </div>
+                 
+                  <% } %> 
+                  
+                  
+                </div>
+
+
+                <!-- -------------------------end of  the flex-direction column ---------------- -->
+
+                <div class="row">
+                  <div class="col-12">
+                    <div class="pagination left">
+                      <ul class="pagination-list">
+                        <li><a href="javascript:void(0)">1</a></li>
+                        <li class="active">
+                          <a href="javascript:void(0)">2</a>
+                        </li>
+                        <li><a href="javascript:void(0)">3</a></li>
+                        <li><a href="javascript:void(0)">4</a></li>
+                        <li>
+                          <a href="javascript:void(0)"
+                            ><i class="lni lni-chevron-right"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane show active fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab" >
+
+                <!-- --------------start of the row wise product list--------------------- -->
+
+                <div class="row">
+
+                    <%for(var i = 0 ; i<result.product.length ;i++){  %> 
+
+                  <div class="col-lg-12 col-md-12 col-12">
+                    <div class="single-product">
+                      <div class="row align-items-center">
+                        <div class="col-lg-4 col-md-4 col-12">
+                          <div class="product-image">
+                            <a href="/product/productDetails?id=<%=result.product[i]._id%>">
+                                <img  
+                                src="<%=result.product[i].image[0].imageUrl%>" style="width: 100%; height: 320px; object-fit: fill;"
+                                  alt="#"
+                                />
+                            </a>
+                            <% if(result.product[i].offerPercentage !== null){ %> 
+                            <span class="sale-tag">-<%=result.product[i].offerPercentage%>%</span>
+                            <% } %> 
+                            <div class="button" style="width: fit-content;">
+                              <a onclick="addToWihslist('<%=result.product[i]._id%>')" class="btn" style="width: 200px;"
+                                ><i class="fas fa-heart"></i> Add to wishlist</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-12">
+                          <div class="product-info">
+                            <span class="category">Speaker</span>
+                            <h4 class="title">
+                                <a href="/product/productDetails?id=<%=result.product[i]._id%>"><%=result.product[i].productName  %></a>
+                            </h4>
+                            <ul class="review">
+                                <i class="fas fa-star  text-warning"></i>
+                               <i class="fas fa-star  text-warning"></i>
+                               <i class="fas fa-star  text-warning"></i>
+                               <i class="fas fa-star  text-warning"></i>
+                               <i class="fas fa-star  text-warning"></i>
+                              <li><span>5.0 Review(s)</span></li>
+                            </ul>
+
+                            <% if(result.product[i].offerPrice != null){ %> 
+                            <div class="price">
+                              <span>₹ <%=result.product[i].offerPrice%> .00 </span>
+                              <span class="discount-price">₹ <%=result.product[i].price%> .00 </span>
+                            </div>
+                            <% }else{ %> 
+                                <div class="price">
+                                <span>₹ <%=result.product[i].price%> .00 </span>
+                                 </div>
+                                <% } %> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <% } %> 
+                 
             
+                </div>
+
+
+                <!-- --------------end of  the row wise product list------------------ -->
+
+                
+                <div class="row">
+                  <div class="col-12">
+                    <div class="pagination left">
+                      <ul class="pagination-list">
+                        <li><a href="javascript:void(0)">1</a></li>
+                        <li class="active">
+                          <a href="javascript:void(0)">2</a>
+                        </li>
+                        <li><a href="javascript:void(0)">3</a></li>
+                        <li><a href="javascript:void(0)">4</a></li>
+                        <li>
+                          <a href="javascript:void(0)"
+                            ><i class="lni lni-chevron-right"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      </div>
-      </section>
-    
-<% } %> 
+    </div>
+  </section>
+  <% } %> 
 
-<style>
-    #filterBtn{
-    display: none ;
-}
-    @media screen and (max-width : 560px) {
-        #mobile-filter{
-            padding: 1rem;
-            display: none;
-        }
-        #filterBtn{
-            display: flex; justify-content: right
-        }
-        #addTowishList{
-            display: block !important;
-    position: absolute !important;
-    font-size: 25px;
-    top: 53%;
-    left: 73%;
-    color: transparent;
-    -webkit-text-stroke: 2px rgb(245, 0, 0);
 
-}
-.price{
-    font-size: 16px !important;
-}
-    }
-    .displayBlock{
-        display:  block !important;
-    }
-</style>
-
+<%- include('./partials/footer')%> 
 <script>
-
-
-function showFilter (){
-    document.getElementById('mobile-filter').classList.toggle('displayBlock')
-}
-
-
-
- var noti =    document.getElementById("notification")
-  function addToCart(id){
-   
-    var data = {pid:id};
-    $.ajax({
-      url:"/user/addToCart",
-      data:data,
-      method:"post", 
-
-      success:(result)=>{
-        if(result.status){
-
-        }else{
-          noti.innerHTML = "Item is already exists on you cart"
-          noti.style.display = "block"
-          setTimeout(()=>{
-              noti.style.display = "none"
-          } , 500)
-            
-        }
-      } 
-     
-
-
-    })
-  }
-
-  function addToWihslist(id){
+    function addToWihslist(id){
     $.ajax({
         url:'/addToWishlist',
         data : {id : id},
@@ -718,6 +404,3 @@ function showFilter (){
                 })
   }
 </script>
-
-</section>
-	

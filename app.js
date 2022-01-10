@@ -16,20 +16,18 @@ const offer = require('./controllers/admin/offersAndCoupones');
 const userEntry = require('./routes/users/userEntry');
 const userProducts = require('./routes/users/products');
 const userCart = require('./routes/users/userCart');
-const userProfile  = require('./routes/users/userProfile')
 const userCheckOut = require('./routes/users/userCheckout')
 const paypal = require('./routes/users/paypal');
 
 // -----  end of routers initilizing for user----//
 
 // ---------router initilizing for admin -------
+const addBanner = require('./routes/admin/addBanner');
 const adminCatagory = require('./routes/admin/adminCatagory');
 const adminPoduct = require('./routes/admin/adminProduct');
 const adminEntry = require('./routes/admin/adminEntry');
-const adminDashBord = require('./routes/admin/adminDashbord');
 const adminUserManageMent  = require('./routes/admin/adminUserManageMent');
 const adminOffer = require('./routes/admin/adminOffers');
-const adminCoupones  = require('./routes/admin/adminCoupones');
 const adminSalesReport = require('./routes/admin/adminSalesReprort');
 const { checkout } = require('./routes/users/userEntry');
 const adminOrders = require('./routes/admin/adminOrders');
@@ -80,6 +78,8 @@ app.use('/admin/catagory',adminCatagory);
 app.use('/admin/products',adminPoduct);
 app.use('/admin/orders' , adminOrders);
 app.use('/admin/offers' , adminOffer);
+app.use('/admin/sales' , adminSalesReport);
+app.use('/admin/banner' , addBanner);
 //end of the admin-page routes
 
 

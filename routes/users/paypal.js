@@ -9,11 +9,8 @@ var address ;
  
 router.post('/attachAddress',(req,res)=>{
   
-  console.log(req.body);
   req.session.address = req.body;
-  console.log("===============================")
-  console.log(req.session.address);
-  console.log("===============================")
+  
 
   res.json('address added');
 })
@@ -31,7 +28,6 @@ paypal.configure({
 
 
 router.post('/', (req, res) => {
-  console.log("userId = " +req.session.uid);
  
 
   const create_payment_json = {
@@ -94,11 +90,8 @@ router.get('/success', (req, res) => {
   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
       //When error occurs when due to non-existent transaction, throw an error else log the transaction details in the console then send a Success string reposponse to the user.
     if (error) {
-        console.log(error.response);
         throw error;
     } else {
-      console.log("success....")
-        console.log(JSON.stringify(payment));
         res.send('user/success');
     }
 });

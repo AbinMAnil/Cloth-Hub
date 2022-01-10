@@ -6,7 +6,7 @@ const orders = require("../../controllers/admin/adminOrders");
 router to manage orders for the admin 
 */
 
-router.get('/' , orders.showOrderPage);
+router.get('/', orders.showOrderPage);
 
 /* 
 router to get ordre by id 

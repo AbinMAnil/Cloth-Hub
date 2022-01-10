@@ -1,186 +1,8 @@
-<%-include('./partials/!docType') %>
-<!-- <link rel="stylesheet" href="/stylesheets/user/createAccout.css">
-</head>
-<body>
-    <main>
-        <section class="section">
-            <div class="outer" id="outer">
-                <div class="left">
-                    <h1 class="image-text" id="image-text">Huge offers are Waitng </h1>
-                    <div class="image">
-                        <div style="width:100%;height:100%;position:relative;"><iframe src="https://giphy.com/embed/l46CgonUOtSV0pxyE" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
-                    </div>
-                </div>
-                <div class="right">
-                    <%#-include('./partials/spinner') %> 
-                    <section>
-                        <form  id="createUserForm" action="">
-                            <div class="header">
-                                <div style="margin-left: 3vw;">
-                                    <h1>cloth Hub</h1>
-                                </div>
-                                <center>
-                                    <h1><span style="font-size: 25px;background-color: yellow; padding: 2px;">Create </span> Account</h1>
-                                </center>
-                            </div> -->
 
+<%- include('./partials/headers')%> 
 
-                            <!-- timer to limit user time -->
-                            <!-- <center id="createAccountHide">
-                                <div class="timer" id="timer">
-                                    <span class="timing" id="safeTimerDisplay">02 : 60</span>
-                                </div>
-                                <p id="chanceIndicator">your have <span id="limitIndicator"> 4 </span> cahances left</p>
-                            </center> -->
-
-                            <!-- end of the timer -->
-
-                            <!-- <div class="form-body">
-                                <input class="form hideBeforeOtp" type="text" name="name" id="" placeholder="Name "  onkeyup="Check(this);" onkeydown="Check(this);" onKeyPress="if(this.value.length==10) return false;">
-                                <input class="form hideBeforeOtp" type="email" name="email" id="" placeholder="E mail">
-                                <input  class="form " type="number" name="phone" id="phone" placeholder="Phone number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" >
-                                <input  class="form hideBeforeOtp" type="password" name="password" id="" placeholder="Password">
-                            </div>
-                        </form>
-                        <footer>
-                            <center class="otpField"  id="otpField">
-                                <input  class="form " type="number" name="otp" id="otp" placeholder="Enter the OTP" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length== 6) return false;" >
-                            </center>
-                            <center class="hideBeforeOtp"> <button  onclick="submitData()" type="button">Create Account  </button></center>
-                            <center class="hideButton"> <button id="continueButton"  onclick="numberSubmit()" type="button">Continue </button></center>
-                            <div style="display: flex; justify-content: space-evenly;" class="hideButton" >
-                                <center class="hideBeforeOtp" id="showOtpSubmitButton"> <button id=""  onclick="submitOtp()" type="button">Submit OTP </button></center>
-                                <center class="hideBeforeOtp" id="goBack"> <button id=""  onclick="location.reload()" type="button"> Go Back </button></center>
-                            </div>
-                            <p style="text-align: center; color: red;  margin-top: 1vh;" id="err"></p>
-                            <p style="text-align: center;">have an Account <span><a href="/signup">sign Up</a></span></p>
-                        </footer>
-                    </section>
-                </div>
-            </div>
-        </section>
-    </main>
-    <script src="/javascripts/user/createAccount.js"></script>
-</body>
-</html> -->
-
-
-<!-- -----------start of the user  create account --------------- -->
 
 <style>
-
-    #username , #password, #dob,  #email , #phone , #oldPassword  , #newPassword{
-      border: 1px solid #0c004c;
-    }
-    .registration-form{
-      padding: 1rem 3rem 2rem 3rem;
-    }
-    
-    .registration-form form{
-        background-color: #fff;
-        max-width: 600px;
-        margin: auto;
-        padding: 50px 70px;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
-    }
-    
-    .registration-form .form-icon{
-      text-align: center;
-        background-color:#133685;
-        border-radius: 50%;
-        font-size: 40px;
-        color: white;
-        width: 100px;
-        height: 100px;
-        margin: auto;
-        margin-bottom: 50px;
-        line-height: 100px;
-    }
-    
-    .registration-form .item{
-      border-radius: 6px;
-        margin-bottom: 25px;
-        padding: 10px 20px;
-    }
-    
-    .registration-form .create-account{
-        border-radius: 6px;
-        padding: 10px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #5791ff;
-        border: none;
-        color: white;
-        margin-top: 20px;
-    }
-    
-    .registration-form .social-media{
-        max-width: 600px;
-        background-color: #fff;
-        margin: auto;
-        padding: 35px 0;
-        text-align: center;
-        border-bottom-left-radius: 30px;
-        border-bottom-right-radius: 30px;
-        color: #9fadca;
-        border-top: 1px solid #dee9ff;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
-    }
-    
-    .registration-form .social-icons{
-        margin-top: 30px;
-        margin-bottom: 16px;
-    }
-    
-    .registration-form .social-icons a{
-        font-size: 23px;
-        margin: 0 3px;
-        color: #5691ff;
-        border: 1px solid;
-        border-radius: 50%;
-        width: 45px;
-        display: inline-block;
-        height: 45px;
-        text-align: center;
-        background-color: #fff;
-        line-height: 45px;
-    }
-    
-    .registration-form .social-icons a:hover{
-        text-decoration: none;
-        opacity: 0.6;
-    }
-    
-    @media (max-width: 576px) {
-      .registration-form{
-        padding:  1rem;
-      }
-        .registration-form form{
-            padding: 50px 20px;
-        }
-    
-        .registration-form .form-icon{
-            width: 70px;
-            height: 70px;
-            font-size: 30px;
-            line-height: 70px;
-        }
-    }
-    
-    
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    
-    /* Firefox */
-    input[type=number] {
-      -moz-appearance: textfield;
-    }
     #partitioned {
   padding-left: 15px;
   letter-spacing: 42px;
@@ -203,202 +25,160 @@
   width: 190px; 
   overflow: hidden;
 }
-    </style>
-  
-  <div class="w3-container">
-  
-    <div id="id02" class="w3-modal" style=" display: block !important;">
-      <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
-        <div class="w3-container"  id="editProfile">
-          <div class="w3-section">
-            <div class="registration-form">
-              <form  name="createAccout" id="editProfileForm" action="#">
-                  <div class="form-icon">
-                      <span><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQomLumvGvI0ncdMVYtyq2r31HMiVa2piHmJshVkC00JCtODsiJcDBMD6rBuA3p1yCZSw0&usqp=CAU" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50px;" alt=""></i></span>
-                  </div>
+</style>
+<input hidden type="text" value="<%=refId%>" id="refId">
 
-                   <!-- timer to limit user time -->
-                        <center style="display: none;" id="createAccountHide">
-                            <div id='progressbar4'></div>
-                                <div style="margin-top: -5%;" class="timer" id="timer">
-                                    <h4 class="timing" id="safeTimerDisplay">02 : 60</h4>
-                                </div>
-                                <p id="chanceIndicator" >your have<b id="limitIndicator" class="text-danger"> 4 </b>chances left</p>
-                            </center> 
-
-                            <!-- end of the timer -->
-
-                                <input hidden type="text" value="<%=refId%>" id="refId">
-                  <div class="form-group">
-                      <input name="userName" type="text" class="form-control item" id="username" placeholder="Username" required>
-                  </div>
-                  <div class="form-group">
-                      <input name="email" type="email" class="form-control item" id="email" placeholder="Email" required>
-                  </div>
-                  <div class="form-group">
-                      <input minlength="10"   maxlength="10" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;"    name="phone" type="number" class="form-control item" id="phone" placeholder="Phone Number" required>
-                  </div>
-
-
-                  <!-- ----------for otp------------------ -->
-                  <div class="form-group mb-4">
-                   <center id="otpDiv" style="display: none;">
-                    <div id="divOuter">
-                    <div id="divInner">
-                  <input style="outline: none; border: none;" id="partitioned" type="text" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  onKeyPress="if(this.value.length==4) return false;"/>
-                    </div>
-                  </div> </center>
-
-                </div>
-
-                  <!-- -----------end of top============== -->
-  
-                  <div class="form-group">
-                    <input  minlength="6"     name="phone" type="password" class="form-control item" id="password" placeholder="Password" required>
-                </div>
-                
-                  <div class="form-group">
-                      
-                      <button  id="continueBtn" onclick='sendOtp()' class="btn btn-success " type="button" >Continue</button>
-
-                      <button style="display: none;"  id="submitOtpBtn" onclick='submitOtp()' class="btn btn-success " type="button" >submit OTP</button>
-
-                      <button  onclick='document.getElementById("id02").style.display = "none"  ; document.getElementById("editProfileForm").reset()' type="button" class="btn btn-danger ">Cancel</button>
-                  </div>
-                 <center> <p id="errorEditProfile" style="color: red; margin-top: 2%;"></p></center>
-              </form>
+    <div class="breadcrumbs">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+              <div class="breadcrumbs-content">
+                <h1 class="page-title">Registration</h1>
               </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+              <ul class="breadcrumb-nav">
+                <li>
+                  <a href="index.html"><i class="lni lni-home"></i> Home</a>
+                </li>
+                <li>Registration</li>
+              </ul>
+            </div>
           </div>
-      
+        </div>
+      </div>
   
+      <div class="account-login section">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+              <div class="register-form">
+                <div class="title">
+                  <h3>No Account? Register</h3>
+                  <p>
+                    Registration takes less than a minute but gives you full
+                    control over your orders.
+                  </p>
+                </div>
+                <form class="row" method="post">
+
+                        <!-- timer to limit user time -->
+                  <center style="display: none;" id="createAccountHide" class="mt-4">
+                    <div id='progressbar4'></div>
+                        <div style="margin-top: -5%;" class="timer" id="timer">
+                            <h4 class="timing" id="safeTimerDisplay">02 : 60</h4>
+                        </div>
+                        <p id="chanceIndicator" >your have<b id="limitIndicator" class="text-danger"> 4 </b>chances left</p>
+                    </center> 
+
+                    <!-- end of the timer -->
+
+
+                  <div id="nameDiv" class="col-sm-12">
+                    <div class="form-group">
+                      <label for="reg-fn">First Name</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="username"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                                    <!-- ----------for otp------------------ -->
+                                    <div  style="display: none;"  id="otpDiv" class="form-group mb-4 mt-4">
+                                        <center>
+                                         <div id="divOuter">
+                                         <div id="divInner">
+                                       <input style="outline: none; border: none;" id="partitioned" type="text" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  onKeyPress="if(this.value.length==4) return false;"/>
+                                         </div>
+                                       </div> </center>
+                     
+                                     </div>
+                     
+                                       <!-- -----------end of top============== -->
+
+
+
+                  
+                  <div id="emailDiv" class="col-sm-6">
+                    <div class="form-group">
+                      <label for="reg-email">E-mail Address</label>
+                      <input
+                        class="form-control"
+                        type="email"
+                        id="email"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div id="phoneDiv" class="col-sm-6">
+                    <div class="form-group">
+                      <label for="reg-phone">Phone Number</label>
+                      <input
+                      style="letter-spacing: 8px;"
+                        class="form-control"
+                        type="number"
+                        id="phone"
+                        pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;"   
+                      />
+                    </div>
+                  </div>
+
+                  <div id="passwordDiv" class="col-sm-12">
+                    <div class="form-group">
+                      <label for="reg-pass">Password</label>
+                      <input
+                        class="form-control"
+                        type="password"
+                        id="password"
+                        required
+                      />
+                    </div>
+                  </div>
+                 
+                  <div class="button">
+                    <center>
+                      <p class="text-danger mt-4 mb-4" id="err" ></p>
+                      </center>
+                    <button id="continueBtn" class="btn" type="button" onclick="sendOtp()">Continue</button>
+                    <button id="submitOtpBtn" class="btn" type="button" onclick="submitOtp()">Submit</button>
+                  </div>
+                  <p class="outer-link">
+                    Already have an account? <a href="/signup">Login Now</a>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
+      </div>
+
+<%- include('./partials/footer')%> 
   
-  <style>
-.progressbar {
-  width: 80%;
-  margin: 25px auto;
-  border-radius: 50px;
-}
-.progressbar .inner {
-  height: 10px;
-  animation: progressbar-countdown;
-  /* Placeholder, this will be updated using javascript */
-  animation-duration: 120s;
-  /* We stop in the end */
-  animation-iteration-count: 1;
-  /* Stay on pause when the animation is finished finished */
-  animation-fill-mode: forwards;
-  /* We start paused, we start the animation using javascript */
-  animation-play-state: paused;
-  /* We want a linear animation, ease-out is standard */
-  animation-timing-function: linear;
-}
-@keyframes progressbar-countdown {
-  0% {
-    width: 100%;
-    background: #0F0;
-  }
-  50%{
-      width: 50%;
-      background-color: yellow;
-  }
-  100% {
-    width: 0%;
-    background: #F00;
-  }
-}
-  </style>
-
-
-
-
-
-  <!-- --------------end of the user crearte accout --------------------- -->
-  <script>
-
-
-var interevel;
-var checker = 4;
-var timerChecker = true;
-
-
-function submitOtp() {
-
-    if (checker > 0 && timerChecker) {
-        checker--;
-        document.getElementById("limitIndicator").innerHTML = checker;
-        var phone = document.getElementById('phone').value
-        var otp = document.getElementById("partitioned").value;
-        if (otp.length == 4) {
-           
-            $.ajax({
-                url: "/otp",
-                data: {
-                    otp: otp,
-                    phone: phone
-                },
-                method: "post",
-                success: (result) => {
-
-                    var pack = {
-                         refId : $('#refId').val(),
-                         name : $('#username').val(),
-                         email : $('#email').val(),
-                         phone : $('#phone').val(),
-                         password : $('#password').val()
-
-                    }
-                    if (result.status === true) {
-                        $.ajax({
-                            url : '/createAccountPost',
-                            data :  pack,
-                            method :'post',
-                            success : (createAccoutStatus)=>{
-                                if(createAccoutStatus.status == true){
-                                location.href = '/';
-                                }else{
-                                    document.getElementById('errorEditProfile').innerHTML = result.status; 
-                                }
-
-                            }
-                        })
-                       
-                    }else{
-                        document.getElementById('errorEditProfile').innerHTML = result.status;
-                    }
-                }
-            })
-        }
-        else {
-            document.getElementById("err").innerHTML = "otp requres 4 numbers";
-        }
-    }
-    else {
-        clearInterval(interevel);
-        swal.fire("Sorry !", "Try again ", "error").then(() => {
-            location.reload();
-        })
-
-    }
-
-}
-
-
-
-      // fuction to clear erro ;
-document.querySelectorAll('.item').forEach(iter=>{
-    iter.addEventListener('click' ,()=>{
-        document.getElementById('errorEditProfile').innerHTML = ""
-    })
-})
+<script>
 
 
 const loading = ` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
 
-     function sendOtp(){
-        var err = document.getElementById("errorEditProfile");
+$(document).ready(()=>{
+    $('#submitOtpBtn').hide()
+})
+
+      // fuction to clear erro ;
+      document.querySelectorAll('.form-control').forEach(iter=>{
+    iter.addEventListener('click' ,()=>{
+        document.getElementById('err').innerHTML = ""
+    })
+})
+
+
+
+
+function sendOtp(){
+        var err = document.getElementById("err");
 
         var userName = $('#username').val()
         var email = $('#email').val()
@@ -437,10 +217,10 @@ const loading = ` <span class="spinner-border spinner-border-sm" role="status" a
                 btn.innerHTML = 'Continue';
                 btn.disabled =false;
                 if(result.status  == true){
-                    $('#username').hide();
-                    $('#email').hide();
-                    $('#phone').hide();
-                    $('#password').hide();
+                    $('#nameDiv').hide();
+                    $('#emailDiv').hide();
+                    $('#phoneDiv').hide();
+                    $('#passwordDiv').hide();
                     btn.style.display = "none";
 
                     $('#otpDiv').show();
@@ -455,6 +235,9 @@ const loading = ` <span class="spinner-border spinner-border-sm" role="status" a
      }
 
 
+var timerChecker = true;
+
+
 // functon to stop timer
 function stopTimer() {
     clearInterval(interevel);
@@ -465,7 +248,6 @@ function stopTimer() {
 }
 // function to start timer;
 function startTimer() {
-    createProgressbar('progressbar4', '120s', function() {});
     var timer = document.getElementById("safeTimerDisplay");
     var minute = 2;
     var second = 1;
@@ -486,30 +268,76 @@ function startTimer() {
     }, 1000);
 }
 
+var checker = 4;
 
- function createProgressbar(id, duration, callback) {
-  // We select the div that we want to turn into a progressbar
-  var progressbar = document.getElementById(id);
-  progressbar.className = 'progressbar';
 
-  // We create the div that changes width to show progress
-  var progressbarinner = document.createElement('div');
-  progressbarinner.className = 'inner';
 
-  // Now we set the animation parameters
-  progressbarinner.style.animationDuration = duration;
+function submitOtp() {
 
-  // Eventually couple a callback
-  if (typeof(callback) === 'function') {
-    progressbarinner.addEventListener('animationend', callback);
-  }
+if (checker > 0 && timerChecker) {
+    checker--;
+    document.getElementById("limitIndicator").innerHTML = checker;
+    var phone = document.getElementById('phone').value
+    var otp = document.getElementById("partitioned").value;
+    var btn = document.getElementById('submitOtpBtn');
+    btn.innerHTML = loading;
+    btn.disabled = true;
+    if (otp.length == 4) {
+       
+        $.ajax({
+            url: "/otp",
+            data: {
+                otp: otp,
+                phone: phone
+            },
+            method: "post",
+            success: (result) => {
+                  btn.innerHTML = 'Submit';
+                 btn.disabled = false;
+                var pack = {
+                     refId : $('#refId').val(),
+                     name : $('#username').val(),
+                     email : $('#email').val(),
+                     phone : $('#phone').val(),
+                     password : $('#password').val(),
+                     gustUserId : localStorage.getItem('userId')
+                }
+                if (result.status == true) {
+                    $.ajax({
+                        url : '/createAccountPost',
+                        data :  pack,
+                        method :'post',
+                        success : (createAccoutStatus)=>{
+                            if(createAccoutStatus.status == true){
+                            location.href = '/';
+                            }else{
+                                document.getElementById('err').innerHTML = result.status; 
+                            }
 
-  // Append the progressbar to the main progressbardiv
-  progressbar.appendChild(progressbarinner);
+                        }
+                    })
+                   
+                }else{
+                    document.getElementById('err').innerHTML = result.status;
+                }
+            }
+        })
+    }
+    else {
+        document.getElementById("err").innerHTML = "otp requres 4 numbers";
+    }
+}
+else {
+    clearInterval(interevel);
+    swal.fire("Sorry !", "Try again ", "error").then(() => {
+        location.reload();
+    })
 
-  // When everything is set up we start the animation
-  progressbarinner.style.animationPlayState = 'running';
+}
+
 }
 
 
-   </script>
+
+
+</script>

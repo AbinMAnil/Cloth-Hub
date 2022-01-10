@@ -3,6 +3,8 @@ dotEnv.config();
 var express = require("express");
 const { route } = require("../../app");
 var router = express.Router();
+const mongoose = require('mongoose');
+const objectId = mongoose.Types.ObjectId;
 const middleWare = require("../../middleWares/userAuth");
 const userEntryControllers = require("../../controllers/user/userEntry");
 const catagory = require("../../controllers/admin/adminCatagory");
@@ -10,41 +12,36 @@ const cart = require("../../controllers/user/cart");
 const gustUserCart = require("../../model/user/gustUser");
 const userCart = require("../../model/user/cart");
 const adminProducts = require("../../controllers/admin/adminProduct");
+const addBanner = require('../../controllers/admin/addBanner');
+const wishlist = require('../../model/user/wishlist');
 // --------------------END OF THE REQUIREMENTS------------------------------\\
 
 // HOME PAGE RENDERNG
 router.get("/", middleWare.getUser, async (req, res) => {
   req.session.lastRouter = "/";
 
-  res.render("user/home", {
+  res.render ("user/home", {
     logStatus: req.session.loginStatus,
     catagory: await catagory.getAllCatagory(),
     recentProducts: await adminProducts.sortDate(parseInt(-1)),
     trend: await adminProducts.trendingProduts(),
+    banner : await addBanner.getAllBanners(),
   });
 });
 
 // ROUTER T0 GET CART COUNT OF THE ALL  TYPE OF USER
-router.post("/getCartCount", async (req, res) => {
-  if (req.session.uid) {
-    res.json({
-      count: await userEntryControllers.getCartCount(req.session.uid, userCart),
-    });
-  } else {
-    res.json({
-      count: await userEntryControllers.getCartCount(req.body.id, gustUserCart),
-    });
-  }
-});
+router.post("/getCartCount" , userEntryControllers.getCartCount);
 
 // res.render("user/home");
 
 // CREATE ACCOUNT PAGE RENDRING
-router.get("/createAccount", middleWare.dontBringToSingupPage, (req, res) => {
-  console.log(req.query.refId);
+router.get("/createAccount", middleWare.dontBringToSingupPage, async (req, res) => {
 
-    res.render("user/createAccout", {refId : req.query.refId} );
-  // console.log(req.cookies);
+    res.render("user/createAccout", {refId : req.query.refId , logStatus: req.session.loginStatus,
+      catagory: await catagory.getAllCatagory(),
+      recentProducts: await adminProducts.sortDate(parseInt(-1)),
+      trend: await adminProducts.trendingProduts()
+     } );
   // res.cookie("demo", "hello world", {
   //   maxAge: 100000000000000000000,
   // });
@@ -52,14 +49,18 @@ router.get("/createAccount", middleWare.dontBringToSingupPage, (req, res) => {
 });
 
 // SIGNUP PAGE RENDERING
-router.get("/signup", middleWare.dontBringToSingupPage, (req, res) => {
-  res.render("user/signup");
+router.get("/signup", middleWare.dontBringToSingupPage, async (req, res) => {
+  res.render("user/signup" , {logStatus: req.session.loginStatus,
+    catagory: await catagory.getAllCatagory(),
+    recentProducts: await adminProducts.sortDate(parseInt(-1)),
+    trend: await adminProducts.trendingProduts()});
 });
 
 // TO CHECK THE PHONE NUMBER IS VALID OR NOT OF A NEW USER
 router.post("/isValidPhone", async (req, res) => {
   
   try {
+   
     res.json({
       status: await userEntryControllers.sendOtpToUser(req.body.phone),
     });
@@ -70,7 +71,6 @@ router.post("/isValidPhone", async (req, res) => {
 
 // TO CHECK THE OTP
 router.post("/otp", async (req, res) => {
-  console.log(req.body.gustUserId);
   var result = await userEntryControllers.checkOtpforNewUser(
     req.body.phone,
     req.body.otp
@@ -83,9 +83,15 @@ router.post("/otp", async (req, res) => {
 router.post("/createAccountPost", async (req, res) => {
   req.body.password = await middleWare.hashPassword(req.body.password);
   try {
+    req.session.temGustUserId = req.body.gustUserId;
     var result = await userEntryControllers.insertUser(req.body);
     req.session.uid = result._id;
+
+    cart.shiftItem(req.session.temGustUserId, req.session.uid);
     res.json({ status: true });
+    // shift item of user ;
+   
+
   } catch (err) {
     res.json({ status: err });
   }
@@ -104,7 +110,6 @@ router.post("/otpCheckForExistUser", async (req, res) => {
     req.body.phone,
     req.body.otp
   );
-
 
   req.session.uid = result.userId;
   res.json({ status: result.status  });
@@ -130,12 +135,13 @@ router.post("/signupWithEmail", async (req, res) => {
 router.get("/logout", (req, res) => {
   delete req.session.uid;
   res.redirect("/");
-});
+  });
 
 // TO RENDER THE  USER PROFILE
 router.get("/userProfile", async (req, res) => {
   res.render("user/userProfile", {
     logStatus: req.session.loginStatus,
+    
     catagory: await catagory.getAllCatagory(),
     user: await userEntryControllers.getUserById(req.session.uid),
   });
@@ -147,6 +153,21 @@ router.post("/eidtProfile", (req, res) => {
     status: userEntryControllers.editProfile(req.session.uid, req.body),
   });
 });
+
+router.post('/getWishListCount' , async (req,res)=>{
+  if(req.session.uid){
+    
+   var result =  await wishlist.findOne({userId : objectId(req.session.uid)})
+   if(result == null){
+     res.json({status : 0});
+     return ;
+   }
+  res.json({status : result.product.length});
+  }else{
+    res.json({status : parseInt(0)})
+  }
+})
+
 
 //ROUTER TO CHECK PASSWORD
 router.post("/checkPassword", userEntryControllers.changePassword);
@@ -168,5 +189,8 @@ router.post("/addToWishlist", userEntryControllers.addToWishlist);
 //ROUTER TO DELETE ITEM FORM WISHLIST
 router.delete("/removeFormWishlist", userEntryControllers.removeFromWishlist);
 
-// ROUTER TO SHOW CATAGORY WISE AND SUBCATAGORY ;
+//ROUTER TO EIDT UPLOAD THE PROFILE OF USER
+router.post('/uploadProfilPic' , userEntryControllers.uploadProfile)
+
+
 module.exports = router;

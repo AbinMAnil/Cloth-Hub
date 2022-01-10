@@ -61,6 +61,12 @@ router.post('/sortDate', async (req, res)=>{
 
 })
 
+//ROUTER T0 SHOW CURRENT OFFER A PRODUCT HAVE 
+router.post('/getOfferOfProduct' , product.getProductOffer );
+
+
+// router to delter the offer form the product 
+router.post('/removeOffer' , product.clearOrderFromProduct);
 
 
 module.exports = router

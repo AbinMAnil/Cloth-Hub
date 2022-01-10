@@ -99,7 +99,6 @@ module.exports = {
      showCheckOut : async (req, res)=>{
 
           if(req.session.uid){
-               console.log(req.query.couponeCode);
                var result = await cartController.getCartForCheckOut(req.session.uid);
              if(result.product.length >= 1){
           res.render('user/checkOut' , {logStatus: req.session.loginStatus,
@@ -128,7 +127,8 @@ module.exports = {
          var saveAddress =req.body.saveAddress ;
          delete req.body['saveAddress'];
          delete req.body['paymentMethod']
-          var cartProduct = await cartController.getCartForCheckOut(userId);
+         var cartProduct = await cartController.getCartForCheckOut(userId);
+
           if(cartProduct.grandTotal > 1 ){
                var lastAmount ; 
                if(req.body.amount != undefined) {lastAmount = parseInt(req.body.amount)}
@@ -168,7 +168,7 @@ module.exports = {
 
 
           // to save the  address;
-          if(saveAddress){
+          if(saveAddress == true){
                // req.body.addressUniqueId =  generateUniqueId()
                addAddress(req.body, userId);
           }
@@ -215,7 +215,6 @@ module.exports = {
      },
      getAddressOfUser : async (req,res)=>{
 
-          console.log(req.body.id);
           var result = await userModel.aggregate([
 
                {$match:{_id  :  objectId(req.session.uid)}} ,
@@ -233,7 +232,6 @@ module.exports = {
           res.json({status : true});
      },
      deleteAddress :async (req,res)=>{
-          console.log(req.body.id)
           var result = await userModel.updateOne(
                {_id :objectId(req.session.uid)},
 
@@ -243,6 +241,40 @@ module.exports = {
           if(result.modifiedCount)res.json({status :true  , address : addressCount.address.length});
           
      },
+     getWallet : async (req,res)=>{
+          var user =  await userModel.findOne({_id : objectId(req.session.uid)});
+          const totalAmount  = await cartController.getAmoutOnlyForWallet(req.session.uid)
+          if(user.wallet >= totalAmount){
+               console.log("ya aligible")
+               res.json({status :true})
+          }else{
+               res.json({status :false})
+          }
+     },
+
+     updateWallet : async (req,res)=>{
+          var wallet =  await userModel.findOne({_id : objectId(req.session.uid)});
+          wallet = wallet.wallet;
+          
+
+          if(wallet => req.body.amount){
+          const result = await userModel.updateOne(
+               {
+                    _id :  objectId(req.session.uid)
+               },
+               {
+                    $inc: {
+                         wallet : -parseInt(req.body.amount)
+                    }
+               }
+          )
+          console.log(result);
+          res.json({status : true})
+          }else{
+               res.json({status : false , message  : "you don't have enough money to purchase"});
+          }
+
+     }
 
    
 

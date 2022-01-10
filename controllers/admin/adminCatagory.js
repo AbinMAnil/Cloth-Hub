@@ -146,7 +146,6 @@ module.exports = {
                   
                     resolve(true);
                  }catch(err){
-                      location.reload();
                     console.log(err);
                  }
                     
@@ -181,7 +180,6 @@ module.exports = {
                          if(insertResult.acknowledged  == true) {resolve(true) ; return }
                          else{
                               console.log("somthing err");
-                              location.reload();
                          }
                     }
           })

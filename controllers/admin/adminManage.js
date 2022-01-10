@@ -33,7 +33,6 @@ module.exports = {
                    if(result.acknowledged)resolve(action);
                }catch(err){
                     console.log(err);
-                    location.reload();
                }
           })
      }, 

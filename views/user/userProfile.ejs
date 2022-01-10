@@ -1,6 +1,16 @@
 <%-include('./partials/!docType') %> 
 <%-include('./partials/headers') %> 
 
+<link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
+<link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
+
+<script src="https://unpkg.com/dropzone"></script>
+<script src="https://unpkg.com/cropperjs"></script>
+
+    <meta name="robots" content="noindex,follow" />
+
+
+
 <style>
 
 #input1,
@@ -89,10 +99,7 @@ body {
 .address{
   width: 200%;
 }
-.table-responsive{
-  height: 18vh;
-  scroll-behavior: smooth;
-}
+
 @media screen and (max-width : 500px){
   .address{
     width: 145%;
@@ -223,11 +230,46 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 </style>
-<% console.log(user.address )  %> 
+
+
+<% for(var i = 1; i<=1 ; i++){%> 
+  <div  style="z-index: 99999;"   class="modal fade" id="modal<%=i%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelaria-hidden="true>
+       <div class="modal-dialog" role="document">
+            <div class="modal-content"  style=" z-index: 9999 !important;">
+                 <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Crop Image Here</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                      </button>
+                 </div>
+                 <div class="modal-body">
+                      <div class="img-container">
+                           <div class="row">
+                           <div class="col-md-8" style="width: 500px;  height: 500px;">
+                                <img  style="width: 500px; height: 500px;" src="" id="sampleImage<%=i%>" />
+                           </div>
+                           <div class="col-md-4">
+                                <div class="preview" id="preview<%=i%>"></div>
+                           </div>
+                           </div>
+                      </div>
+                 </div>
+                 <div class="modal-footer">
+
+                      <button type="button" id="crop<%=i%>" class="btn btn-primary">Crop</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="closeModal1('<%=i%>')"  >Cancel</button>
+
+                 </div>
+            </div>
+       </div>
+       </div>
+
+       <% } %> 
 
 <div class="container">
      <div class="main-body">
-     
+ 
+
            <!-- Breadcrumb -->
            
            <!-- /Breadcrumb -->
@@ -236,8 +278,10 @@ input[type=number] {
              <div class="col-md-4 mb-3">
                <div class="card shadow">
                  <div class="card-body">
-                   <div class="d-flex flex-column align-items-center text-center">
-                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                   <div class="d-flex flex-column align-items-center text-center"  style="position: relative;">
+                     <img src=" <%=user.image != null ? user.image.imageUrl : 'https://bootdey.com/img/Content/avatar/avatar7.png' %>" alt="Admin" class="rounded-circle" width="150"  id="chekPreview1" >
+                     <input type="file"  id="image1"  style="margin-left:33%; margin-top: -7%; opacity: 0; z-index: 99;  width: 23%; " onchange="addImg(1)"  >
+                     <button  id="uploadImageBtn"  style="position: absolute; border-radius: 50px; top: 40%; left: 60%; " class="btn btn-outline-dark " ><i class="fas fa-user-edit"></i></button>
                      <div class="mt-3">
                        <h4 id="profileName"><%= user.name %> </h4>
                        <p class="text-secondary mb-1 " id="profileMail"><%= user.email %> </p>
@@ -327,38 +371,122 @@ input[type=number] {
                    <div class="card h-100 shadow">
                      <div class="card-body">
 
-                      
+                      <style>
+
+
+.list-group {
+    width: 400px !important
+}
+
+.list-group-item {
+    margin-top: 10px;
+    border-radius: none;
+   
+    cursor: pointer;
+    transition: all 0.3s ease-in-out
+}
+
+.list-group-item:hover {
+    transform: scaleX(1.1)
+}
+
+.check {
+    opacity: 0;
+    transition: all 0.6s ease-in-out
+}
+
+.list-group-item:hover .check {
+    opacity: 1
+}
+
+.about span {
+    font-size: 12px;
+    margin-right: 10px
+}
+
+input[type=checkbox] {
+    position: relative;
+    cursor: pointer
+}
+
+input[type=checkbox]:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0px;
+    left: 0;
+    border: 1px solid #10a3f9;
+    border-radius: 3px;
+    background-color: white
+}
+
+input[type=checkbox]:checked:after {
+    content: "";
+    display: block;
+    width: 7px;
+    height: 12px;
+    border: solid #007bff;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 6px
+}
+
+input[type="checkbox"]:checked+.check {
+    opacity: 1
+}
+                      </style>
                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Make </i> Changes </h6>
-                       <div class=" mt-5 " >
-                        <center>
-                        <button onclick="chagePassword()" class="btn btn-warning ">Chage Password</button>
-                       </center>
-                       </div>
-                       <small></small>
-                       <div class="progress mb-3 bg-white" style="height: 10px">
-                       </div>
-                       <small></small>
-                       <div class="bg-white d-flex " style="justify-content: space-evenly ;" >
-                        <button class="btn btn-success " onclick="showModal()">Add New Address</button>
-                        <a href="/checkout/orderHistory"><button class="btn btn-primary  " >show Order History</button></a>
-
-                       </div>
-                       <small></small>
-                       <div class=" mb-3 bg-white" >
-                         <div hidden class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                       </div>
-                       <small></small>
-                       <div class=" mb-3 bg-white" >
-                        <center><button onclick="editProdfile()" class="btn btn-danger "> Edit Profile </button></center>
-
-                         <div hidden class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                       </div>
+                       <div class="container d-flex justify-content-center">
+                        <ul class="list-group  text-white">
+                            <li class="list-group-item d-flex justify-content-between align-content-center">
+                                <div  onclick="editProdfile()" class="d-flex flex-row"> <img src="https://as2.ftcdn.net/v2/jpg/02/36/88/65/500_F_236886518_vBktOcZq7nxqKpS3MTJF8xYxuuUiscFd.jpg" width="40" />
+                                    <div class="ml-2">
+                                        <h6 class="mb-0">Edit Profile</h6>
+                                        <div class="about"> <span>Click</span> <span>Name , email</span> </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-content-center">
+                              <a href="/checkout/orderHistory"  style="text-decoration: none; color: black;">
+                                <div class="d-flex flex-row"> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK1Zt5T2R1aOT2tGT6N-nF8mFMhOOXV1SeQQ&usqp=CAU" width="40" />
+                                    <div class="ml-2">
+                                        <h6 class="mb-0">Order History</h6>
+                                        <div class="about"> <span>Click</span> <span>show order history</span> </div>
+                                    </div>
+                                </div>
+                              </a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-content-center">
+                                <div  onclick="chagePassword()" class="d-flex flex-row"> <img src="https://en.pimg.jp/078/081/245/1/78081245.jpg" width="40" />
+                                    <div class="ml-2">
+                                        <h6 class="mb-0">Reset password</h6>
+                                        <div class="about"> <span>Click</span> <span>Change your password</span> </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-content-center">
+                                <div  onclick="showModal()"  class="d-flex flex-row"> <img src="https://img.freepik.com/free-vector/address-concept-illustration_114360-321.jpg?size=626&ext=jpg" width="40" />
+                                    <div class="ml-2">
+                                        <h6 class="mb-0">Add Address</h6>
+                                        <div class="about"> <span>Click</span> <span>Create New address</span> </div>
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </div>
                      </div>
                    </div>
                  </div>
 
 
-                 <div class="col-sm-6 mb-3 ">
+                 <div class="col-sm-6 mb-3 "  style="height: fit-content;">
                    <div class="card h-100">
                      <div class="card-body shadow">
                        <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">Address ManageMens</i> Change and Delete</h6>
@@ -367,8 +495,8 @@ input[type=number] {
                       
                         <div id="lastContId" class="table-responsive " >
                           <% if(user.address.length <= 0 ){ %> 
-                         <center> <h3 class="mt-5">You Didn't Add One Address 😂</h2></center>
-                          <center><button class="btn btn-danger "  onclick="showModal()" >ADD NEW ADDRESS</button></center>
+                         <center> <h5 class="mt-5 p-4">You Didn't Add One Address 😂</h5></center>
+                          <center><button class="btn btn-outline-primary "  onclick="showModal()" >ADD NEW ADDRESS</button></center>
                           <% }else{ %> 
                             <table id="addressTable" class="table table-responsive table-borderless bg-white">
                                 <thead>
@@ -659,12 +787,104 @@ input[type=number] {
 <script>
 
 $( document ).ready(function() {
-  console.log(window.location.host);
+
+
+  var image1 = document.getElementById('sampleImage1');
+
+//modal1 and image 1
+    var modal1 = $('#modal1');
+    var cropper1;
+
+    $('#image1').change(function (event) {
+        var files = event.target.files;
+
+        var done = function (url) {
+            
+            image1.src = url;
+            modal1.modal('show');
+        };
+
+        if (files && files.length > 0) {
+            reader = new FileReader();
+            reader.onload = function (event) {
+                done(reader.result);
+            };
+            reader.readAsDataURL(files[0]);
+        }
+    });
+
+    modal1.on('shown.bs.modal', function () {
+        cropper1 = new Cropper(image1, {
+             aspectRatio: 1/1,
+            viewMode: 1,
+            preview: '#preview1'
+        });
+    }).on('hidden.bs.modal', function () {
+        cropper1.destroy();
+        cropper1 = null;
+    });
+
+    $('#crop1').click(function () {
+        canvas = cropper1.getCroppedCanvas({
+            width: 800,
+            height: 500
+        });
+
+        canvas.toBlob(function (blob) {
+            url = URL.createObjectURL(blob);
+            var reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                var base64data = reader.result;
+                    // $("#imageValue1").val(base64data);
+                     
+               ;
+                modal1.modal('hide');
+                const loading = ` <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+                    const icon = `<i class="fas fa-user-edit"></i>`
+                    const btn = document.getElementById('uploadImageBtn');
+                    btn.innerHTML = loading;
+                $.ajax({
+                  url : '/uploadProfilPic',
+                  data : {base64 : base64data},
+                  method : "post",
+                  success  :(result)=>{
+                    if(result.status){
+                      btn.innerHTML = icon;
+                    $('#chekPreview1').attr('src', base64data);
+                    }else{
+                      swal.fire('Error '  , 'somthing went wrong ' , "error").then(()=>location.reload());
+                    }
+                   
+                    
+
+                  }
+                })
+            };
+        });
+    });
+
+
+
+
+
+
   var refCode = $('#myInput').val();
    var ref = window.location.host+ '/createAccount?refId='+ refCode ;
    refCode = $('#myInput').val(ref);
 });
 
+
+
+function closeModal1(id){
+     $('#modal'+id).modal('hide')
+
+}
+
+
+function addImg(id){
+
+ }
 
 function copyRefId() {
   /* Get the text field */
@@ -944,9 +1164,8 @@ function closeModal(){
        data:{id : id},
        method:'post',
        success:(result)=>{
-        //  console.log(result.address)
          var y = result.address
-         console.log(y)
+       
 document.getElementById("input0").value = y.firstName
 document.getElementById("input1").value = y.secondeName
 document.getElementById("input2").value = y.phone
@@ -1047,8 +1266,8 @@ var x = `
            document.getElementById('tableRow'+id).style.display = "none"
            if(result.address <= 0 ){
             
-            var tem = `<center> <h3 class="mt-5">You Didn't Add One Address 😂</h2></center>
-                          <center><button class="btn btn-danger "  onclick="showModal()" >ADD NEW ADDRESS</button></center>`;
+            var tem = `<center> <h5 class="mt-5 p-4">You Didn't Add One Address 😂</h5></center>
+                          <center><button class="btn btn-outline-primary "  onclick="showModal()" >ADD NEW ADDRESS</button></center>`;
                           document.getElementById('lastContId').innerHTML = tem
            }
            const Toast = Swal.mixin({

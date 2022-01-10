@@ -1,12 +1,12 @@
 <%- include('./partials/headers')%> 
-<%-include('./partials/!docType')%>
+
 <style>
      .green{
           background-color: seagreen;
      }
      
 </style>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="/stylesheets/user/orderHistory.css">
 <% if(orders == null || orders.length <= 0){ %> 
      <div class="container-fluid " >
@@ -26,7 +26,7 @@
       </div>
 
      <% }else{ %> 
-<div class="container" onload="truncate()">
+<div class="container"  style="margin-top: 50px; margin-bottom: 50px" onload="truncate()">
      <h3>Order History</h3>
      
      <% for(var m = 0 ; m  < orders.length ;m++){ %> 
@@ -49,7 +49,6 @@
            
              <div class="track" id="statusBar<%=orders[m]._id%>" >
                  
-             <% console.log(y) %> 
                   <% if( orders[m].status.includes("placed") ||  orders[m].status.includes("Shipped") || orders[m].status.includes("on The Way") || orders[m].status.includes("Completed")    ){  x = true}else{ x = false} %>
                <div  class="step <%= x== true ?'active ' : ""  %>   <%= y == true ? "cancel" : "" %>  " > <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
 
@@ -80,13 +79,11 @@
              <div class="scrollmenu">
                <% for(var i = 0 ; i< orders[m].product.length ;i++){ %> 
                     <a class="shadow">
-                         <% console.log("jfukkkkkkkk--------------------") %> 
-                         <% console.log(orders[m].product[0].productArray[0]) %> 
                          <li class="col-md-4" style="list-style: none;">
                               <figure class="itemside mb-3">
-                                  <div class="aside"><img src="<%=orders[m].product[0].productArray[0].image[0].imageUrl%>" class="img-sm border"></div>
+                                  <div class="aside"><img src="<%=orders[m].product[i].productArray[0].image[0].imageUrl%>" class="img-sm border"></div>
                                   <figcaption class="info " style="text-align: start;">
-                                      <p class="title"><b> <%=orders[0].product[0].productArray[0].productName %> </b>   <br> <span class="text-info"> ( <%=orders[m].product[i].color %> ) </p> 
+                                      <p class="title"><b> <%=orders[m].product[i].productArray[0].productName %> </b>   <br> <span class="text-info"> ( <%=orders[m].product[i].color %> ) </p> 
                                       <span class="text-muted"><%=orders[m].product[i].size %> </span>
                                       <span class="text-danger" style="margin-left: 10%;">Q : <%=orders[m].product[i].quantity %> </span>
                                       <br>
@@ -102,7 +99,7 @@
           </div>
           <div class="col-md-4 col-12 allDetails" >
                <div class="">
-               <div class="allDetails shadow d-flex " style="justify-content: space-evenly; width: 100%; ">
+               <div class="allDetails shadow d-flex " style="justify-content: space-evenly;  ">
                   
                     <div class="d-flex p-2" style="flex-direction: column; " >
                          <p>Total Price</p>
@@ -143,7 +140,6 @@
           <table class="table table-borderless">
               
                <tbody id="tableBodyAddress">
-                 
                 
                 
                </tbody>
@@ -151,7 +147,7 @@
        
          <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
            <button onclick="document.getElementById('id01').style.display='none'" type="button" class="w3-button w3-red">Back</button>
-         </div>
+     </div>
    
        </div>
      </div>

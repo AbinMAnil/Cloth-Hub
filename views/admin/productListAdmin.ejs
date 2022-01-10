@@ -44,6 +44,15 @@
                        </div>
 
                </div>
+
+
+               <!-- _____________add product btn______________-- -->
+
+              <a href="/admin/products/addproucts"> <button style="position: absolute;left: 84%;" class="btn btn-primary">Add Product</button></a>
+               <!-- __________ end  fo the add productbtn ___________________ -->
+
+
+
                <div class="w3-dropdown mb-2"  style="width: 100%;display: flex;justify-content: flex-end;">
                     <button id="" onclick="showOpt()" class="btn btn-outline-primary " type="button"> sort <i class="fas fa-sort-down"></i> </button>
                     <div onkeypress="hideopt()"   id="Demo" class="w3-dropdown-content w3-bar-block w3-border vis" style="  display:flex;flex-direction: column;  top: 11%; left: 91%;">
@@ -136,7 +145,7 @@
 
                       <td style="border-left: 1px solid rgb(230, 227, 227); padding-left: 1%;" class="align-middle">
                          <button type="button" class="btn btn-outline-success"  onclick="editProudct('<%=data.product[i]._id%>')" ><i class="fas fa-edit"></i> </button>
-                         <button onclick="deleteProduct('<%=data.product[i]._id%>')" type="button" class="btn btn-outline-danger"><i class="fas fa-minus-circle"></i></button>
+                         <button onclick="deleteProduct('<%=data.product[i]._id%>')"   type="button" class="btn btn-outline-danger"><i class="fas fa-minus-circle"></i></button>
                          <button  onclick="showOfferForm('<%=data.product[i]._id%>')" class="btn btn-outline-warning"><i class="fas fa-tags"></i></button>
         
                       </td>
@@ -738,7 +747,7 @@ input[type=number] {
 
 <div class="w3-container">
 
-    <div id="id03" class="w3-modal" style="z-index: 9999;">
+    <div id="id03" class="w3-modal" style="z-index: 999;">
       <div class="w3-modal-content w3-card-4 w3-animate-zoom" style="max-width:600px">
         <div class="w3-container" id="editProfile">
           <div class="w3-section">
@@ -769,7 +778,13 @@ input[type=number] {
                       <button  id="createOfferBtn" type="button" class="btn btn-success " onclick="applyOffer()"> Apply Offer</button>
                       <button  onclick='document.getElementById("id03").style.display = "none" ; document.getElementById("changePassword").reset()  ; document.getElementById("changePawordErr").innerHTML = ""'  type="button" class="btn btn-danger ">Cancel</button>
                   </div>
-                 <center> <p id="changePawordErr" style="color: red; margin-top: 2%;"></p></center>
+
+
+                  <center id="previousOffer">
+                  
+                  </center>
+
+                 <center> <p  id="changePawordErr" style="color: red; margin-top: 2%;"></p></center>
               </form>
               </div>
           </div>
@@ -804,9 +819,65 @@ $(function () {
 var  productId ;
 
 function showOfferForm(id){
+
  productId = id;
- document.getElementById("id03").style.display = "block";
+
+$.ajax({
+    url : '/admin/products/getOfferOfProduct',
+    method : 'post',
+    data : {pid : id},
+    success  : (result)=>{
+        console.log(result)
+        if(result.status == false){
+            document.getElementById("id03").style.display = "block";
+            return;
+        }
+        console.log(result.offerName )
+
+       const odlOffer = document.getElementById('previousOffer');
+       const  offerDiv = `<code style="position: absolute; top: 67%; left: 24%; background-color: white;">Current Offer</code>
+                    <div class="">
+                        <p style="border-radius: 7px;  padding: 1rem; border: 1px solid darkslateblue; text-align: start; margin-top: 7%;"> <b>${result.offerName}</b>
+                              <button type="button" onclick="clearOffer('${id}')" style="margin-left: 40%;" class="btn btn-outline-danger"><i class="fas fa-minus"></i></button></p>
+                    </div>`;
+
+                    odlOffer.innerHTML = offerDiv;
+            document.getElementById("id03").style.display = "block";
+
+
+
+    }
+})
 }
+
+function  clearOffer(id){
+    Swal.fire({
+  title: 'Are you sure?',
+  text: "do you want to delete the offer from the product",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    $.ajax({
+        url : '/admin/products/removeOffer',
+        method : 'post',
+        data : {id : id},
+        success : (result)=>{
+            if(result.status){
+                swal.fire("Success" , 'offer removed successfully' , "success").then(()=>location.reload());
+            }else{
+                swal.fire('Error' , 'somthing went wrong ' , 'error').then(()=>location.reload());
+            }
+        }
+    })
+  }
+})
+
+}
+
 
 function applyOffer(){
     var offerId
@@ -833,7 +904,6 @@ function applyOffer(){
 
 
 function createTable(data){ 
-    console.log(data)
     var offer , price ; 
      document.getElementById('tableSpinner').classList.remove("displayNone")
      var tBody =  document.getElementById('tabelBody');
@@ -979,7 +1049,6 @@ function sortByDate(date){
           method:'post',
           success :(result)=>{
               
-              console.log(result.status);
            createTable(result.status) 
                         
                       
@@ -1005,13 +1074,6 @@ function hideopt(){
      document.getElementById("Demo").classList.toggle('vis')
 }
 // {{ end of the sort option }}
-
-
-
-
-
-
-
 
 
 
@@ -1076,7 +1138,6 @@ function morePage(num){
          var tBody =  document.getElementById('tabelBody');
         function searchProduct(){
            var searchKey =   document.getElementById("searchBar").value
-           console.log(searchKey);
              if(searchKey == null){
                  alert("hel")
                     $.ajax({

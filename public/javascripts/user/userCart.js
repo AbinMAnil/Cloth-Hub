@@ -1,47 +1,46 @@
 // function to  chage the quantity;
 
-function chageQuantity(change , id , productId){
-     var qButton = document.getElementById('quantity'+id);
-      var x = parseInt(qButton.innerHTML)
-      if(x == 1  && parseInt(change ) == -1){document.getElementById('minusButton'+id).style.visibility = "hidden" ; return  }
-     document.getElementById('minusButton'+id).style.visibility = "visible"; 
-      
-      if(x > 1 || parseInt(change) == 1){
-          $.ajax({
-               url:"cart/chageQuantity",
-               data : {change : change , id : id , userId : localStorage.getItem("userId") , pid: productId},
-               method:'post',
-               success : (result)=>{
-                    console.log(result.status.product.grandTotal)
-                    document.getElementById('grandTotal').innerHTML = result.status.product.grandTotal
-                    document.getElementById('finalPrice').innerHTML = result.status.product.grandTotal
+// function chageQuantity(id , productId){
+
+// alert("fuck");
+//      var quantity = document.getElementById('quantitySelect'+id).value;
+// (quantity);
+
+//           // $.ajax({
+//           //      url:"cart/chageQuantity",
+//           //      data : {  id : id , userId : localStorage.getItem("userId") , pid: productId},
+//           //      method:'post',
+//           //      success : (result)=>{
+//           //           console.log(result.status.product.grandTotal)
+//           //           document.getElementById('grandTotal').innerHTML = result.status.product.grandTotal
+//           //           document.getElementById('finalPrice').innerHTML = result.status.product.grandTotal
 
 
-                  for(var i = 0 ; i< result.status.product.product.length ;i++){
-                       if(result.status.product.product[i].vaientId == id){
-                         // console.log(result.status.product.product[i].vaientId)
-                         document.getElementById("price"+id).innerHTML = result.status.product.product[i].totalPrice
-                            break;
+//           //         for(var i = 0 ; i< result.status.product.product.length ;i++){
+//           //              if(result.status.product.product[i].vaientId == id){
+//           //                // console.log(result.status.product.product[i].vaientId)
+//           //                document.getElementById("price"+id).innerHTML = result.status.product.product[i].totalPrice
+//           //                   break;
 
-                       }
-                  }
-                    if(result.status.status == true){
+//           //              }
+//           //         }
+//           //           if(result.status.status == true){
                         
-                         var y =  x +  parseInt(1)
-                         qButton.innerHTML = y+""
-                    }else if(result.status.status == false){
-                         var y =  x -  parseInt(1)
-                         qButton.innerHTML = y+""
-                    }else{
-                         swal.fire("Error" , result.status.status)
-                         .then(()=>{
-                              location.reload();
-                         })
-                    }
-               }
-          })
-     }
-}
+//           //                var y =  x +  parseInt(1)
+//           //                qButton.innerHTML = y+""
+//           //           }else if(result.status.status == false){
+//           //                var y =  x -  parseInt(1)
+//           //                qButton.innerHTML = y+""
+//           //           }else{
+//           //                swal.fire("Error" , result.status.status)
+//           //                .then(()=>{
+//           //                     location.reload();
+//           //                })
+//           //           }
+//           //      }
+//           // })
+     
+// }
 
 
 function getCartCount(){

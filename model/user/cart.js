@@ -8,7 +8,7 @@ const cart = new scehma({
           required:true
      },
      product:{
-          required:true,
+     required:true,
           type:Array
      }
 

@@ -24,7 +24,6 @@ module.exports = {
      getOrderById : async (req,res)=>{
 
          var data = await orders.findOne({_id : objectId(req.body.id)})
-         console.log(data);
           res.json({result :data.address });
      },
      getOrderedProducts : async (req,res)=>{
@@ -43,6 +42,5 @@ module.exports = {
                     }
                }
           );
-          console.log(result);
      },
 }

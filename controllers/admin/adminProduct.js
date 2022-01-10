@@ -166,7 +166,6 @@ module.exports = {
   },
 
   sortDate: (date) => {
-    console.log(date);
     return new Promise(async (resolve, reject) => {
       var result = await product.find().sort({ createdAt: parseInt(date) });
       resolve(result);
@@ -197,7 +196,7 @@ module.exports = {
 
   showCatagotyAndSubcatagoryWise: (item) => {
     return new Promise(async (resolve, reject) => {
-      console.log(item);
+
       var obj = {
         product: await product.find({ subCatagory: item }),
         totalLength: await product.count(),
@@ -208,27 +207,60 @@ module.exports = {
   },
   showCatagoryWise: (item) => {
     return new Promise(async (resolve, reject) => {
-      console.log(item);
+
       var obj = {
         product: await product.find({ catagory: item }),
         totalLength: await product.count(),
       };
-      console.log(item);
+
       resolve(obj);
     });
   },
 
   searchProduct: (item) => {
     return new Promise(async (resolve, reject) => {
-      console.log(item);
       var obj = {
         product: await product.find({
           productName: { $regex: item ,$options: 'i' },
         }),
         totalLength: await product.count(),
       };
-      console.log(item);
       resolve(obj);
     });
   },
+
+  getProductOffer  : async (req,res)=>{
+    const result = await product.findOne( {_id : objectId(req.body.pid) })
+    console.log(result);
+    if(result.offerName == null){
+      res.json({status : false});
+      return ;
+    }
+
+     res.json({
+       offerName : result.offerName,
+       offerPercentage : result.offerPercentage
+     })
+  },
+  clearOrderFromProduct : async (req,res)=>{
+    try{
+      var result =await product.updateOne(
+        {
+          _id : objectId(req.body.id)
+        },
+        {
+          $set:{
+            offerName : null,
+            offerPercentage : null,
+            offerPrice : null,
+          }
+        }
+      )
+      console.log(result);
+      res.json({status : true})
+    }catch(err){
+      console.log(err)
+      res.json({status : false})
+    }
+  }
 };

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const cloudinary = require("../../API/cloudnary");
 const user = require('../../model/user/userDataSchema');
 const API = require('../../API/twilio');
-const { findById } = require("../../model/user/userDataSchema");
 const { response } = require("../../app");
 const middleWare = require("../../middleWares/userAuth");
 const objectId = mongoose.Types.ObjectId;
@@ -9,9 +9,45 @@ const product = require('../../model/admin/prductSchema');
 const { json } = require("express");
 const catagory = require('../../controllers/admin/adminCatagory');
 const cart = require('../../controllers/user/cart');
+const cartModel = require('../../model/user/cart');
+const gustCartModel = require('../../model/user/gustUser');
 const wishlist = require('../../model/user/wishlist');
-const referralCodeGenerator = require('referral-code-generator')
+const referralCodeGenerator = require('referral-code-generator');
+const { pre } = require("../../model/user/userAddress");
+
+function distroyImage(imageUid ){
+     
+     return new Promise((resolve,reject)=>{
+          cloudinary.uploader.destroy(imageUid, function (error, result) {
+                    //upload new image ;
+
+             });
+     })
+}
+
+function uploadImage(base64){
+     return new Promise((resolve , reject)=>{
+
+          var temData = base64.split(";base64,").pop();
+          var uploadStr = "data:image/jpeg;base64," + temData;
+          cloudinary.uploader.upload(uploadStr, (err, result) => {
+          if (err) console.log(err);
+          else {
+          var urlAndId = {
+               imageUrl: result.secure_url,
+               publicId: result.public_id,
+          };
+          console.log(result.publicId);
+          resolve(urlAndId);
+          }
+          });
+
+     })
+}
+
+
 // function to check the user is exists;
+
 function findUserByMail(email){
     return new Promise( async (resolve, reject)=>{
     var result = await user.findOne(
@@ -37,7 +73,6 @@ function findUserByPhone(phone){
                     phone:parseInt(phone)
                }
           )
-          console.log(result);
          
           if(result == "")resolve(null)
           else{
@@ -77,7 +112,6 @@ function getWishlistProducts (userId){
                
                
                ])
-               // console.log(result[0].productArray.brand);
                resolve(result);
 
      })
@@ -89,7 +123,7 @@ module.exports = {
      // the insert data of  the user;
      insertUser: async  (data)=>{
           return new Promise(async (resolve , reject)=>{
-
+               delete data.gustUserId;
           const {refId , userName , email , passwrod , phone}= data;
 
           if(refId == ""){
@@ -126,7 +160,6 @@ module.exports = {
                         }
                     }
                )
-               console.log(updateReferdUser);
                // also gave 25 rupees to the user while creataing ;
 
                data.refCode =  referralCodeGenerator.alphaNumeric('uppercase', 5, 3);
@@ -164,7 +197,6 @@ module.exports = {
      },
 
      checkOtp:(phone, otp)=>{
-          console.log(phone , otp);  	
           return new Promise( async (resolve, reject)=>{
               try{
                var result = await  API.checkOtp(otp , phone);
@@ -206,14 +238,12 @@ module.exports = {
      },
 
      checkOtpforNewUser:(phone, otp)=>{
-          console.log(phone , otp);  	
           return new Promise( async (resolve, reject)=>{
               try{
                var result = await  API.checkOtp(otp , phone);
 
                if(result) {
                    var userExits = await   user.findOne({phone: phone})
-                   console.log(userExits);
                    if(userExits == null){
                     let resoponseData = {
                          status: true ,
@@ -266,7 +296,6 @@ module.exports = {
                   }
                }catch(err){
                     console.log(err);
-                    location.reload();
                }
           })
      },
@@ -300,14 +329,27 @@ module.exports = {
                    }
           })
      } , 
-     getCartCount :(id , db)=>{
-          console.log("helle im in the cart count ")
-          return new Promise(async(resolve ,reject)=>{
-              var result = await  db.findOne({userId :id});
-          //     console.log(result.product.length);
-               resolve(result.product.length)
-          })
-     }, 
+     getCartCount :async (req,res)=>{
+         if(req.session.uid){
+              var cartProduct = await cartModel.findOne({userId : req.session.uid});
+              if(cartProduct == null ){
+                   res.json({count : 0});
+                   return ; 
+              }
+
+              res.json({count : cartProduct.product.length});
+              return ;
+         }
+
+         var gustUserCart = await gustCartModel.findOne({userId : req.body.id});
+
+         if(gustUserCart == null ){
+              res.json({count : 0});
+              return ; 
+         }
+         res.json({count : gustUserCart.product.length});    
+         return ; 
+      }, 
      getUserById: (id)=>{
           return new Promise(async (resolve ,reject)=>{
                resolve(
@@ -317,7 +359,6 @@ module.exports = {
      },
 
      editProfile: async (id , data)=>{
-          console.log(data);
                return new Promise( async  (resolve ,reject)=>{
                     var result = await user.updateOne(
                          {
@@ -350,10 +391,16 @@ module.exports = {
          if(result.modifiedCount == 1){ res.json({status : true}) };
      },
      showWishlist : async (req,res)=>{
+          var data 
+          if(req.session.uid){
+               data =  await  getWishlistProducts(req.session.uid)
+               }else{
+                   data = [] 
+               }
+               console.log(data);
           res.render('user/wishlist' , {logStatus: req.session.loginStatus,
                catagory: await catagory.getAllCatagory(),
-               data: await  getWishlistProducts(req.session.uid)
-              
+               data: data
           })
      },
      addToWishlist :async (req,res)=>{
@@ -388,7 +435,6 @@ module.exports = {
           }
      },
      removeFromWishlist : async (req,res)=>{
-     console.log(req.body.id);
           var result = await wishlist.updateOne(
                {
                     userId : req.session.uid
@@ -399,9 +445,43 @@ module.exports = {
                     }
                }
           )
-          console.log(result);
           if(result.modifiedCount == 1)res.json({status : true});
      }, 
+
+     uploadProfile : async (req,res)=>{
+          console.log("hello -------------in the  contrller of image upload")
+          var preImage = await user.findOne({_id : objectId(req.session.uid)});
+         
+
+          if(preImage.image  == null){
+              updateQuery = await uploadImage(req.body.base64);
+          }else{
+               distroyImage(preImage.image.publicId);
+              updateQuery = await uploadImage(req.body.base64);
+          } 
+
+          console.log(updateQuery);
+
+          try{
+               var result = await user.updateOne(
+                    {
+                         _id : objectId(req.session.uid)
+                    },
+                    {
+                         $set:{
+                                   'image.imageUrl' : updateQuery.imageUrl,
+                                   'image.publicId'  : updateQuery.publicId
+                         }
+                    }
+               )
+               res.json({status : true});
+          }catch(err){
+               
+               consle.log(err);
+               res.json({status : false});
+          }
+
+     }
 
      
 }

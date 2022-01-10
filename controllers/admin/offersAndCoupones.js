@@ -26,10 +26,8 @@ module.exports = {
     }
   },
   deleteOffer: async (req, res) => {
-    console.log(req.body.id);
     try {
       var resultName = await offerModel.findOne({ _id: objectId(req.body.id) });
-      console.log(resultName);
       var upResult = await product.updateMany(
         {
           offerName: resultName.offerName,
@@ -42,26 +40,26 @@ module.exports = {
           },
         }
       );
-      console.log(upResult);
       var result = await  offerModel.remove({_id : objectId(req.body.id)})
     
 
       res.json({ status: true, len: await offerModel.find().count() });
     } catch (err) {
-      console.log(err);
       res.json({ status: fales, message: "Somthing went wrong " });
     }
   },
 
   applyOffer: async (req, res) => {
-    console.log(req.body);
+
     var pro = await product.findOne({ _id: objectId(req.body.productId) });
     var offerTem = await offer.findOne({ _id: objectId(req.body.offerId) });
 
+      if(offerTem.offerPercentage > pro.offerPercentage){
+
+      
     var finalPrice = Math.round(
       pro.price - Math.round((pro.price * offerTem.offerPercentage) / 100)
     );
-    console.log(finalPrice);
 
     try {
       var result = await product.updateOne(
@@ -76,7 +74,6 @@ module.exports = {
           },
         }
       );
-      console.log(result);
       if (result.modifiedCount == 1) {
         res.json({ status: true });
       }
@@ -84,17 +81,20 @@ module.exports = {
       res.json({ status: false, message: "Somthing Went worng " });
       console.log(err);
     }
+      }else{
+        res.json({ status : false , message : 'There is already an offer  is more  userfull to user'});
+      }
   },
 
   applyOfferToSubcatagory: async (req, res) => {
     let { catagory, subCat, offerId } = req.body;
     var offerTem = await offer.findOne({ _id: objectId(offerId) });
+
     var productArray = await product.find({
       catagory: catagory,
       subCatagory: subCat == undefined ? { $regex: "" } : subCat,
     });
 
-    console.log(productArray.length);
     // find the offer price in the loop and also insert the value into the docuemt
     var falg = true;
     for (var i = 0; i < productArray.length; i++) {
@@ -132,8 +132,29 @@ module.exports = {
 
   expireOffer:async  () => {
     return new Promise(async (resolve, reject) => {
+
+      // expiriring the coupone 
+
+      var coupone = await couponeModel.find();
+      var cpDate =   JSON.stringify(new Date()).substr(1,10)
+
+      let couponeExpire = async ()=>{
+        for(var i = 0 ; i< coupone.length ; i++){
+          if(coupone[i].expireDate < cpDate ){
+            await  couponeModel.remove({_id : coupone[i]._id});
+          }
+        }
+
+      }
+     
+
+
+
       // in the case more than one offer is expired;
+
+
       var  offerCount = await  offer.find()
+
       let expireOfferFun = async () => {
            var date = new Date();
         for (var i = 0; i < offerCount.length; i++) {
@@ -152,16 +173,17 @@ module.exports = {
                     }
                )
                var delResult = await   offer.remove({_id : objectId (offerCount[i]._id) });
-               console.log(upProduct);
-               console.log(delResult);
                }else{
                     
                }
         }
 
+
+
+
         resolve(true);
       };
-
+      couponeExpire()
       expireOfferFun();
     });
   },
@@ -181,7 +203,6 @@ module.exports = {
       try{
 
         var productArray = await product.find({ offerName : data.offerName ,  offerPercentage  : parseInt(data.offerPercentage), expireDate : data.expireDate });
-        console.log(productArray);
         var falg = true;
         for (var i = 0; i < productArray.length; i++) {
           var finalPrice = Math.round(productArray[i].price -  Math.round((productArray[i].price * offerPercentage  ) / 100)
@@ -234,7 +255,6 @@ module.exports = {
 
   },
   createCoupone : async (req,res)=>{
-      console.log(req.body);
       req.body.couponeCode =  couponeCodeGenerator.generate(); 
       try{
         let result = await couponeModel(req.body).save();
@@ -250,12 +270,10 @@ module.exports = {
          var result  = await couponeModel.remove({_id : objectId(req.body.id)});
         res.json({status : true , len : await couponeModel.find().count() })
        }catch(err){
-         console.log(err);
          res.json({status : false , message :"Somthing Went worng" })
        }
   },
   updateCoupone  : async (req,res)=>{
-    console.log(req.body);
     const couponeId = req.body.couponeId;
     delete req.body.couponeId;
     

@@ -199,7 +199,6 @@ function openPage(pageName, elmnt, color) {
 document.getElementById("defaultOpen").click();
 
 function editCatagory(cata) {
-  console.log(cata);
 
   var altCat = document.getElementById("form").value;
   var orgCat = document.getElementById("mainCata").value;

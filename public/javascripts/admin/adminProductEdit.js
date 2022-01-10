@@ -330,8 +330,6 @@ console.log(product.price)
           data:{id:id},
           method:'post',
           success :(data)=>{
-              console.log("hell data")
-              console.log(data);
 
 
                objectId = data.porduct._id;
@@ -517,7 +515,6 @@ function addSizeVarient(){
      };
 
       //{{ updation to the dtabase}}
-      console.log(objectId);
 
       $.ajax({
            url:'/admin/products/editProducts',

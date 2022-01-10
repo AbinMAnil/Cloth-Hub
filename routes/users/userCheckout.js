@@ -45,8 +45,17 @@ router.delete('/deleteAddress', checkOut.deleteAddress)
 */
 router.post('/razorPayCreateOrderId' , rasorPay.createOrder);
 
+
 /* router to verify the order 
 */
 router.post('/finalVerify' , rasorPay.verifyRazorPay);
+
+
+// router to get users wallet amout ;
+router.post('/getWallet' , checkOut.getWallet);
+
+// rotuer to update wallet after pay
+router.post('/updateWallet' , checkOut.updateWallet);
+
 
 module.exports = router;

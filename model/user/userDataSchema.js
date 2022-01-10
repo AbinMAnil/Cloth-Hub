@@ -41,7 +41,11 @@ const userSchecma = new schema({
         type:Boolean,
         default:false,
     },
-    address:[addressSchma]
+    address:[addressSchma],
+
+    image : {
+        type : Object,
+    } 
 
 }, {timestamps:true } )
 

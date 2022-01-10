@@ -27,7 +27,6 @@ router.get('/CatagoryWiseShow', async (req,res)=>{
 });
 
 router.get('/searchProduct' , async (req,res)=>{
-    console.log(req.query.productName)
     res.render('user/products' ,{logStatus:req.session.loginStatus ,  catagory: await  catagory.getAllCatagory() ,result :await product.searchProduct(req.query.productName)});
 } )
 
